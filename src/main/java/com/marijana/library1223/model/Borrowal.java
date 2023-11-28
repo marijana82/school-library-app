@@ -9,11 +9,13 @@ public class Borrowal {
     @Id
     @GeneratedValue
     private Long id;
-
     @Column(name="first_name_student")
     private String firstNameStudent;
     @Column(name="last_name_student")
     private String lastNameStudent;
+    @Column(name="student_class")
+    private String studentClass;
+
     @Column(name="book_title")
     private String bookTitle;
     @Column(name="initials_author")
@@ -22,6 +24,9 @@ public class Borrowal {
     private String lastNameAuthor;
     @Column(name="number_of_books_borrowed")
     private int numberOfBooksBorrowed;
+
+
+
 
     public Long getId() {
         return id;
@@ -45,6 +50,14 @@ public class Borrowal {
 
     public void setLastNameStudent(String lastNameStudent) {
         this.lastNameStudent = lastNameStudent;
+    }
+
+    public String getStudentClass() {
+        return studentClass;
+    }
+
+    public void setStudentClass(String studentClass) {
+        this.studentClass = studentClass;
     }
 
     public String getBookTitle() {
