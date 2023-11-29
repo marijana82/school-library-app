@@ -12,9 +12,9 @@ public class Account {
     @GeneratedValue
     private Long id;
 
-    @Column(name="first_name_student")
+    @Column(name="first_name_student", length = 64)
     private String firstNameStudent;
-    @Column(name="last_name_student")
+    @Column(name="last_name_student", length = 64)
     private String lastNameStudent;
     @Column(name="dob")
     private LocalDate dob;
