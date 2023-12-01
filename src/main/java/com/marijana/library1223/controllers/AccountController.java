@@ -35,7 +35,7 @@ public class AccountController {
     //3.get-mapping
     @GetMapping
     public ResponseEntity<List<AccountDto>> getAllAccounts() {
-        return ResponseEntity.ok(accountService.showAllAccounts);
+       return ResponseEntity.ok(accountService.showAllAccounts());
     }
 
 

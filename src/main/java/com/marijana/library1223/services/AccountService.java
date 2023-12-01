@@ -5,6 +5,9 @@ import com.marijana.library1223.models.Account;
 import com.marijana.library1223.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class AccountService {
 
@@ -28,6 +31,16 @@ public class AccountService {
     }
 
     //showAllAccounts method - get mapping (all)
+    public List<AccountDto> showAllAccounts() {
+        List<Account> accountList = accountRepository.findAll();
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        for (Account account : accountList) {
+            AccountDto accountDto = transferAccountToAccountDto(account);
+            accountDtoList.add(accountDto);
+        }
+        return accountDtoList;
+    }
+
 
 
     //helper methods ...............................................................
