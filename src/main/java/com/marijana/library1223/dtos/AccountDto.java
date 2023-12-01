@@ -1,18 +1,27 @@
 package com.marijana.library1223.dtos;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public class AccountDto {
 
     private Long id;
+    @Size(min=3, max=128)
     private String firstNameStudent;
+    @Size(min=3, max=128)
     private String lastNameStudent;
+    @Past
     private LocalDate dob;
+    @NotBlank
     private String studentClass;
+    @Size(min=3, max=128)
     private String nameOfTeacher;
 
+    //getters & setters
     public Long getId() {
         return id;
     }
