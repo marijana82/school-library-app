@@ -47,11 +47,20 @@ public class AccountController {
         return ResponseEntity.created(uri).body(accountDto);
     }
 
-    //3.get-mapping
+    //3.get-mapping-all
     @GetMapping
     public ResponseEntity<List<AccountDto>> getAllAccounts() {
        return ResponseEntity.ok(accountService.showAllAccounts());
     }
+
+    //4.get-mapping-one
+    @GetMapping("/{idAccount}")
+    public ResponseEntity<AccountDto> getOneAccount(@PathVariable Long idAccount) {
+        AccountDto accountDto = accountService.showOneAccount(idAccount);
+        return ResponseEntity.ok(accountDto);
+
+    }
+
 
 
 

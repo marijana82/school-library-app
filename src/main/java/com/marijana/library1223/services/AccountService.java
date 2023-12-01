@@ -1,12 +1,14 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.AccountDto;
+import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -39,6 +41,17 @@ public class AccountService {
             accountDtoList.add(accountDto);
         }
         return accountDtoList;
+    }
+
+    //showOneAccount method - get mapping (one)
+    public AccountDto showOneAccount(Long id) {
+        Optional<Account> optionalAccount = accountRepository.findById(id);
+        if(optionalAccount.isPresent()) {
+            Account requestedAccount = optionalAccount.get();
+            return transferAccountToAccountDto(requestedAccount);
+        } else {
+            throw new RecordNotFoundException("Account with id number" + id + "does not exist.");
+        }
     }
 
 
