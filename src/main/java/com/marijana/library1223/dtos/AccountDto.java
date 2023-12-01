@@ -10,15 +10,15 @@ import java.time.LocalDate;
 public class AccountDto {
 
     private Long id;
-    @Size(min=3, max=128)
+    @Size(min=2, max=128, message = "First name must contain at least 2 characters.")
     private String firstNameStudent;
-    @Size(min=3, max=128)
+    @Size(min=2, max=128, message = "Last name must contain at least 2 characters.")
     private String lastNameStudent;
     @Past
     private LocalDate dob;
-    @NotBlank
+    @NotBlank(message = "Please provide the class student is member of.")
     private String studentClass;
-    @Size(min=3, max=128)
+    @Size(min=2, max=128, message = "Name must contain at least 2 characters.")
     private String nameOfTeacher;
 
     //getters & setters

@@ -2,7 +2,9 @@ package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.AccountDto;
 import com.marijana.library1223.services.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,8 +24,8 @@ public class AccountController {
 
     //2.post-mapping
     @PostMapping
-    //add @Valid and BindingResult!!
-    public ResponseEntity<?> createNewAccount(@RequestBody AccountDto accountDto) {
+    //add @Valid and BindingResult
+    public ResponseEntity<?> createNewAccount(@Valid @RequestBody AccountDto accountDto, BindingResult bindingResult) {
         accountService.createAccount(accountDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
