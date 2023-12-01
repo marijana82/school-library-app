@@ -6,10 +6,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -50,16 +52,36 @@ public class AccountController {
     //3.get-mapping-all
     @GetMapping
     public ResponseEntity<List<AccountDto>> getAllAccounts() {
-       return ResponseEntity.ok(accountService.showAllAccounts());
+            return ResponseEntity.ok(accountService.showAllAccounts());
     }
+
+
 
     //4.get-mapping-one
     @GetMapping("/{idAccount}")
     public ResponseEntity<AccountDto> getOneAccount(@PathVariable Long idAccount) {
         AccountDto accountDto = accountService.showOneAccount(idAccount);
         return ResponseEntity.ok(accountDto);
-
     }
+
+    //5.put-mapping
+    @PutMapping("/{idAccount}")
+    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long idAccount, @Valid @RequestBody AccountDto accountDto) {
+        AccountDto accountDto1 = accountService.updateOneAccount(idAccount, accountDto);
+        return ResponseEntity.ok().body(accountDto1);
+    }
+
+
+    //6.patch-mapping
+
+    //7.delete-mapping
+    @DeleteMapping("/{idAccount}")
+    public ResponseEntity<Object> deleteOneAccount(@PathVariable Long idAccount) {
+        accountService.deleteById(idAccount);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 
 

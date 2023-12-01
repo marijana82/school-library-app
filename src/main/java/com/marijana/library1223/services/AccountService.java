@@ -1,11 +1,14 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.AccountDto;
+import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +24,12 @@ public class AccountService {
 
     //createAccount method - post mapping
     public AccountDto createAccount(AccountDto accountDto) {
+
+        if(accountRepository.existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(accountDto.getFirstNameStudent(), accountDto.getLastNameStudent())) {
+            //here i'm getting status 500 internal server error instead of "Account already exists".
+            throw new ResourceAlreadyExistsException("Account already exists!");
+
+        } else {
         Account account = new Account();
         account.setFirstNameStudent(accountDto.getFirstNameStudent());
         account.setLastNameStudent(accountDto.getLastNameStudent());
@@ -29,8 +38,13 @@ public class AccountService {
         account.setNameOfTeacher(accountDto.getNameOfTeacher());
         accountRepository.save(account);
         accountDto.setId(account.getId());
-       return accountDto;
+
+        return accountDto;
+
+        }
     }
+
+
 
     //showAllAccounts method - get mapping (all)
     public List<AccountDto> showAllAccounts() {
@@ -43,6 +57,7 @@ public class AccountService {
         return accountDtoList;
     }
 
+
     //showOneAccount method - get mapping (one)
     public AccountDto showOneAccount(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
@@ -50,9 +65,51 @@ public class AccountService {
             Account requestedAccount = optionalAccount.get();
             return transferAccountToAccountDto(requestedAccount);
         } else {
-            throw new RecordNotFoundException("Account with id number" + id + "does not exist.");
+            throw new IdNotFoundException("Account with id number " + id + " does not exist.");
         }
     }
+
+    //deleteById method - delete mapping (one)
+    public String deleteById(Long id) {
+        if(accountRepository.existsById(id)) {
+            Optional<Account> accountFound = accountRepository.findById(id);
+            Account accountToDelete = accountFound.get();
+            accountRepository.delete(accountToDelete);
+            return "Account with id number " + id + " has been successfully deleted.";
+        } else {
+            throw new IdNotFoundException("Account with id number " + id + " does not exist.");
+        }
+    }
+
+
+    //updateOneAccount method - put mapping - for changing the whole account
+    public AccountDto updateOneAccount(Long id, AccountDto accountDto) {
+
+        Optional<Account> optionalAccount = accountRepository.findById(id);
+
+        if(optionalAccount.isEmpty()) {
+
+            throw new RecordNotFoundException("Account with id number " + id + " not found.");
+
+        } else {
+
+            Account account = optionalAccount.get();
+            Account updatedAccount = transferAccountDtoToAccount(accountDto);
+            //setting the already existing id from the database
+            updatedAccount.setId(account.getId());
+            accountRepository.save(updatedAccount);
+            return transferAccountToAccountDto(updatedAccount);
+        }
+    }
+
+
+
+
+
+
+
+
+    //patch method
 
 
 
