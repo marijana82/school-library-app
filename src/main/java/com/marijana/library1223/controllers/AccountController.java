@@ -66,13 +66,18 @@ public class AccountController {
 
     //5.put-mapping
     @PutMapping("/{idAccount}")
-    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long idAccount, @Valid @RequestBody AccountDto accountDto) {
+    public ResponseEntity<AccountDto> fullUpdateAccount(@PathVariable Long idAccount, @Valid @RequestBody AccountDto accountDto) {
         AccountDto accountDto1 = accountService.updateOneAccount(idAccount, accountDto);
         return ResponseEntity.ok().body(accountDto1);
     }
 
 
     //6.patch-mapping
+    @PatchMapping("/{idAccount")
+    public ResponseEntity<AccountDto> partialUpdateAccount(@PathVariable Long idAccount, @Valid @RequestBody AccountDto accountDto) {
+        AccountDto accountDto1 = accountService.updateAccountPartially(idAccount, accountDto);
+        return ResponseEntity.ok().body(accountDto1);
+    }
 
     //7.delete-mapping
     @DeleteMapping("/{idAccount}")
