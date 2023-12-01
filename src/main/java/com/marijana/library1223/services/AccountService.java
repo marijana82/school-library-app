@@ -103,13 +103,43 @@ public class AccountService {
     }
 
 
+    //updateAccountPartially - patch method - for partially updating an account
+    public AccountDto updateAccountPartially(Long id, AccountDto accountDto) {
 
+        Optional<Account> optionalAccount = accountRepository.findById(id);
 
+        if(optionalAccount.isEmpty()) {
+            throw new RecordNotFoundException();
 
+        } else {
 
+            Account accountToUpdate = optionalAccount.get();
 
+            Account account1 = transferAccountDtoToAccount(accountDto);
+            account1.setId(accountToUpdate.getId());
 
-    //patch method
+            if(accountDto.getFirstNameStudent() !=null) {
+                accountToUpdate.setFirstNameStudent(accountDto.getFirstNameStudent());
+            }
+            if(accountDto.getLastNameStudent() !=null) {
+                accountToUpdate.setLastNameStudent(accountDto.getLastNameStudent());
+            }
+            if(accountDto.getDob() !=null) {
+                accountToUpdate.setDob(accountDto.getDob());
+            }
+            if(accountDto.getStudentClass() !=null) {
+                accountToUpdate.setStudentClass(accountDto.getStudentClass());
+            }
+            if(accountDto.getNameOfTeacher() !=null) {
+                accountToUpdate.setNameOfTeacher(accountDto.getNameOfTeacher());
+            }
+
+            Account returnAccount = accountRepository.save(account1);
+            return transferAccountToAccountDto(returnAccount);
+
+        }
+
+    }
 
 
 
