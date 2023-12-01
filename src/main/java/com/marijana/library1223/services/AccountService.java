@@ -27,6 +27,24 @@ public class AccountService {
        return accountDto;
     }
 
+    //showAllAccounts method - get mapping (all)
+
+
+    //helper methods ...............................................................
+
+    //helper method - transfer Account to AccountDto
+    private AccountDto transferAccountToAccountDto(Account account) {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setFirstNameStudent(account.getFirstNameStudent());
+        accountDto.setLastNameStudent(account.getLastNameStudent());
+        accountDto.setDob(account.getDob());
+        accountDto.setStudentClass(account.getStudentClass());
+        accountDto.setNameOfTeacher(account.getNameOfTeacher());
+        accountDto.setId(account.getId());
+        return accountDto;
+    }
+
+
 
 
 }

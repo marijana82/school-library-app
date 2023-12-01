@@ -3,13 +3,11 @@ package com.marijana.library1223.controllers;
 import com.marijana.library1223.dtos.AccountDto;
 import com.marijana.library1223.services.AccountService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
@@ -32,6 +30,12 @@ public class AccountController {
                 .path("/" + accountDto.getId())
                 .toUriString());
         return ResponseEntity.created(uri).body(accountDto);
+    }
+
+    //3.get-mapping
+    @GetMapping
+    public ResponseEntity<List<AccountDto>> getAllAccounts() {
+        return ResponseEntity.ok(accountService.showAllAccounts);
     }
 
 

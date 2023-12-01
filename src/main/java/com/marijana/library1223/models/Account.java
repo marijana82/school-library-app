@@ -11,7 +11,6 @@ public class Account {
     @Id
     @GeneratedValue
     private Long id;
-
     @Column(name="first_name_student", length = 64)
     private String firstNameStudent;
     @Column(name="last_name_student", length = 64)
