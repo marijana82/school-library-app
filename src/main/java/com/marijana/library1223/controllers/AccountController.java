@@ -24,6 +24,7 @@ public class AccountController {
 
     //2.post-mapping
     @PostMapping
+    //add @Valid and BindingResult!!
     public ResponseEntity<?> createNewAccount(@RequestBody AccountDto accountDto) {
         accountService.createAccount(accountDto);
         URI uri = URI.create(ServletUriComponentsBuilder
