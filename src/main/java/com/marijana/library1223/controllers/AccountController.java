@@ -5,6 +5,7 @@ import com.marijana.library1223.services.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,7 +26,19 @@ public class AccountController {
     //2.post-mapping
     @PostMapping
     //add @Valid and BindingResult
-    public ResponseEntity<?> createNewAccount(@Valid @RequestBody AccountDto accountDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createNewAccount(@Valid @RequestBody AccountDto accountDto, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors()) {
+            //create a string which we return as body
+            StringBuilder stringBuilder = new StringBuilder();
+            for(FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(" : ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append(("\n"));
+            }
+            return ResponseEntity.badRequest().body(stringBuilder.toString());
+        }
+
         accountService.createAccount(accountDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
