@@ -44,6 +44,18 @@ public class AccountService {
         return accountDto;
     }
 
+    //helper method - transfer AccountDto to Account
+    public Account transferAccountDtoToAccount(AccountDto accountDto) {
+        Account account = new Account();
+        account.setFirstNameStudent(accountDto.getFirstNameStudent());
+        account.setLastNameStudent(accountDto.getLastNameStudent());
+        account.setDob(accountDto.getDob());
+        account.setStudentClass(accountDto.getStudentClass());
+        account.setNameOfTeacher(accountDto.getNameOfTeacher());
+        account.setId(accountDto.getId());
+        return account;
+    }
+
 
 
 
