@@ -73,7 +73,7 @@ public class AccountController {
 
 
     //6.patch-mapping
-    @PatchMapping("/{idAccount")
+    @PatchMapping("/{idAccount}")
     public ResponseEntity<AccountDto> partialUpdateAccount(@PathVariable Long idAccount, @Valid @RequestBody AccountDto accountDto) {
         AccountDto accountDto1 = accountService.updateAccountPartially(idAccount, accountDto);
         return ResponseEntity.ok().body(accountDto1);
