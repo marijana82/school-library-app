@@ -1,6 +1,7 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BorrowalDto;
+import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.repositories.BorrowalRepository;
@@ -95,6 +96,23 @@ public class BorrowalService {
             Borrowal returnBorrowal = borrowalRepository.save(borrowal1);
             return transferBorrowalToBorrowalDto(returnBorrowal);
         }
+
+        //deleteById method - delete mapping
+        //TODO: CREATE DELETE BORROWAL METHOD
+
+
+
+       /* public String deleteBorrowalById(Long id) {
+            if(borrowalRepository.existsById(id)) {
+                Optional<Borrowal> borrowalFound = borrowalRepository.findById(id);
+                Borrowal borrowalToDelete = borrowalFound.get();
+                borrowalRepository.delete(borrowalToDelete);
+                return "Borrowal with id number " + id + " has been successfully deleted.";
+            } else {
+                throw new IdNotFoundException("Borrowal with id number " + id + " has not been found.");
+            }
+
+        }*/
 
     }
 

@@ -72,11 +72,11 @@ public class BorrowalController {
     public ResponseEntity<BorrowalDto> partialUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.partialUpdateBorrowal(idBorrowal, borrowalDto);
         return ResponseEntity.ok().body(borrowalDto1);
-
     }
 
 
     //delete-mapping
+    //TODO: CREATE DELETE MAPPING
 
 
 }
