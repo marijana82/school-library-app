@@ -16,7 +16,7 @@ public class BorrowalDto {
     @NotBlank(message="Please provide book title.")
     private String bookTitle;
     @Max(value=3)
-    private int numberOfBooksBorrowed;
+    private Integer numberOfBooksBorrowed;
 
 
     //getters&setters

@@ -52,16 +52,30 @@ public class BorrowalController {
     public ResponseEntity<List<BorrowalDto>> getAllBorrowals() {
         List<BorrowalDto> borrowalDtoList = borrowalService.getAllBorrowals();
         return ResponseEntity.ok(borrowalDtoList);
+    }
 
+    //get-mapping-one
+    @GetMapping("/{idBorrowal}")
+    public ResponseEntity<Object> getSingleBorrowal(@PathVariable Long idBorrowal) {
+        return ResponseEntity.ok(borrowalService.getSingleBorrowal(idBorrowal));
+    }
+
+    //put-mapping
+    @PutMapping("/{idBorrowal}")
+    public ResponseEntity<BorrowalDto> fullUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
+        BorrowalDto borrowalDto1 = borrowalService.fullUpdateBorrowal(idBorrowal, borrowalDto);
+        return ResponseEntity.ok().body(borrowalDto1);
+    }
+
+    //patch-mapping
+    @PatchMapping("/{idBorrowal}")
+    public ResponseEntity<BorrowalDto> partialUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
+        BorrowalDto borrowalDto1 = borrowalService.partialUpdateBorrowal(idBorrowal, borrowalDto);
+        return ResponseEntity.ok().body(borrowalDto1);
 
     }
 
 
-    //get-mapping-one
-
-
-    //put-mapping
-    //patch-mapping
     //delete-mapping
 
 

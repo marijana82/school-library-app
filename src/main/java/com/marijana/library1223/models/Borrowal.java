@@ -19,7 +19,7 @@ public class Borrowal {
     @Column(name="book_title")
     private String bookTitle;
     @Column(name="number_of_books_borrowed")
-    private int numberOfBooksBorrowed;
+    private Integer numberOfBooksBorrowed;
 
     //status
     //private Status status; (enum)
