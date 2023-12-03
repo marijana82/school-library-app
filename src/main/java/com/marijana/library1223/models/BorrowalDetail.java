@@ -11,7 +11,6 @@ public class BorrowalDetail {
     @Id
     @GeneratedValue
     private Long id;
-
     @Column(name="borrowal_date")
     private LocalDate borrowalDate;
     @Column(name="due_date")

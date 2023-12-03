@@ -1,24 +1,21 @@
 package com.marijana.library1223.dtos;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
+
 public class BorrowalDto {
     private Long id;
-
-    @NotBlank(message = "Please provide student's first name.")
-    private String firstNameStudent;
-    @NotBlank(message = "Please provide student's last name.")
-    private String lastNameStudent;
-    @NotBlank(message = "Please provide student's class name.")
-    private String studentClass;
-    @NotBlank(message = "Please provide the name of the book.")
+    @FutureOrPresent
+    private LocalDate dateOfBorrowal;
+    @FutureOrPresent
+    private LocalDate dueDate;
+    @NotBlank(message="Please provide book title.")
     private String bookTitle;
-    private String initialsAuthor;
-    @NotBlank(message = "Please provide author's last name.")
-    private String lastNameAuthor;
-    @Max(5)
+    @Max(value=3)
     private int numberOfBooksBorrowed;
 
 
@@ -26,33 +23,8 @@ public class BorrowalDto {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFirstNameStudent() {
-        return firstNameStudent;
-    }
-
-    public void setFirstNameStudent(String firstNameStudent) {
-        this.firstNameStudent = firstNameStudent;
-    }
-
-    public String getLastNameStudent() {
-        return lastNameStudent;
-    }
-
-    public void setLastNameStudent(String lastNameStudent) {
-        this.lastNameStudent = lastNameStudent;
-    }
-
-    public String getStudentClass() {
-        return studentClass;
-    }
-
-    public void setStudentClass(String studentClass) {
-        this.studentClass = studentClass;
     }
 
     public String getBookTitle() {
@@ -63,27 +35,27 @@ public class BorrowalDto {
         this.bookTitle = bookTitle;
     }
 
-    public String getInitialsAuthor() {
-        return initialsAuthor;
-    }
-
-    public void setInitialsAuthor(String initialsAuthor) {
-        this.initialsAuthor = initialsAuthor;
-    }
-
-    public String getLastNameAuthor() {
-        return lastNameAuthor;
-    }
-
-    public void setLastNameAuthor(String lastNameAuthor) {
-        this.lastNameAuthor = lastNameAuthor;
-    }
-
     public int getNumberOfBooksBorrowed() {
         return numberOfBooksBorrowed;
     }
 
     public void setNumberOfBooksBorrowed(int numberOfBooksBorrowed) {
         this.numberOfBooksBorrowed = numberOfBooksBorrowed;
+    }
+
+    public LocalDate getDateOfBorrowal() {
+        return dateOfBorrowal;
+    }
+
+    public void setDateOfBorrowal(LocalDate dateOfBorrowal) {
+        this.dateOfBorrowal = dateOfBorrowal;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 }

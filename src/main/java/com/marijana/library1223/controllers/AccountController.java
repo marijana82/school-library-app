@@ -51,11 +51,7 @@ public class AccountController {
         return ResponseEntity.created(uri).body(accountDto);
     }
 
-    //3.get-mapping-all
-   /* @GetMapping
-    public ResponseEntity<List<AccountDto>> getAllAccounts() {
-            return ResponseEntity.ok(accountService.showAllAccounts());
-    }*/
+    //3.get-mapping-all (all in general + all belonging to the same class)
 
     @GetMapping
     public ResponseEntity<List<AccountDto>> getAllAccounts(@RequestParam(value="studentClass", required=false) Optional<String> studentClass) {
@@ -71,14 +67,13 @@ public class AccountController {
 
 
 
-
-
-    //4.get-mapping-one
+    //4.get-mapping-one (specific id)
     @GetMapping("/{idAccount}")
     public ResponseEntity<AccountDto> getOneAccount(@PathVariable Long idAccount) {
         AccountDto accountDto = accountService.showOneAccount(idAccount);
         return ResponseEntity.ok(accountDto);
     }
+
 
     //5.put-mapping
     @PutMapping("/{idAccount}")
@@ -94,6 +89,7 @@ public class AccountController {
         AccountDto accountDto1 = accountService.updateAccountPartially(idAccount, accountDto);
         return ResponseEntity.ok().body(accountDto1);
     }
+
 
     //7.delete-mapping
     @DeleteMapping("/{idAccount}")
