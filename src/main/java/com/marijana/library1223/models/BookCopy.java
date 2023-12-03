@@ -10,22 +10,26 @@ public class BookCopy {
     @GeneratedValue
     private Long id;
 
-    @Column(name="barcode")
+    @Column(name = "barcode")
     private String barcode;
-    @Column(name="number_of_pages")
-    private int numberOfPages;
-    @Column(name="total_word_count")
-    private int totalWordCount;
-    @Column(name="format")
+    @Column(name = "number_of_pages")
+    private Integer numberOfPages;
+    @Column(name = "total_word_count")
+    private Integer totalWordCount;
+    @Column(name = "format")
     private String format;
-    @Column(name="is_in_written_form")
+    @Column(name = "is_in_written_form")
     private boolean isInWrittenForm;
-    @Column(name="is_audio_book")
+    @Column(name = "is_audio_book")
     private boolean isAudioBook;
-    @Column(name="is_dyslexia_friendly")
+    @Column(name = "is_dyslexia_friendly")
     private boolean isDyslexiaFriendly;
-    @Column(name="year_published")
-    private int yearPublished;
+    @Column(name = "year_published")
+    private Integer yearPublished;
+
+
+    //getters&setters
+
 
     public Long getId() {
         return id;
@@ -43,19 +47,19 @@ public class BookCopy {
         this.barcode = barcode;
     }
 
-    public int getNumberOfPages() {
+    public Integer getNumberOfPages() {
         return numberOfPages;
     }
 
-    public void setNumberOfPages(int numberOfPages) {
+    public void setNumberOfPages(Integer numberOfPages) {
         this.numberOfPages = numberOfPages;
     }
 
-    public int getTotalWordCount() {
+    public Integer getTotalWordCount() {
         return totalWordCount;
     }
 
-    public void setTotalWordCount(int totalWordCount) {
+    public void setTotalWordCount(Integer totalWordCount) {
         this.totalWordCount = totalWordCount;
     }
 
@@ -91,11 +95,14 @@ public class BookCopy {
         isDyslexiaFriendly = dyslexiaFriendly;
     }
 
-    public int getYearPublished() {
+    public Integer getYearPublished() {
         return yearPublished;
     }
 
-    public void setYearPublished(int yearPublished) {
+    public void setYearPublished(Integer yearPublished) {
         this.yearPublished = yearPublished;
     }
 }
+
+
+

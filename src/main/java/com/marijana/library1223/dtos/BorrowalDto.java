@@ -35,11 +35,11 @@ public class BorrowalDto {
         this.bookTitle = bookTitle;
     }
 
-    public int getNumberOfBooksBorrowed() {
+    public Integer getNumberOfBooksBorrowed() {
         return numberOfBooksBorrowed;
     }
 
-    public void setNumberOfBooksBorrowed(int numberOfBooksBorrowed) {
+    public void setNumberOfBooksBorrowed(Integer numberOfBooksBorrowed) {
         this.numberOfBooksBorrowed = numberOfBooksBorrowed;
     }
 
