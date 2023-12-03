@@ -16,9 +16,14 @@ public class BorrowalService {
 
     //createBorrowal - post mapping
     public BorrowalDto createBorrowal(BorrowalDto borrowalDto) {
-        Borrowal newBorrowal = transferBorrowalDtoToBorrowal(borrowalDto);
-        Borrowal savedBorrowal = borrowalRepository.save(newBorrowal);
-        return transferBorrowalToBorrowalDto(savedBorrowal);
+        Borrowal borrowal = new Borrowal();
+        borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
+        borrowal.setDueDate(borrowalDto.getDueDate());
+        borrowal.setBookTitle(borrowalDto.getBookTitle());
+        borrowal.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
+        borrowalRepository.save(borrowal);
+        borrowalDto.setId(borrowal.getId());
+        return borrowalDto;
     }
 
 

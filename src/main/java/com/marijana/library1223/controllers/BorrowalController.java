@@ -20,7 +20,6 @@ import java.net.URI;
 public class BorrowalController {
 
     //constructor injection
-
     private final BorrowalService borrowalService;
     public BorrowalController(BorrowalService borrowalService) {
         this.borrowalService = borrowalService;
