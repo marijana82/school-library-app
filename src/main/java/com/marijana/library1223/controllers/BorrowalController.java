@@ -6,13 +6,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/borrowals")
@@ -49,8 +47,19 @@ public class BorrowalController {
 
     }
 
+    //get-mapping-all (all in general)
+    @GetMapping
+    public ResponseEntity<List<BorrowalDto>> getAllBorrowals() {
+        List<BorrowalDto> borrowalDtoList = borrowalService.getAllBorrowals();
+        return ResponseEntity.ok(borrowalDtoList);
+
+
+    }
+
+
     //get-mapping-one
-    //get-mapping-all
+
+
     //put-mapping
     //patch-mapping
     //delete-mapping

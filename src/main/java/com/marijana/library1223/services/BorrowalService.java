@@ -5,6 +5,9 @@ import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class BorrowalService {
 
@@ -24,6 +27,19 @@ public class BorrowalService {
         borrowalRepository.save(borrowal);
         borrowalDto.setId(borrowal.getId());
         return borrowalDto;
+    }
+
+    //getAllBorrowals - get mapping
+    public List<BorrowalDto> getAllBorrowals() {
+        List<Borrowal> borrowalList = borrowalRepository.findAll();
+        List<BorrowalDto> borrowalDtoList = new ArrayList<>();
+        for (Borrowal borrowal : borrowalList) {
+            BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowal);
+            borrowalDtoList.add(borrowalDto);
+        }
+        return borrowalDtoList;
+
+
     }
 
 
