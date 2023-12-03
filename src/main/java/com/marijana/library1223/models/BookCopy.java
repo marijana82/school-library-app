@@ -2,6 +2,8 @@ package com.marijana.library1223.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name="book_copies")
 public class BookCopy {
@@ -25,11 +27,10 @@ public class BookCopy {
     @Column(name = "is_dyslexia_friendly")
     private boolean isDyslexiaFriendly;
     @Column(name = "year_published")
-    private Integer yearPublished;
+    private LocalDate yearPublished;
 
 
     //getters&setters
-
 
     public Long getId() {
         return id;
@@ -95,11 +96,11 @@ public class BookCopy {
         isDyslexiaFriendly = dyslexiaFriendly;
     }
 
-    public Integer getYearPublished() {
+    public LocalDate getYearPublished() {
         return yearPublished;
     }
 
-    public void setYearPublished(Integer yearPublished) {
+    public void setYearPublished(LocalDate yearPublished) {
         this.yearPublished = yearPublished;
     }
 }

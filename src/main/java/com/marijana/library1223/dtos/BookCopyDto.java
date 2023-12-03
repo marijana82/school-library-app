@@ -4,26 +4,26 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
+
 public class BookCopyDto {
 
     private Long id;
     @NotBlank(message = "Please provide a barcode.")
     private String barcode;
     @NotNull(message = "Must not be left empty.")
-    private int numberOfPages;
+    private Integer numberOfPages;
     @NotNull(message = "Must not be left empty.")
-    private int totalWordCount;
+    private Integer totalWordCount;
     private String format;
     private boolean isInWrittenForm;
     private boolean isAudioBook;
     private boolean isDyslexiaFriendly;
     @NotBlank(message = "Please provide publishing year.")
-    private int yearPublished;
+    private LocalDate yearPublished;
 
 
     //getters&setters
-
-
     public Long getId() {
         return id;
     }
@@ -40,19 +40,19 @@ public class BookCopyDto {
         this.barcode = barcode;
     }
 
-    public int getNumberOfPages() {
+    public Integer getNumberOfPages() {
         return numberOfPages;
     }
 
-    public void setNumberOfPages(int numberOfPages) {
+    public void setNumberOfPages(Integer numberOfPages) {
         this.numberOfPages = numberOfPages;
     }
 
-    public int getTotalWordCount() {
+    public Integer getTotalWordCount() {
         return totalWordCount;
     }
 
-    public void setTotalWordCount(int totalWordCount) {
+    public void setTotalWordCount(Integer totalWordCount) {
         this.totalWordCount = totalWordCount;
     }
 
@@ -88,11 +88,11 @@ public class BookCopyDto {
         isDyslexiaFriendly = dyslexiaFriendly;
     }
 
-    public int getYearPublished() {
+    public LocalDate getYearPublished() {
         return yearPublished;
     }
 
-    public void setYearPublished(int yearPublished) {
+    public void setYearPublished(LocalDate yearPublished) {
         this.yearPublished = yearPublished;
     }
 }

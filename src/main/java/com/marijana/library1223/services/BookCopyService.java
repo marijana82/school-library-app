@@ -44,6 +44,8 @@ public class BookCopyService {
         }
     }
 
+    //show all copies - get mapping (all)
+
 
     //helper methods ...........................................
 
