@@ -58,6 +58,22 @@ public class AccountService {
     }
 
 
+
+    //showAllAccountsByStudentClass method - get mapping (only accounts with the same student class)
+    public List<AccountDto> showAllAccountsByStudentClass(String studentClass) {
+        List<Account> accountList = accountRepository.findAllAccountsByStudentClassEqualsIgnoreCase(studentClass);
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        for(Account account : accountList) {
+            AccountDto accountDto = transferAccountToAccountDto(account);
+            accountDtoList.add(accountDto);
+        }
+        return accountDtoList;
+     }
+
+
+
+
+
     //showOneAccount method - get mapping (one)
     public AccountDto showOneAccount(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
