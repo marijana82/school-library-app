@@ -6,6 +6,7 @@ import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookCopyRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +48,6 @@ public class BookCopyService {
     }
 
     //show all copies - get mapping (all)
-    //---continue from here
     public List<BookCopyDto> getAllBookCopies() {
         List<BookCopy> bookCopyList = bookCopyRepository.findAll();
         List<BookCopyDto> bookCopyDtoList = new ArrayList<>();
@@ -57,6 +57,19 @@ public class BookCopyService {
         }
         return bookCopyDtoList;
     }
+
+    //show all copies published after
+    public List<BookCopyDto> getAllBookCopiesPublishedAfter(LocalDate date) {
+        List<BookCopy> bookCopyList = bookCopyRepository.findByYearPublishedAfter(date);
+        List<BookCopyDto> bookCopyDtoList = new ArrayList<>();
+        for(BookCopy bookCopy : bookCopyList) {
+            BookCopyDto bookCopyDto = transferBookCopyToBookCopyDto(bookCopy);
+            bookCopyDtoList.add(bookCopyDto);
+        }
+        return bookCopyDtoList;
+    }
+
+
 
 
     //helper methods ...........................................

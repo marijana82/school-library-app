@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,6 +24,7 @@ public class BookCopyController {
     }
 
     //post-mapping
+    @PostMapping
     public ResponseEntity<Object> createNewBookCopy(@Valid @RequestBody BookCopyDto bookCopyDto, BindingResult bindingResult) {
        if(bindingResult.hasFieldErrors()) {
            //create a string which we return as body
@@ -51,17 +53,27 @@ public class BookCopyController {
         return ResponseEntity.ok(bookCopyDto);
     }
 
-    //get-mapping-all +
-    //continue from here ------ with three different paths
-    //get-all-year-published-after
-    //get-all-is-dyslexia-friendly
-    //get-all-is-audio-book
 
+
+
+
+    //get-mapping-all
     @GetMapping
     public ResponseEntity<List<BookCopyDto>> getAllBookCopies() {
         List<BookCopyDto> bookCopyDtoList = bookCopyService.getAllBookCopies();
         return ResponseEntity.ok(bookCopyDtoList);
     }
+
+    //get-all-year-published-after
+    @GetMapping("/after")
+    public ResponseEntity<List<BookCopyDto>> getAllBookCopiesPublishedAfter(@RequestParam LocalDate date) {
+        return ResponseEntity.ok(bookCopyService.getAllBookCopiesPublishedAfter(date));
+
+    }
+
+    //TODO: CREATE GET MAPPINGS FOR BOOLEAN VALUES DYSLEXIA FRIENDLY AND AUDIO BOOK TRUE!
+    //get-all-is-dyslexia-friendly
+    //get-all-is-audio-book
 
 
 

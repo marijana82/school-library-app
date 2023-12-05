@@ -3,6 +3,7 @@ package com.marijana.library1223.dtos;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ public class BookCopyDto {
     private boolean isAudioBook;
     @NotNull(message= "Field cannot be null, please provide true or false value.") //or @AssertTrue (null is also a valid input)
     private boolean isDyslexiaFriendly;
-    @NotBlank(message = "Please provide publishing year.")
+    @Past
     private LocalDate yearPublished;
 
 
