@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/book-copies")
@@ -50,8 +51,21 @@ public class BookCopyController {
         return ResponseEntity.ok(bookCopyDto);
     }
 
-
     //get-mapping-all +
+    //continue from here ------ with three different paths
+    //get-all-year-published-after
+    //get-all-is-dyslexia-friendly
+    //get-all-is-audio-book
+
+    @GetMapping
+    public ResponseEntity<List<BookCopyDto>> getAllBookCopies() {
+        List<BookCopyDto> bookCopyDtoList = bookCopyService.getAllBookCopies();
+        return ResponseEntity.ok(bookCopyDtoList);
+    }
+
+
+
+
     //put-mapping
     //patch-mapping
     //delete-mapping

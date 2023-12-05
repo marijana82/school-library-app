@@ -3,6 +3,7 @@ package com.marijana.library1223.dtos;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
@@ -11,13 +12,16 @@ public class BookCopyDto {
     private Long id;
     @NotBlank(message = "Please provide a barcode.")
     private String barcode;
-    @NotNull(message = "Must not be left empty.")
+    @Positive(message= "Number of pages must be a positive number.")
     private Integer numberOfPages;
-    @NotNull(message = "Must not be left empty.")
+    @Positive(message= "Number of pages must be a positive number.")
     private Integer totalWordCount;
     private String format;
+    @NotNull(message= "Field cannot be null, please provide true or false value.")
     private boolean isInWrittenForm;
+    @NotNull(message= "Field cannot be null, please provide true or false value.") //or @AssertTrue (null is also a valid input)
     private boolean isAudioBook;
+    @NotNull(message= "Field cannot be null, please provide true or false value.") //or @AssertTrue (null is also a valid input)
     private boolean isDyslexiaFriendly;
     @NotBlank(message = "Please provide publishing year.")
     private LocalDate yearPublished;
