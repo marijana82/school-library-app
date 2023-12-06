@@ -11,4 +11,10 @@ public class PictureBookController {
     public PictureBookController(PictureBookService pictureBookService) {
         this.pictureBookService = pictureBookService;
     }
+
+    //post
+    //get-all
+    //get-id
+    //put
+    //patch
 }
