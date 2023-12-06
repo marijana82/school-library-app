@@ -1,6 +1,7 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
+import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.repositories.BookRepository;
@@ -66,6 +67,20 @@ public class BookService {
         }
         return bookDtoList;
     }
+
+    //deleteById
+    public String deleteById(Long id) {
+        if(bookRepository.existsById(id)) {
+            Optional<Book> bookFound = bookRepository.findById(id);
+            Book bookToDelete = bookFound.get();
+            bookRepository.delete(bookToDelete);
+            return "Book with id number " + id + " has been successfully deleted.";
+        } else {
+            throw new IdNotFoundException("Book with id number " + id + " has not been found.");
+        }
+
+    }
+
 
 
 

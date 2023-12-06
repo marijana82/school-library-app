@@ -57,7 +57,7 @@ public class BookController {
     }
 
 
-    //get mapping all + suitable age
+    //get mapping all + name Author
     @GetMapping
     public ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(value="nameAuthor", required=false) Optional<String> nameAuthor) {
         List<BookDto> bookDtoList;
@@ -68,8 +68,19 @@ public class BookController {
             bookDtoList = bookService.showAllBooksByNameAuthor(nameAuthor.get());
         }
         return ResponseEntity.ok().body(bookDtoList);
-
     }
+
+
+
+    //delete one
+    @DeleteMapping("/{idBook}")
+    public ResponseEntity<Object> deleteOneBook(@PathVariable Long idBook) {
+        bookService.deleteById(idBook);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 
 
 
