@@ -13,15 +13,16 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     //add a method that finds accounts belonging to the same student class
     List<Account> findAllAccountsByStudentClassEqualsIgnoreCase(String studentClass);
 
+    //TODO: double check!!!
+    //add a method that checks if first name and last name already exist
+    boolean existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(String firstNameStudent, String lastNameStudent);
+
 
     //-----------NOT IMPLEMENTED YET------------------------------------------------
 
     //add a method that searches students by date of birth
     List<Account> findByDob(LocalDate dob);
 
-
-    //add a method that checks if first name and last name already exist
-    boolean existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(String firstNameStudent, String lastNameStudent);
 
 
 }

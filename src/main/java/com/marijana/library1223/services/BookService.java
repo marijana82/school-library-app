@@ -1,9 +1,14 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
+import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -17,7 +22,6 @@ public class BookService {
 
     //createNewBook method
     public BookDto createNewBook(BookDto bookDto) {
-
         Book book = new Book();
         book.setIsbn(bookDto.getIsbn());
         book.setBookTitle(bookDto.getBookTitle());
@@ -27,11 +31,44 @@ public class BookService {
         bookRepository.save(book);
         bookDto.setId(book.getId());
         return bookDto;
-        //private PictureBook pictureBook;
-        //private ReadingBook readingBook;
-        //private InformationBook informationBook;
-
     }
+
+
+    //showOneBook method
+    public BookDto showOneBook(Long id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        if(optionalBook.isPresent()) {
+            Book requestedBook = optionalBook.get();
+            return transferBookToBookDto(requestedBook);
+        } else {
+            throw new RecordNotFoundException("Book with id number " + id + " has not been found.");
+        }
+    }
+
+    //showAllBooks
+    public List<BookDto> showAllBooks() {
+        List<Book> bookList = bookRepository.findAll();
+        List<BookDto> bookDtoList = new ArrayList<>();
+        for(Book book : bookList) {
+            BookDto bookDto = transferBookToBookDto(book);
+            bookDtoList.add(bookDto);
+        }
+        return bookDtoList;
+    }
+
+    //showAllBooksByNameAuthor
+    public List<BookDto> showAllBooksByNameAuthor(String nameAuthor) {
+        List<Book> bookList = bookRepository.findAllBooksByNameAuthorEqualsIgnoreCase(nameAuthor);
+        List<BookDto> bookDtoList = new ArrayList<>();
+        for(Book book : bookList) {
+            BookDto bookDto = transferBookToBookDto(book);
+            bookDtoList.add(bookDto);
+        }
+        return bookDtoList;
+    }
+
+
+
 
 
 

@@ -6,13 +6,13 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @RestController
 @RequestMapping("/books")
@@ -25,7 +25,7 @@ public class BookController {
     }
 
 
-    //post
+    //post mapping
     @PostMapping
     public ResponseEntity<Object> createBook(@Valid @RequestBody BookDto bookDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
@@ -46,6 +46,29 @@ public class BookController {
                 .path("/" + bookDto.getId())
                 .toUriString());
         return ResponseEntity.created(uri).body(bookDto);
+    }
+
+
+    //get mapping one
+    @GetMapping("/{idBook}")
+    public ResponseEntity<BookDto> getOneBook(@PathVariable Long idBook) {
+        BookDto bookDto = bookService.showOneBook(idBook);
+        return ResponseEntity.ok(bookDto);
+    }
+
+
+    //get mapping all + suitable age
+    @GetMapping
+    public ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(value="nameAuthor", required=false) Optional<String> nameAuthor) {
+        List<BookDto> bookDtoList;
+
+        if(nameAuthor.isEmpty()) {
+            bookDtoList = bookService.showAllBooks();
+        } else {
+            bookDtoList = bookService.showAllBooksByNameAuthor(nameAuthor.get());
+        }
+        return ResponseEntity.ok().body(bookDtoList);
+
     }
 
 
