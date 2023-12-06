@@ -127,22 +127,28 @@ public class AccountService {
             Account accountToUpdate = optionalAccount.get();
 
             Account account1 = transferAccountDtoToAccount(accountDto);
+
             account1.setId(accountToUpdate.getId());
 
             if(accountDto.getFirstNameStudent() !=null) {
                 accountToUpdate.setFirstNameStudent(accountDto.getFirstNameStudent());
+                //account1.....as in patch book service
             }
             if(accountDto.getLastNameStudent() !=null) {
                 accountToUpdate.setLastNameStudent(accountDto.getLastNameStudent());
+                //account1.....as in patch book service
             }
             if(accountDto.getDob() !=null) {
                 accountToUpdate.setDob(accountDto.getDob());
+                //account1.....as in patch book service
             }
             if(accountDto.getStudentClass() !=null) {
                 accountToUpdate.setStudentClass(accountDto.getStudentClass());
+                //account1.....as in patch book service
             }
             if(accountDto.getNameOfTeacher() !=null) {
                 accountToUpdate.setNameOfTeacher(accountDto.getNameOfTeacher());
+                //account1.....as in patch book service
             }
 
             Account returnAccount = accountRepository.save(account1);

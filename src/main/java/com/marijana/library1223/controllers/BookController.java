@@ -80,6 +80,21 @@ public class BookController {
     }
 
 
+    //update all
+    @PutMapping("/{idBook}")
+    public ResponseEntity<BookDto> fullUpdateBook(@PathVariable Long idBook, @Valid @RequestBody BookDto bookDto) {
+        BookDto bookDto1 = bookService.updateOneBook(idBook, bookDto);
+        return ResponseEntity.ok().body(bookDto1);
+    }
+
+    //update partially
+    @PatchMapping("/{idBook}")
+    public ResponseEntity<BookDto> partialUpdateBook(@PathVariable Long idBook, @Valid @RequestBody BookDto bookDto) {
+        BookDto bookDto1 = bookService.updateBookPartially(idBook, bookDto);
+        return ResponseEntity.ok().body(bookDto1);
+    }
+
+
 
 
 
