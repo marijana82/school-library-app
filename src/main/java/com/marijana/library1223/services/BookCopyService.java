@@ -37,8 +37,8 @@ public class BookCopyService {
         bookCopy.setTotalWordCount(bookCopyDto.getTotalWordCount());
         bookCopy.setFormat(bookCopyDto.getFormat());
         bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
-        //bookCopy.setAudioBook(bookCopyDto.isAudioBook());
-        //bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
+        bookCopy.setAudioBook(bookCopyDto.isAudioBook());
+        bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
         bookCopy.setYearPublished(bookCopyDto.getYearPublished());
         bookCopyRepository.save(bookCopy);
         bookCopyDto.setId(bookCopy.getId());

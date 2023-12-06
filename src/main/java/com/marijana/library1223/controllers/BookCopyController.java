@@ -23,7 +23,6 @@ public class BookCopyController {
         this.bookCopyService = bookCopyService;
     }
 
-    //TODO: why is it not working???????
     //post-mapping
     @PostMapping
     public ResponseEntity<Object> createBookCopy(@Valid @RequestBody BookCopyDto bookCopyDto, BindingResult bindingResult) {
