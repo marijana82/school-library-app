@@ -12,7 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 @RestController
 @RequestMapping("/books")
@@ -29,7 +28,6 @@ public class BookController {
     @PostMapping
     public ResponseEntity<Object> createBook(@Valid @RequestBody BookDto bookDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
-            //create a string which we return as body
             StringBuilder stringBuilder = new StringBuilder();
             for(FieldError fieldError : bindingResult.getFieldErrors()) {
                 stringBuilder.append(fieldError.getField());

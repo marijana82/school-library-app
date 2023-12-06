@@ -26,3 +26,19 @@ VALUES (1000, 2345, 200, 2000, 'paperback', true, true, false,'1991-02-02'),
        (1009, 0987, 100, 1010, 'paperback', true, true, true,'2023-01-01'),
        (1010, 8765, 101, 1010, 'hardcover', true, true, false,'2023-02-02');
 
+--Book......................................
+
+INSERT INTO books (id, isbn, book_title, name_author, suitable_age, number_of_copies)
+VALUES (1000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 4, 5),
+       (1001, 8765, 'Graafmachines en kiepautos', 'Angela Royston', 4, 2),
+       (1002, 763987, 'Barbapapa', 'Annette Tilson', 5, 1),
+       (1003, 62983, 'Woeste Willem', 'Ingrid Schubert', 5, 3),
+       (1004, 38928, 'Langzaam, zosnel als zij konden', 'Toon Tellegen', 6, 1),
+       (1005, 729387, 'Sprookjes voor alle kinderen', 'Lea Smulders', 7, 2),
+       (1006, 92876, 'Die dag in Hiroshima', 'Toshi Maruki', 9, 1),
+       (1007, 6283987, 'Boom is boos', 'Marjolein Krijger', 6, 4),
+       (1008, 28764, 'De man die bomen plantte', 'Jean Giono', 9, 1),
+       (1009, 720936, 'Ufo alarm', 'Jozua Douglas', 10, 2),
+       (1010, 398276, 'Gozert', 'Pieter Koolwijk', 11, 1),
+       (1011, 38927, 'De reuzenperzik', 'Roald Dahl', 11, 2),
+       (1012, 38765, 'Vos en haas', 'Sylvia Vanden Heede', 7, 1);
