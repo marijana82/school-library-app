@@ -1,9 +1,7 @@
 package com.marijana.library1223.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 
 import java.time.LocalDate;
 
@@ -13,9 +11,10 @@ public class BorrowalDetail {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(name="borrowal_date")
     private LocalDate borrowalDate;
+    @Column(name="due_date")
     private LocalDate dueDate;
-    private LocalDate returnDate;
 
     //private Status status (take from enumeration);
 
@@ -44,11 +43,4 @@ public class BorrowalDetail {
         this.dueDate = dueDate;
     }
 
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
 }
