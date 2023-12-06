@@ -1,7 +1,6 @@
 package com.marijana.library1223.dtos;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
@@ -9,21 +8,21 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 
 public class BookCopyDto {
-
     private Long id;
-    @NotBlank(message = "Please provide a barcode.")
-    private String barcode;
+    @Min(4)
+    private int barcode;
     @Positive(message= "Number of pages must be a positive number.")
     private Integer numberOfPages;
     @Positive(message= "Number of pages must be a positive number.")
     private Integer totalWordCount;
     private String format;
-    @NotNull(message= "Field cannot be null, please provide true or false value.")
-    private boolean isInWrittenForm;
+    @NotNull
+    private boolean inWrittenForm;
     @NotNull(message= "Field cannot be null, please provide true or false value.") //or @AssertTrue (null is also a valid input)
-    private boolean isAudioBook;
+    private boolean audioBook;
     @NotNull(message= "Field cannot be null, please provide true or false value.") //or @AssertTrue (null is also a valid input)
-    private boolean isDyslexiaFriendly;
+    private boolean dyslexiaFriendly;
+
     @Past
     private LocalDate yearPublished;
 
@@ -37,11 +36,11 @@ public class BookCopyDto {
         this.id = id;
     }
 
-    public String getBarcode() {
+    public int getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(String barcode) {
+    public void setBarcode(int barcode) {
         this.barcode = barcode;
     }
 
@@ -69,28 +68,29 @@ public class BookCopyDto {
         this.format = format;
     }
 
+
     public boolean isInWrittenForm() {
-        return isInWrittenForm;
+        return inWrittenForm;
     }
 
     public void setInWrittenForm(boolean inWrittenForm) {
-        isInWrittenForm = inWrittenForm;
+        this.inWrittenForm = inWrittenForm;
     }
 
     public boolean isAudioBook() {
-        return isAudioBook;
+        return audioBook;
     }
 
     public void setAudioBook(boolean audioBook) {
-        isAudioBook = audioBook;
+        this.audioBook = audioBook;
     }
 
     public boolean isDyslexiaFriendly() {
-        return isDyslexiaFriendly;
+        return dyslexiaFriendly;
     }
 
     public void setDyslexiaFriendly(boolean dyslexiaFriendly) {
-        isDyslexiaFriendly = dyslexiaFriendly;
+        this.dyslexiaFriendly = dyslexiaFriendly;
     }
 
     public LocalDate getYearPublished() {

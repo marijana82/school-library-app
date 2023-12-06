@@ -3,7 +3,6 @@ package com.marijana.library1223.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-
 @Entity
 @Table(name="book_copies")
 public class BookCopy {
@@ -13,19 +12,23 @@ public class BookCopy {
     private Long id;
 
     @Column(name = "barcode")
-    private String barcode;
+    private int barcode;
     @Column(name = "number_of_pages")
     private Integer numberOfPages;
     @Column(name = "total_word_count")
     private Integer totalWordCount;
     @Column(name = "format")
     private String format;
-    @Column(name = "is_in_written_form")
-    private boolean isInWrittenForm;
-    @Column(name = "is_audio_book")
-    private boolean isAudioBook;
-    @Column(name = "is_dyslexia_friendly")
-    private boolean isDyslexiaFriendly;
+
+    @Column(name = "in_written_form")
+    private boolean inWrittenForm;
+
+    @Column(name = "audio_book")
+    private boolean audioBook;
+
+    @Column(name = "dyslexia_friendly")
+    private boolean dyslexiaFriendly;
+
     @Column(name = "year_published")
     private LocalDate yearPublished;
 
@@ -40,11 +43,11 @@ public class BookCopy {
         this.id = id;
     }
 
-    public String getBarcode() {
+    public int getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(String barcode) {
+    public void setBarcode(int barcode) {
         this.barcode = barcode;
     }
 
@@ -73,27 +76,27 @@ public class BookCopy {
     }
 
     public boolean isInWrittenForm() {
-        return isInWrittenForm;
+        return inWrittenForm;
     }
 
     public void setInWrittenForm(boolean inWrittenForm) {
-        isInWrittenForm = inWrittenForm;
+        this.inWrittenForm = inWrittenForm;
     }
 
     public boolean isAudioBook() {
-        return isAudioBook;
+        return audioBook;
     }
 
     public void setAudioBook(boolean audioBook) {
-        isAudioBook = audioBook;
+        this.audioBook = audioBook;
     }
 
     public boolean isDyslexiaFriendly() {
-        return isDyslexiaFriendly;
+        return dyslexiaFriendly;
     }
 
     public void setDyslexiaFriendly(boolean dyslexiaFriendly) {
-        isDyslexiaFriendly = dyslexiaFriendly;
+        this.dyslexiaFriendly = dyslexiaFriendly;
     }
 
     public LocalDate getYearPublished() {

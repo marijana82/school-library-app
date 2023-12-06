@@ -24,6 +24,4 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     boolean existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(String firstNameStudent, String lastNameStudent);
 
 
-
-
 }

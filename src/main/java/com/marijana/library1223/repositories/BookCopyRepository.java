@@ -7,6 +7,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookCopyRepository extends JpaRepository<BookCopy, Long> {
+
+    //-----------IMPLEMENTED-------------------
     List<BookCopy> findByYearPublishedAfter(LocalDate date);
+
+    List<BookCopy> findByDyslexiaFriendly(boolean dyslexia);
+
+    List<BookCopy> findByAudioBook(boolean audio);
+
+    //-----------NOT IMPLEMENTED YET----------------
+    boolean existsBookCopiesByBarcode(int barcode);
 
 }

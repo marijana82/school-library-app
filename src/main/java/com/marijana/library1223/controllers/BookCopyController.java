@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/book-copies")
+@RequestMapping("/book-copy")
 public class BookCopyController {
 
     //constructor injection
@@ -23,9 +23,10 @@ public class BookCopyController {
         this.bookCopyService = bookCopyService;
     }
 
+    //TODO: why is it not working???????
     //post-mapping
     @PostMapping
-    public ResponseEntity<Object> createNewBookCopy(@Valid @RequestBody BookCopyDto bookCopyDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createBookCopy(@Valid @RequestBody BookCopyDto bookCopyDto, BindingResult bindingResult) {
        if(bindingResult.hasFieldErrors()) {
            //create a string which we return as body
            StringBuilder stringBuilder = new StringBuilder();
@@ -37,7 +38,7 @@ public class BookCopyController {
            }
            return ResponseEntity.badRequest().body(stringBuilder.toString());
        }
-       bookCopyService.createNewBookCopy(bookCopyDto);
+       bookCopyService.createBookCopy(bookCopyDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/" + bookCopyDto.getId())
@@ -54,9 +55,6 @@ public class BookCopyController {
     }
 
 
-
-
-
     //get-mapping-all
     @GetMapping
     public ResponseEntity<List<BookCopyDto>> getAllBookCopies() {
@@ -71,14 +69,27 @@ public class BookCopyController {
 
     }
 
-    //TODO: CREATE GET MAPPINGS FOR BOOLEAN VALUES DYSLEXIA FRIENDLY AND AUDIO BOOK TRUE!
-    //get-all-is-dyslexia-friendly
-    //get-all-is-audio-book
 
+    //get-all-dyslexia-friendly
+    @GetMapping("/dyslexia")
+    public ResponseEntity<List<BookCopyDto>> getAllBookCopiesDyslexiaFriendly(@RequestParam boolean dyslexia) {
+        return ResponseEntity.ok(bookCopyService.getAllBookCopiesDyslexiaFriendly(dyslexia));
+    }
 
+    //get-all-audio-book
+    @GetMapping("/audio")
+    public ResponseEntity<List<BookCopyDto>> getAllBookCopiesAudio(@RequestParam boolean audio) {
+        return ResponseEntity.ok(bookCopyService.getAllBookCopiesAudio(audio));
+    }
 
-
+    //TODO: check why is it not working???
     //put-mapping
+    @PutMapping("/{idCopy}")
+    public ResponseEntity<BookCopyDto> fullUpdateBookCopy(@PathVariable Long idCopy, @Valid @RequestBody BookCopyDto bookCopyDto) {
+        BookCopyDto bookCopyDto1 = bookCopyService.updateOneBookCopy(idCopy, bookCopyDto);
+        return ResponseEntity.ok().body(bookCopyDto1);
+    }
+
     //patch-mapping
     //delete-mapping
 
