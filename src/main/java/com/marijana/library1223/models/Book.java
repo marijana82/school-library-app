@@ -1,7 +1,12 @@
 package com.marijana.library1223.models;
 
+import com.marijana.library1223.enums.BookTypeEnum;
+import com.marijana.library1223.interfaces.BookTypeInterface;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,11 +24,7 @@ public class Book {
     private String nameAuthor;
     @Column(name = "suitable_age")
     private int suitableAge;
-    @Column(name = "number_of_copies")
-    private int numberOfCopies;
 
-    //private PictureBook pictureBook;
-    //private ReadingBook readingBook;
-    //private InformationBook informationBook;
+
 }
 

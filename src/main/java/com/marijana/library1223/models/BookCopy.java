@@ -34,7 +34,6 @@ public class BookCopy {
 
 
     //getters&setters
-
     public Long getId() {
         return id;
     }

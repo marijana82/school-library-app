@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
+@Embeddable
 @Entity
 @Table(name="information_books")
 public class InformationBook implements BookTypeInterface {
@@ -21,7 +22,5 @@ public class InformationBook implements BookTypeInterface {
     public BookTypeEnum getBookType() {
         return BookTypeEnum.INFORMATION_BOOK;
     }
-
-
 
 }

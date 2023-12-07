@@ -1,9 +1,11 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
+import com.marijana.library1223.dtos.PictureBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
+import com.marijana.library1223.models.PictureBook;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +30,12 @@ public class BookService {
         book.setBookTitle(bookDto.getBookTitle());
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setSuitableAge(bookDto.getSuitableAge());
-        book.setNumberOfCopies(bookDto.getNumberOfCopies());
         bookRepository.save(book);
         bookDto.setId(book.getId());
         return bookDto;
     }
+
+
 
 
     //showOneBook method
@@ -125,10 +128,6 @@ public class BookService {
                 book1.setSuitableAge(bookDto.getSuitableAge());
                 //bookToUpdate.setSuitableAge(bookDto.getSuitableAge());
             }
-            if(bookDto.getNumberOfCopies() !=-1) {
-                book1.setNumberOfCopies(bookDto.getNumberOfCopies());
-                //bookToUpdate.setNumberOfCopies(bookDto.getNumberOfCopies());
-            }
 
             Book returnBook = bookRepository.save(book1);
             return transferBookToBookDto(returnBook);
@@ -152,7 +151,6 @@ public class BookService {
         bookDto.setBookTitle(book.getBookTitle());
         bookDto.setNameAuthor(book.getNameAuthor());
         bookDto.setSuitableAge(book.getSuitableAge());
-        bookDto.setNumberOfCopies(book.getNumberOfCopies());
         return bookDto;
     }
 
@@ -165,11 +163,7 @@ public class BookService {
         book.setBookTitle(bookDto.getBookTitle());
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setSuitableAge(bookDto.getSuitableAge());
-        book.setNumberOfCopies(bookDto.getNumberOfCopies());
         return book;
     }
-
-
-
 
 }

@@ -17,11 +17,6 @@ public class BookDto {
     private String nameAuthor;
     @Positive(message = "Suitable age must be a positive number.")
     private int suitableAge;
-    private int numberOfCopies;
-
-    //private PictureBook pictureBook;
-    //private ReadingBook readingBook;
-    //private InformationBook informationBook;
 
 }
 

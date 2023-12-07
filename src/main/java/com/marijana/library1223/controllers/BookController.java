@@ -1,6 +1,7 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BookDto;
+import com.marijana.library1223.dtos.PictureBookDto;
 import com.marijana.library1223.services.BookService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class BookController {
     }
 
 
-    //post mapping
+    //post mapping books
     @PostMapping
     public ResponseEntity<Object> createBook(@Valid @RequestBody BookDto bookDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
@@ -46,6 +47,28 @@ public class BookController {
         return ResponseEntity.created(uri).body(bookDto);
     }
 
+
+    //post mapping picture books
+   /* @PostMapping("/picture-books")
+    public ResponseEntity<Object> createPictureBook(@Valid @RequestBody PictureBookDto pictureBookDto, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(" : ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append(("\n"));
+            }
+            return ResponseEntity.badRequest().body(stringBuilder.toString());
+        }
+        bookService.createNewPictureBook(pictureBookDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + pictureBookDto.getId())
+                .toUriString());
+        return ResponseEntity.created(uri).body(pictureBookDto);
+    }
+*/
 
     //get mapping one
     @GetMapping("/{idBook}")

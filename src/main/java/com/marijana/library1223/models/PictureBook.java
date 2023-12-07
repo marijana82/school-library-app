@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
+//@Embeddable
 @Entity
 @Table(name="picture_books")
 public class PictureBook implements BookTypeInterface {
