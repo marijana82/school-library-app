@@ -2,11 +2,9 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.PictureBookDto;
 import com.marijana.library1223.models.PictureBook;
-import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.PictureBookRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -44,7 +44,7 @@ public class PictureBookController {
     }
 
 
-    //get-all
+    //get-all + illustrator + type
     @GetMapping
     public ResponseEntity<List<PictureBookDto>> getAllPictureBooks(
             @RequestParam(value="nameIllustrator", required=false) Optional<String> nameIllustrator,
@@ -52,7 +52,7 @@ public class PictureBookController {
 
        List<PictureBookDto> pictureBookDtoList;
 
-       //no parameters present
+            //no parameters present
        if(nameIllustrator.isEmpty() && type.isEmpty()) {
            pictureBookDtoList = pictureBookService.showAllPictureBooks();
 

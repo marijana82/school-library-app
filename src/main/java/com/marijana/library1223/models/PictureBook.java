@@ -1,12 +1,14 @@
 package com.marijana.library1223.models;
 
+import com.marijana.library1223.enums.BookTypeEnum;
+import com.marijana.library1223.interfaces.BookTypeInterface;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name="picture_books")
-public class PictureBook {
+public class PictureBook implements BookTypeInterface {
 
     @Id
     @GeneratedValue
@@ -15,5 +17,10 @@ public class PictureBook {
     private String type;
     @Column(name = "name_illustrator")
     private String nameIllustrator;
+
+    @Override
+    public BookTypeEnum getBookType() {
+        return BookTypeEnum.PICTURE_BOOK;
+    }
 
 }
