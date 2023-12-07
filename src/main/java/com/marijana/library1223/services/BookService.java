@@ -1,11 +1,9 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
-import com.marijana.library1223.dtos.PictureBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
-import com.marijana.library1223.models.PictureBook;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +27,7 @@ public class BookService {
         book.setIsbn(bookDto.getIsbn());
         book.setBookTitle(bookDto.getBookTitle());
         book.setNameAuthor(bookDto.getNameAuthor());
+        book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
         bookRepository.save(book);
         bookDto.setId(book.getId());
@@ -63,6 +62,28 @@ public class BookService {
     //showAllBooksByNameAuthor
     public List<BookDto> showAllBooksByNameAuthor(String nameAuthor) {
         List<Book> bookList = bookRepository.findAllBooksByNameAuthorEqualsIgnoreCase(nameAuthor);
+        List<BookDto> bookDtoList = new ArrayList<>();
+        for(Book book : bookList) {
+            BookDto bookDto = transferBookToBookDto(book);
+            bookDtoList.add(bookDto);
+        }
+        return bookDtoList;
+    }
+
+    //showAllBooksByNameIllustrator
+    public List<BookDto> showAllBooksByNameIllustrator(String nameIllustrator) {
+        List<Book> bookList = bookRepository.findAllBooksByNameIllustratorEqualsIgnoreCase(nameIllustrator);
+        List<BookDto> bookDtoList = new ArrayList<>();
+        for(Book book : bookList) {
+            BookDto bookDto = transferBookToBookDto(book);
+            bookDtoList.add(bookDto);
+        }
+        return bookDtoList;
+    }
+
+    //showAllBooksByNameIllustratorAndNameAuthor
+    public List<BookDto> showAllBooksByNameIllustratorAndNameAuthor(String nameIllustrator, String nameAuthor) {
+        List<Book> bookList = bookRepository.findAllBooksByNameIllustratorAndNameAuthorEqualsIgnoreCase(nameIllustrator, nameAuthor);
         List<BookDto> bookDtoList = new ArrayList<>();
         for(Book book : bookList) {
             BookDto bookDto = transferBookToBookDto(book);
@@ -114,24 +135,23 @@ public class BookService {
 
             if(bookDto.getIsbn() !=-1) {
                 book1.setIsbn(bookDto.getIsbn());
-                //bookToUpdate.setIsbn(bookDto.getIsbn());
             }
             if(bookDto.getBookTitle() !=null) {
                 book1.setBookTitle(bookDto.getBookTitle());
-                //bookToUpdate.setBookTitle(bookDto.getBookTitle());
             }
             if(bookDto.getNameAuthor() !=null) {
                 book1.setNameAuthor(bookDto.getNameAuthor());
-                //bookToUpdate.setNameAuthor(bookDto.getNameAuthor());
             }
+            if(bookDto.getNameIllustrator() !=null) {
+                book1.setNameIllustrator(bookDto.getNameIllustrator());
+            }
+
             if(bookDto.getSuitableAge() !=-1) {
                 book1.setSuitableAge(bookDto.getSuitableAge());
-                //bookToUpdate.setSuitableAge(bookDto.getSuitableAge());
             }
 
             Book returnBook = bookRepository.save(book1);
             return transferBookToBookDto(returnBook);
-
 
         }
 
@@ -150,6 +170,7 @@ public class BookService {
         bookDto.setIsbn(book.getIsbn());
         bookDto.setBookTitle(book.getBookTitle());
         bookDto.setNameAuthor(book.getNameAuthor());
+        bookDto.setNameIllustrator(book.getNameIllustrator());
         bookDto.setSuitableAge(book.getSuitableAge());
         return bookDto;
     }
@@ -162,6 +183,7 @@ public class BookService {
         book.setIsbn(bookDto.getIsbn());
         book.setBookTitle(bookDto.getBookTitle());
         book.setNameAuthor(bookDto.getNameAuthor());
+        book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
         return book;
     }

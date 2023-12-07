@@ -1,7 +1,6 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BookDto;
-import com.marijana.library1223.dtos.PictureBookDto;
 import com.marijana.library1223.services.BookService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -47,29 +46,6 @@ public class BookController {
         return ResponseEntity.created(uri).body(bookDto);
     }
 
-
-    //post mapping picture books
-   /* @PostMapping("/picture-books")
-    public ResponseEntity<Object> createPictureBook(@Valid @RequestBody PictureBookDto pictureBookDto, BindingResult bindingResult) {
-        if(bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for(FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(" : ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append(("\n"));
-            }
-            return ResponseEntity.badRequest().body(stringBuilder.toString());
-        }
-        bookService.createNewPictureBook(pictureBookDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + pictureBookDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(pictureBookDto);
-    }
-*/
-
     //get mapping one
     @GetMapping("/{idBook}")
     public ResponseEntity<BookDto> getOneBook(@PathVariable Long idBook) {
@@ -78,15 +54,30 @@ public class BookController {
     }
 
 
-    //get mapping all + name Author
+    //get mapping all + name Author + name Illustrator
     @GetMapping
-    public ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(value="nameAuthor", required=false) Optional<String> nameAuthor) {
+    public ResponseEntity<List<BookDto>> getAllBooks(
+            @RequestParam(value="nameAuthor", required=false) Optional<String> nameAuthor,
+            @RequestParam(value="nameIllustrator", required=false) Optional<String> nameIllustrator) {
+
         List<BookDto> bookDtoList;
 
-        if(nameAuthor.isEmpty()) {
+
+            //no parameters present
+        if(nameAuthor.isEmpty() && nameIllustrator.isEmpty() ) {
             bookDtoList = bookService.showAllBooks();
-        } else {
+
+            //only nameAuthor parameter is present
+        } else if(nameAuthor.isPresent()) {
             bookDtoList = bookService.showAllBooksByNameAuthor(nameAuthor.get());
+
+            //only nameIllustrator parameter is present
+        } else if(nameIllustrator.isPresent()) {
+            bookDtoList = bookService.showAllBooksByNameIllustrator(nameIllustrator.get());
+
+            //both parameters are present
+        } else {
+            bookDtoList = bookService.showAllBooksByNameIllustratorAndNameAuthor(nameIllustrator.get(), nameAuthor.get());
         }
         return ResponseEntity.ok().body(bookDtoList);
     }

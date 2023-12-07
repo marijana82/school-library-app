@@ -1,5 +1,6 @@
 package com.marijana.library1223.dtos;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -15,6 +16,7 @@ public class BookDto {
     private String bookTitle;
     @NotBlank(message = "Please provide name of the author.")
     private String nameAuthor;
+    private String nameIllustrator;
     @Positive(message = "Suitable age must be a positive number.")
     private int suitableAge;
 

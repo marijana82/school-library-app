@@ -28,15 +28,15 @@ VALUES (1000, 2345, 200, 2000, 'paperback', true, false, false,'1991-02-02'),
 
 --Book......................................
 
-INSERT INTO books (id, isbn, book_title, name_author, suitable_age)
-VALUES (1000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 4),
-       (1001, 8765, 'Graafmachines en kiepautos', 'Angela Royston', 4),
-       (1002, 763987, 'Barbapapa', 'Annette Tilson', 5),
-       (1003, 62983, 'Woeste Willem', 'Ingrid Schubert', 5),
-       (1004, 38928, 'Langzaam, zosnel als zij konden', 'Toon Tellegen', 6),
-       (1005, 729387, 'Sprookjes voor alle kinderen', 'Lea Smulders', 7),
-       (1006, 92876, 'Die dag in Hiroshima', 'Toshi Maruki', 9),
-       (1007, 6283987, 'Boom is boos', 'Marjolein Krijger', 6),
-       (1008, 28764, 'De man die bomen plantte', 'Jean Giono', 9),
-       (1009, 720936, 'Ufo alarm', 'Jozua Douglas', 10),
-       (1010, 398276, 'Gozert', 'Pieter Koolwijk', 11);
+INSERT INTO books (id, isbn, book_title, name_author, name_illustrator, suitable_age, language, genre, reading_level)
+VALUES (1000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Martin', 4, 'dutch', 'vehicles', 'beginners'),
+       (1001, 8765, 'Graafmachines en kiepautos', 'Angela Royston', 'David Barrow', 4, 'dutch', 'vehicles', 'beginners'),
+       (1002, 763987, 'Barbapapa', 'Annette Tilson', 'Talus Taylor', 5, 'dutch', 'vehicles', 'beginners'),
+       (1003, 62983, 'Woeste Willem', 'Ingrid Schubert', 'Dieter Schubert', 5, 'dutch', 'vehicles', 'beginners'),
+       (1004, 38928, 'Langzaam, zosnel als zij konden', 'Toon Tellegen', 'Mance Post', 6, 'dutch', 'vehicles', 'beginners'),
+       (1005, 729387, 'Sprookjes voor alle kinderen', 'Lea Smulders', 'Gyo Fujikawa', 7, 'dutch', 'vehicles', 'beginners'),
+       (1006, 92876, 'Die dag in Hiroshima', 'Toshi Maruki', 'Toshi Maruki', 9, 'dutch', 'vehicles', 'beginners'),
+       (1007, 6283987, 'Boom is boos', 'Marjolein Krijger', 'Marjolein Krijger', 6, 'dutch', 'vehicles', 'beginners'),
+       (1008, 28764, 'De man die bomen plantte', 'Jean Giono', 'Michael McCurdy', 9, 'dutch', 'vehicles', 'beginners'),
+       (1009, 720936, 'Ufo alarm', 'Jozua Douglas', 'Elly Hees', 10, 'dutch', 'vehicles', 'beginners'),
+       (1010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas', 11, 'dutch', 'vehicles', 'beginners');
