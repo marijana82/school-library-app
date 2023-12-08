@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -48,6 +49,13 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
         List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
         return ResponseEntity.ok(reservationDtoList);
+    }
+
+    //get mapping all per reservation date
+    @GetMapping("/dates")
+    public ResponseEntity<List<ReservationDto>> getAllReservationsPerDate(@RequestParam LocalDate reservationDate) {
+        return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
+
     }
 
     //get mapping one (id)

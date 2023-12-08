@@ -6,6 +6,7 @@ import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,17 @@ public class ReservationService {
     //get all reservations - get mapping
     public List<ReservationDto> getAllReservations() {
         List<Reservation> reservationList = reservationRepository.findAll();
+        List<ReservationDto> reservationDtoList = new ArrayList<>();
+        for(Reservation reservation : reservationList) {
+            ReservationDto reservationDto = transferReservationToReservationDto(reservation);
+            reservationDtoList.add(reservationDto);
+        }
+        return reservationDtoList;
+    }
+
+    //get all reservations per date
+    public List<ReservationDto> showAllReservationsByReservationDate(LocalDate reservationDate) {
+        List<Reservation> reservationList = reservationRepository.findAllReservationsByReservationDateAfter(reservationDate);
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
