@@ -1,7 +1,12 @@
 package com.marijana.library1223.models;
 
+import com.marijana.library1223.enums.BookTypeEnum;
+import com.marijana.library1223.interfaces.BookType;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -9,7 +14,7 @@ import lombok.Data;
 public class Book {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "isbn")
     private int isbn;
@@ -23,6 +28,16 @@ public class Book {
     private int suitableAge;
     @Embedded
     private ReadingBook readingBook;
+    @Embedded
+    private InformationBook informationBook;
+
+    //constructors
+
+
+
+
+
+
 
 }
 
