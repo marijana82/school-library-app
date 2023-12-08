@@ -1,49 +1,28 @@
 package com.marijana.library1223.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.marijana.library1223.enums.GenreEnum;
+import com.marijana.library1223.enums.TopicEnum;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Data;
 
-@Entity
-@Table(name="reading_books")
+@Data
+@Embeddable
 public class ReadingBook {
-    @Id
-    @GeneratedValue
-    private Long id;
     private String language;
-    private String genre;
-    private String readingLevel; //or use enumeration here
+    //private GenreEnum currentGenre;
+    private String currentGenre;
+    private String readingLevel;
 
-    public Long getId() {
-        return id;
+    //setter for the enum field
+    public void setCurrentGenre(String currentGenre) {
+        this.currentGenre = currentGenre;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    //getter for the enum field
+    public String getCurrentGenre() {
+        return currentGenre;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public String getReadingLevel() {
-        return readingLevel;
-    }
-
-    public void setReadingLevel(String readingLevel) {
-        this.readingLevel = readingLevel;
-    }
 }

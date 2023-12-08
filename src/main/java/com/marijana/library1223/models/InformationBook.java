@@ -1,15 +1,14 @@
 package com.marijana.library1223.models;
 
-import jakarta.persistence.*;
+import com.marijana.library1223.enums.TopicEnum;
+import jakarta.persistence.Embeddable;
+import lombok.Data;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
-@Entity
-@Table(name="information_books")
+@Data
+@Embeddable
 public class InformationBook {
-    @Id
-    @GeneratedValue
-    private Long id;
-    @Column(name="education_level")
-    private String educationLevel; //or use enumeration here
-    @Column(name="topic")
-    private String topic;
+    private String educationLevel;
+    private String currentTopic;
+
 }

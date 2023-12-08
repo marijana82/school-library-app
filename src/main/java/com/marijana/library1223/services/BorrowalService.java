@@ -3,9 +3,11 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,7 @@ public class BorrowalService {
     public BorrowalDto fullUpdateBorrowal(Long id, BorrowalDto borrowalDto) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(id);
         if(optionalBorrowal.isEmpty()) {
-            throw new RecordNotFoundException("Account with id number " + id + " not found.");
+            throw new RecordNotFoundException("Borrowal with id number " + id + " not found.");
         } else {
             Borrowal borrowal = optionalBorrowal.get();
             Borrowal updatedBorrowal = transferBorrowalDtoToBorrowal(borrowalDto);
@@ -97,23 +99,11 @@ public class BorrowalService {
             return transferBorrowalToBorrowalDto(returnBorrowal);
         }
 
-        //deleteById method - delete mapping
-        //TODO: CREATE DELETE BORROWAL METHOD
+    }
 
-
-
-       /* public String deleteBorrowalById(Long id) {
-            if(borrowalRepository.existsById(id)) {
-                Optional<Borrowal> borrowalFound = borrowalRepository.findById(id);
-                Borrowal borrowalToDelete = borrowalFound.get();
-                borrowalRepository.delete(borrowalToDelete);
-                return "Borrowal with id number " + id + " has been successfully deleted.";
-            } else {
-                throw new IdNotFoundException("Borrowal with id number " + id + " has not been found.");
-            }
-
-        }*/
-
+    //TODO: CREATE NEW DELETE METHOD AS IN BOOK SERVICE CLASS
+    public void deleteBorrowal(Long id) {
+        borrowalRepository.deleteById(id);
     }
 
 
