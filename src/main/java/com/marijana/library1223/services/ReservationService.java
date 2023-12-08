@@ -46,7 +46,7 @@ public class ReservationService {
 
     //get all reservations per date
     public List<ReservationDto> showAllReservationsByReservationDate(LocalDate reservationDate) {
-        List<Reservation> reservationList = reservationRepository.findAllReservationsByReservationDateAfter(reservationDate);
+        List<Reservation> reservationList = reservationRepository.findAllReservationsByReservationDate(reservationDate);
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
@@ -68,6 +68,20 @@ public class ReservationService {
     }
 
     //put
+
+    public ReservationDto fullUpdateReservation(Long id, ReservationDto reservationDto) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+        if(optionalReservation.isEmpty()) {
+            throw new RecordNotFoundException("Reservation with id number " + id + " has not been found.");
+        } else {
+            Reservation reservation = optionalReservation.get();
+            Reservation updatedReservation = transferReservationDtoToReservation(reservationDto);
+            updatedReservation.setId(reservation.getId());
+            reservationRepository.save(updatedReservation);
+            return transferReservationToReservationDto(updatedReservation);
+        }
+    }
+
     //patch
     //delete
 

@@ -55,12 +55,18 @@ public class ReservationController {
     @GetMapping("/dates")
     public ResponseEntity<List<ReservationDto>> getAllReservationsPerDate(@RequestParam LocalDate reservationDate) {
         return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
-
     }
 
     //get mapping one (id)
     @GetMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> getSingleReservation(@PathVariable Long idReservation) {
         return ResponseEntity.ok(reservationService.getSingleReservation(idReservation));
+    }
+
+    //put mapping
+    @PutMapping("/{idReservation}")
+    public ResponseEntity<ReservationDto> fullUpdateReservation(@PathVariable Long idReservation, @Valid @RequestBody ReservationDto reservationDto) {
+        ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
+        return ResponseEntity.ok().body(reservationDto1);
     }
 }
