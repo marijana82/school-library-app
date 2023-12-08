@@ -1,18 +1,14 @@
 package com.marijana.library1223.models;
 
-import com.marijana.library1223.enums.BookTypeEnum;
-import com.marijana.library1223.interfaces.BookType;
+import com.marijana.library1223.enums.TopicEnum;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
 @Data
 @Embeddable
-public abstract class InformationBook implements BookType {
+public class InformationBook {
     private String educationLevel;
-    private String topic;
+    private String currentTopic;
 
-    @Override
-    public BookTypeEnum getBookType() {
-        return BookTypeEnum.INFORMATION_BOOK;
-    }
 }

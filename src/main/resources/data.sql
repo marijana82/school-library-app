@@ -28,15 +28,15 @@ VALUES (1000, 2345, 200, 2000, 'paperback', true, false, false,'1991-02-02'),
 
 --Book......................................
 
-INSERT INTO books (id, isbn, book_title, name_author, name_illustrator, suitable_age, language, genre, reading_level)
-VALUES (1000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Martin', 4, 'dutch', 'vehicles', 'beginners'),
-       (1001, 8765, 'Graafmachines en kiepautos', 'Angela Royston', 'David Barrow', 4, 'dutch', 'vehicles', 'beginners'),
-       (1002, 763987, 'Barbapapa', 'Annette Tilson', 'Talus Taylor', 5, 'dutch', 'vehicles', 'beginners'),
-       (1003, 62983, 'Woeste Willem', 'Ingrid Schubert', 'Dieter Schubert', 5, 'dutch', 'vehicles', 'beginners'),
-       (1004, 38928, 'Langzaam, zosnel als zij konden', 'Toon Tellegen', 'Mance Post', 6, 'dutch', 'vehicles', 'beginners'),
-       (1005, 729387, 'Sprookjes voor alle kinderen', 'Lea Smulders', 'Gyo Fujikawa', 7, 'dutch', 'vehicles', 'beginners'),
-       (1006, 92876, 'Die dag in Hiroshima', 'Toshi Maruki', 'Toshi Maruki', 9, 'dutch', 'vehicles', 'beginners'),
-       (1007, 6283987, 'Boom is boos', 'Marjolein Krijger', 'Marjolein Krijger', 6, 'dutch', 'vehicles', 'beginners'),
-       (1008, 28764, 'De man die bomen plantte', 'Jean Giono', 'Michael McCurdy', 9, 'dutch', 'vehicles', 'beginners'),
-       (1009, 720936, 'Ufo alarm', 'Jozua Douglas', 'Elly Hees', 10, 'dutch', 'vehicles', 'beginners'),
-       (1010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas', 11, 'dutch', 'vehicles', 'beginners');
+INSERT INTO books (id, isbn, book_title, name_author, name_illustrator, suitable_age, current_topic, education_level, language, current_genre, reading_level)
+VALUES (1000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Martin', 4, 'adventure', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1001, 8765, 'Graafmachines en kiepautos', 'Angela Royston', 'David Barrow', 4, 'adventure', 'beginners','dutch', 'adventure', 'basic' ),
+       (1002, 763987, 'Barbapapa', 'Annette Tilson', 'Talus Taylor', 5, 'fantasy', 'beginners','dutch', 'adventure', 'basic'),
+       (1003, 62983, 'Woeste Willem', 'Ingrid Schubert', 'Dieter Schubert', 5, 'humor', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1004, 38928, 'Langzaam, zosnel als zij konden', 'Toon Tellegen', 'Mance Post', 7, 'love', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1005, 729387, 'Sprookjes voor alle kinderen', 'Lea Smulders', 'Gyo Fujikawa', 7, 'fantasy', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1006, 92876, 'Die dag in Hiroshima', 'Toshi Maruki', 'Toshi Maruki', 9, 'war', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1007, 6283987, 'Boom is boos', 'Marjolein Krijger', 'Marjolein Krijger', 6, 'humor', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1008, 28764, 'De man die bomen plantte', 'Jean Giono', 'Michael McCurdy', 9, 'love', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1009, 720936, 'Ufo alarm', 'Jozua Douglas', 'Elly Hees', 10, 'humor', 'beginners', 'dutch', 'adventure', 'basic'),
+       (1010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas', 11, 'family', 'beginners', 'dutch', 'adventure', 'basic');

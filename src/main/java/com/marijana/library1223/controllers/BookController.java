@@ -1,6 +1,7 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BookDto;
+import com.marijana.library1223.dtos.InformationBookDto;
 import com.marijana.library1223.services.BookService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,13 @@ public class BookController {
             bookDtoList = bookService.showAllBooksByNameIllustratorAndNameAuthor(nameIllustrator.get(), nameAuthor.get());
         }
         return ResponseEntity.ok().body(bookDtoList);
+    }
+
+
+    //get mapping all + current topic
+    @GetMapping("/topics")
+    public ResponseEntity<List<InformationBookDto>> getAllBooksByTopic(@RequestParam String currentTopic) {
+        return ResponseEntity.ok(bookService.showAllBooksByTopic(currentTopic));
     }
 
 

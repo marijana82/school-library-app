@@ -1,11 +1,9 @@
 package com.marijana.library1223.models;
 
-import com.marijana.library1223.enums.BookTypeEnum;
-import com.marijana.library1223.interfaces.BookType;
+import com.marijana.library1223.enums.TopicEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,13 +29,39 @@ public class Book {
     @Embedded
     private InformationBook informationBook;
 
+
     //constructors
+    public Book() {
+
+    }
+
+    public Book(int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, ReadingBook readingBook, InformationBook informationBook) {
+        this.isbn = isbn;
+        this.bookTitle = bookTitle;
+        this.nameAuthor = nameAuthor;
+        this.nameIllustrator = nameIllustrator;
+        this.suitableAge = suitableAge;
+        this.readingBook = readingBook;
+        this.informationBook = informationBook;
+    }
+
+    //getters & setters
 
 
+    public ReadingBook getReadingBook() {
+        return readingBook;
+    }
 
+    public void setReadingBook(ReadingBook readingBook) {
+        this.readingBook = readingBook;
+    }
 
+    public InformationBook getInformationBook() {
+        return informationBook;
+    }
 
-
-
+    public void setInformationBook(InformationBook informationBook) {
+        this.informationBook = informationBook;
+    }
 }
 

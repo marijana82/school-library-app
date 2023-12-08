@@ -1,9 +1,12 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
+import com.marijana.library1223.dtos.InformationBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
+import com.marijana.library1223.models.InformationBook;
+import com.marijana.library1223.models.ReadingBook;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +32,30 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
+
+        //create and set values for InformationBook
+        InformationBook informationBook = new InformationBook();
+        if(bookDto.getInformationBook() != null) {
+            informationBook.setEducationLevel(bookDto.getInformationBook().getEducationLevel());
+            informationBook.setCurrentTopic(bookDto.getInformationBook().getCurrentTopic());
+        }
+        //set InformationBook in the Book entity
+        book.setInformationBook(informationBook);
+
+        //create and set values for ReadingBook
+        ReadingBook readingBook = new ReadingBook();
+        if(bookDto.getReadingBook() != null) {
+            readingBook.setCurrentGenre(bookDto.getReadingBook().getCurrentGenre());
+            readingBook.setReadingLevel(bookDto.getReadingBook().getReadingLevel());
+            readingBook.setLanguage(bookDto.getReadingBook().getLanguage());
+        }
+        //set ReadingBook in the Book entity
+        book.setReadingBook(readingBook);
+
         bookRepository.save(book);
         bookDto.setId(book.getId());
         return bookDto;
     }
-
 
 
 
@@ -91,6 +113,18 @@ public class BookService {
         }
         return bookDtoList;
     }
+
+
+    public List<InformationBookDto> showAllBooksByTopic(String topic) {
+        List<Book> bookList = bookRepository.findAllBooksByCurrentTopic(topic);
+        List<InformationBookDto> informationBookDtoList = new ArrayList<>();
+        for(Book book : bookList) {
+            InformationBookDto informationBookDto = transferBookToInformationBookDto(book);
+            informationBookDtoList.add(informationBookDto);
+        }
+        return informationBookDtoList;
+    }
+
 
     //deleteById
     public String deleteById(Long id) {
@@ -186,6 +220,36 @@ public class BookService {
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
         return book;
+    }
+
+
+    //helper method - transfer InformationBookDto To Book ?????
+    private Book transferInformationBookDtoToBook(InformationBookDto informationBookDto) {
+        Book book = new Book();
+        InformationBook informationBook = new InformationBook();
+        informationBook.setCurrentTopic(book.getInformationBook().getCurrentTopic());
+        informationBook.setEducationLevel(book.getInformationBook().getEducationLevel());
+        book.setInformationBook(informationBook);
+        return book;
+    }
+
+    //helper method - transfer Book To InformationBookDto  ?????
+    private InformationBookDto transferBookToInformationBookDto(Book book) {
+        InformationBookDto informationBookDto = new InformationBookDto();
+        InformationBook informationBook = book.getInformationBook();
+        if(informationBook != null) {
+            informationBookDto.setCurrentTopic(informationBook.getCurrentTopic());
+            informationBookDto.setEducationLevel(informationBook.getEducationLevel());
+        }
+        return informationBookDto;
+    }
+
+    //helper method - transferInformationBookToInformationBookDto ???
+    private InformationBook transferInformationBookDtoToInformationBook(InformationBookDto informationBookDto) {
+        InformationBook informationBook = new InformationBook();
+        informationBook.setEducationLevel(informationBookDto.getEducationLevel());
+        informationBook.setCurrentTopic(informationBookDto.getCurrentTopic());
+        return informationBook;
     }
 
 }
