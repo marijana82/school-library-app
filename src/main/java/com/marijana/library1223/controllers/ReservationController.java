@@ -69,4 +69,16 @@ public class ReservationController {
         ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
         return ResponseEntity.ok().body(reservationDto1);
     }
+
+    //TODO: CREATE PATCH MAPPING
+    //patch mapping
+
+    //delete mapping
+    @DeleteMapping("/{idReservation}")
+    public ResponseEntity<Object> deleteReservation(@PathVariable Long idReservation) {
+        reservationService.deleteReservation(idReservation);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

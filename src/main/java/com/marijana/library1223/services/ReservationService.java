@@ -82,8 +82,16 @@ public class ReservationService {
         }
     }
 
+    //TODO: CREATE PATCH METHOD
     //patch
+
+    //TODO: CREATE NEW DELETE METHOD AS IN BOOK SERVICE CLASS
     //delete
+    public void deleteReservation(Long id) {
+        reservationRepository.deleteById(id);
+    }
+
+
 
 
 
