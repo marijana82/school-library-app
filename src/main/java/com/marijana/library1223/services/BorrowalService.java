@@ -58,7 +58,7 @@ public class BorrowalService {
     public BorrowalDto fullUpdateBorrowal(Long id, BorrowalDto borrowalDto) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(id);
         if(optionalBorrowal.isEmpty()) {
-            throw new RecordNotFoundException("Account with id number " + id + " not found.");
+            throw new RecordNotFoundException("Borrowal with id number " + id + " not found.");
         } else {
             Borrowal borrowal = optionalBorrowal.get();
             Borrowal updatedBorrowal = transferBorrowalDtoToBorrowal(borrowalDto);

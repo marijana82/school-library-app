@@ -49,4 +49,10 @@ public class ReservationController {
         List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
         return ResponseEntity.ok(reservationDtoList);
     }
+
+    //get mapping one (id)
+    @GetMapping("/{idReservation}")
+    public ResponseEntity<ReservationDto> getSingleReservation(@PathVariable Long idReservation) {
+        return ResponseEntity.ok(reservationService.getSingleReservation(idReservation));
+    }
 }

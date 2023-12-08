@@ -1,12 +1,14 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
+import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -40,6 +42,25 @@ public class ReservationService {
         }
         return reservationDtoList;
     }
+
+    //get single reservation - get mapping (id)
+    public ReservationDto getSingleReservation(Long id) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+        if(optionalReservation.isPresent()) {
+            Reservation reservationFound = optionalReservation.get();
+            return transferReservationToReservationDto(reservationFound);
+
+        } else {
+            throw new RecordNotFoundException("Reservation with id number " + id + " has not been found.");
+        }
+    }
+
+    //put
+    //patch
+    //delete
+
+
+
 
     //helper methods.........................................
 
