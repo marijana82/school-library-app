@@ -46,8 +46,6 @@ public class Book {
     }
 
     //getters & setters
-
-
     public ReadingBook getReadingBook() {
         return readingBook;
     }
