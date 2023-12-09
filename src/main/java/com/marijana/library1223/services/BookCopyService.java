@@ -25,12 +25,6 @@ public class BookCopyService {
     //createNewBookCopy method - post mapping
     public BookCopyDto createBookCopy(BookCopyDto bookCopyDto) {
 
-        if(bookCopyRepository.existsBookCopiesByBarcode(bookCopyDto.getBarcode())) {
-
-            throw new ResourceAlreadyExistsException("Barcode of this book already exists in the database.");
-
-        } else {
-
         BookCopy bookCopy = new BookCopy();
         bookCopy.setBarcode(bookCopyDto.getBarcode());
         bookCopy.setNumberOfPages(bookCopyDto.getNumberOfPages());
@@ -44,7 +38,7 @@ public class BookCopyService {
         bookCopyDto.setId(bookCopy.getId());
         return bookCopyDto;
 
-        }
+
     }
 
     //showOneCopy - get mapping(one)

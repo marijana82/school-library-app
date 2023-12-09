@@ -5,7 +5,9 @@ import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.models.Account;
+import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.AccountRepository;
+import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,9 +19,12 @@ import java.util.Optional;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final ReservationRepository reservationRepository;
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, ReservationRepository reservationRepository) {
         this.accountRepository = accountRepository;
+        //relations - added reservationRepository (delete reservation service in accountcontroller??)
+        this.reservationRepository = reservationRepository;
     }
 
     //createAccount method - post mapping
@@ -36,11 +41,15 @@ public class AccountService {
         account.setDob(accountDto.getDob());
         account.setStudentClass(accountDto.getStudentClass());
         account.setNameOfTeacher(accountDto.getNameOfTeacher());
+        //here we check if reservation ids exist in accountDto
+        for(long id : accountDto.reservationIds) {
+            Reservation reservation = reservationRepository.findById(id).get();  //happy flow (otherwise check with .isPresent() if the id is present!!
+            account.getReservations().add(reservation);
+        }
         accountRepository.save(account);
         accountDto.setId(account.getId());
 
         return accountDto;
-
         }
     }
 
