@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,4 +23,20 @@ public class Reservation {
     @Column(name="sidenote")
     private String sidenote;
 
+    //Relations..............
+    //NOT OWNER
+    @ManyToMany(mappedBy = "reservations")
+    private List<Account> accounts;
+
+
+
+
+    //getters&setters (can be deleted as it is already created by @Data)
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
 }

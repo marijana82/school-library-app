@@ -76,7 +76,6 @@ public class BorrowalController {
 
 
     //delete-mapping
-    //TODO: check why is DELETE MAPPING not working???
    @DeleteMapping("/{idBorrowal}")
     public ResponseEntity<Object> deleteBorrowal(@PathVariable Long idBorrowal) {
         borrowalService.deleteBorrowal(idBorrowal);

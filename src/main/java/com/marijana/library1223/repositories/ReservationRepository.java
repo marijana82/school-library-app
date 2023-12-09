@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-
     List<Reservation> findAllReservationsByReservationDate(LocalDate reservationDate);
 
 }

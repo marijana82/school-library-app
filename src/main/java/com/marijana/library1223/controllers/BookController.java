@@ -63,7 +63,6 @@ public class BookController {
 
         List<BookDto> bookDtoList;
 
-
             //no parameters present
         if(nameAuthor.isEmpty() && nameIllustrator.isEmpty() ) {
             bookDtoList = bookService.showAllBooks();
@@ -83,13 +82,11 @@ public class BookController {
         return ResponseEntity.ok().body(bookDtoList);
     }
 
-
     //get mapping all + current topic
     @GetMapping("/topics")
     public ResponseEntity<List<InformationBookDto>> getAllBooksByTopic(@RequestParam String currentTopic) {
         return ResponseEntity.ok(bookService.showAllBooksByTopic(currentTopic));
     }
-
 
 
     //delete one
@@ -98,7 +95,6 @@ public class BookController {
         bookService.deleteById(idBook);
         return ResponseEntity.noContent().build();
     }
-
 
     //update all
     @PutMapping("/{idBook}")
@@ -113,10 +109,6 @@ public class BookController {
         BookDto bookDto1 = bookService.updateBookPartially(idBook, bookDto);
         return ResponseEntity.ok().body(bookDto1);
     }
-
-
-
-
 
 
 }

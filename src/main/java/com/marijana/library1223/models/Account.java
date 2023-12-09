@@ -3,6 +3,7 @@ package com.marijana.library1223.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="accounts")
@@ -22,9 +23,17 @@ public class Account {
     @Column(name="name_of_teacher")
     private String nameOfTeacher;
 
+    //Relations.............
+    //OWNER
+    @ManyToMany
+    private List<Reservation> reservations;
+
+
+
     //student photo???
 
 
+    //getters&setters
     public Long getId() {
         return id;
     }
@@ -71,5 +80,13 @@ public class Account {
 
     public void setNameOfTeacher(String nameOfTeacher) {
         this.nameOfTeacher = nameOfTeacher;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

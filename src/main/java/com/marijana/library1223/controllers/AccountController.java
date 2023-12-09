@@ -2,6 +2,7 @@ package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.AccountDto;
 import com.marijana.library1223.services.AccountService;
+import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;
 import org.hibernate.query.sqm.function.SelfRenderingFunctionSqlAstExpression;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,11 @@ public class AccountController {
 
     //1.constructor injection
     private final AccountService accountService;
+    private final ReservationService reservationService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, ReservationService reservationService) {
         this.accountService = accountService;
+        this.reservationService = reservationService;
     }
 
     //2.post-mapping
