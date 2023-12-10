@@ -6,6 +6,7 @@ import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.repositories.BorrowalRepository;
+import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,8 +19,16 @@ public class BorrowalService {
 
     //constructor injector
     private final BorrowalRepository borrowalRepository;
-    public BorrowalService(BorrowalRepository borrowalRepository) {
+    private final ReservationRepository reservationRepository;
+    private final ReservationService reservationService;
+
+    public BorrowalService(BorrowalRepository borrowalRepository,
+                           ReservationRepository reservationRepository,
+                           ReservationService reservationService
+                           ) {
         this.borrowalRepository = borrowalRepository;
+        this.reservationRepository = reservationRepository;
+        this.reservationService = reservationService;
     }
 
     //createBorrowal - post mapping
@@ -40,6 +49,9 @@ public class BorrowalService {
         List<BorrowalDto> borrowalDtoList = new ArrayList<>();
         for (Borrowal borrowal : borrowalList) {
             BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowal);
+            if(borrowal.getReservation() !=null) {
+                borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
+            }
             borrowalDtoList.add(borrowalDto);
         }
         return borrowalDtoList;
@@ -50,8 +62,12 @@ public class BorrowalService {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(id);
         if(optionalBorrowal.isPresent()) {
             Borrowal borrowalFound = optionalBorrowal.get();
-            return transferBorrowalToBorrowalDto(borrowalFound);
-        } else {
+            BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowalFound);
+            if(borrowalFound.getReservation() != null) {
+                borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowalFound.getReservation()));
+            }
+            return borrowalDto;
+                } else {
             throw new RecordNotFoundException("Borrowal with id number " + id + " has not been found.");
         }
     }
@@ -104,6 +120,23 @@ public class BorrowalService {
     //TODO: CREATE NEW DELETE METHOD AS IN BOOK SERVICE CLASS
     public void deleteBorrowal(Long id) {
         borrowalRepository.deleteById(id);
+    }
+
+    //assign Reservation to Borrowal
+    public void assignReservationToBorrowal(Long borrowalId, Long reservationId) {
+        var optionalBorrowal = borrowalRepository.findById(borrowalId);
+        var optionalReservation = reservationRepository.findById(reservationId);
+
+        if(optionalBorrowal.isPresent() && optionalBorrowal.isPresent()) {
+            var borrowalPresent = optionalBorrowal.get();
+            var reservationPresent = optionalReservation.get();
+
+            borrowalPresent.setReservation(reservationPresent);
+            borrowalRepository.save(borrowalPresent);
+        } else {
+            throw new RecordNotFoundException();
+        }
+
     }
 
 

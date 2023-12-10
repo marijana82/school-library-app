@@ -4,9 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 public class BorrowalDto {
     private Long id;
     @FutureOrPresent
@@ -17,45 +19,7 @@ public class BorrowalDto {
     private String bookTitle;
     @Max(value=3)
     private Integer numberOfBooksBorrowed;
+    //relation
+    private ReservationDto reservationDto;
 
-
-    //getters&setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
-    }
-
-    public Integer getNumberOfBooksBorrowed() {
-        return numberOfBooksBorrowed;
-    }
-
-    public void setNumberOfBooksBorrowed(Integer numberOfBooksBorrowed) {
-        this.numberOfBooksBorrowed = numberOfBooksBorrowed;
-    }
-
-    public LocalDate getDateOfBorrowal() {
-        return dateOfBorrowal;
-    }
-
-    public void setDateOfBorrowal(LocalDate dateOfBorrowal) {
-        this.dateOfBorrowal = dateOfBorrowal;
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
 }

@@ -18,4 +18,5 @@ public class ReservationDto {
     @Max(value=3)
     private Integer numberOfBooksReserved;
     private String sidenote;
+
 }
