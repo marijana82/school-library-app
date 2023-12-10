@@ -24,13 +24,8 @@ public class AccountController {
     //1.constructor injection
     private final AccountService accountService;
 
-    //delete reservationService if not necessary!
-    private final ReservationService reservationService;
-
     public AccountController(AccountService accountService, ReservationService reservationService) {
         this.accountService = accountService;
-        //relations - 1. added reservationService
-        this.reservationService = reservationService;
     }
 
     //2.post-mapping

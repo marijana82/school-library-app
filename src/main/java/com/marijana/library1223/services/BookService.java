@@ -7,7 +7,9 @@ import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.InformationBook;
 import com.marijana.library1223.models.ReadingBook;
+import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.BookRepository;
+import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,9 +20,11 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final ReservationRepository reservationRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository) {
         this.bookRepository = bookRepository;
+        this.reservationRepository = reservationRepository;
     }
 
 
@@ -32,6 +36,13 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
+
+        //check if it exists & connect book and reservation objects
+        Optional<Reservation> optionalReservation = reservationRepository.findById(bookDto.reservationId);
+        if(optionalReservation.isPresent()){
+            Reservation reservation = optionalReservation.get();
+            book.setReservation(reservation);
+        }
 
         //create and set values for InformationBook
         InformationBook informationBook = new InformationBook();

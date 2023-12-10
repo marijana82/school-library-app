@@ -26,6 +26,9 @@ public class BookDto {
     private InformationBook informationBook;
     private ReadingBook readingBook;
 
+    //many-to-one relation (many books to one reservation id)
+    public Long reservationId;
+
 
 
     public Long getId() {

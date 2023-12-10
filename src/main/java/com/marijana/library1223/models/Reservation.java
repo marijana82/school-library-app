@@ -1,9 +1,11 @@
 package com.marijana.library1223.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,19 +26,30 @@ public class Reservation {
     private String sidenote;
 
     //Relations..............
-    //NOT OWNER
-    @ManyToMany(mappedBy = "reservations")
-    private List<Account> accounts;
+    //NOT OWNER - target side....................
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "reservations")
+    @JsonIgnore
+    private List<Account> accounts = new ArrayList<>();
 
+    //NOT OWNER - target side.....................
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "reservation")
+    @JsonIgnore
+    private List<Book> books = new ArrayList<>();
 
+    //NOT OWNER - target side......................
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private Borrowal borrowal;
 
-
-    //getters&setters (can be deleted as it is already created by @Data)
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }
 }

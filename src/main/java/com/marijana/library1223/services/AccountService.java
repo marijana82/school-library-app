@@ -23,33 +23,32 @@ public class AccountService {
 
     public AccountService(AccountRepository accountRepository, ReservationRepository reservationRepository) {
         this.accountRepository = accountRepository;
-        //relations - added reservationRepository (delete reservation service in accountcontroller??)
         this.reservationRepository = reservationRepository;
     }
 
-    //createAccount method - post mapping
+    //createAccount2
     public AccountDto createAccount(AccountDto accountDto) {
 
         if(accountRepository.existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(accountDto.getFirstNameStudent(), accountDto.getLastNameStudent())) {
             //here i'm getting status 500 internal server error instead of "Account already exists".
             throw new ResourceAlreadyExistsException("Account already exists!");
-
         } else {
-        Account account = new Account();
-        account.setFirstNameStudent(accountDto.getFirstNameStudent());
-        account.setLastNameStudent(accountDto.getLastNameStudent());
-        account.setDob(accountDto.getDob());
-        account.setStudentClass(accountDto.getStudentClass());
-        account.setNameOfTeacher(accountDto.getNameOfTeacher());
-        //here we check if reservation ids exist in accountDto
-        for(long id : accountDto.reservationIds) {
-            Reservation reservation = reservationRepository.findById(id).get();  //happy flow (otherwise check with .isPresent() if the id is present!!
-            account.getReservations().add(reservation);
+            Account account = new Account();
+            account.setFirstNameStudent(accountDto.getFirstNameStudent());
+            account.setLastNameStudent(accountDto.getLastNameStudent());
+            account.setDob(accountDto.getDob());
+            account.setStudentClass(accountDto.getStudentClass());
+            account.setNameOfTeacher(accountDto.getNameOfTeacher());
+        for(Long id : accountDto.reservationIds) {
+            Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+            if(optionalReservation.isPresent()) {
+                account.getReservations().add(optionalReservation.get());
+            }
         }
-        accountRepository.save(account);
-        accountDto.setId(account.getId());
+            accountRepository.save(account);
+            accountDto.setId(account.getId());
 
-        return accountDto;
+            return accountDto;
         }
     }
 

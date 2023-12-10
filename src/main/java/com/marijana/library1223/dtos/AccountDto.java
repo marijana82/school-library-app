@@ -24,7 +24,7 @@ public class AccountDto {
     //relations - here we give the ids of the reservations which we want to use for connecting the relation
     //for api handleiding: i have to explain that the user can give the list of reservation ids
     //by writing in the json the field: "reservationIds": 1 - for example
-    public long[] reservationIds;
+    public Long[] reservationIds;
 
     //getters & setters
     public Long getId() {

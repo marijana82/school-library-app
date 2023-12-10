@@ -29,13 +29,29 @@ public class Book {
     @Embedded
     private InformationBook informationBook;
 
+    //Relations..............
+    //OWNER - here we specify the join-table/configure the relationship
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "book_reservations",
+            joinColumns = {@JoinColumn(name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
+    )
+    private Reservation reservation;
+
+
 
     //constructors
     public Book() {
 
     }
 
-    public Book(int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, ReadingBook readingBook, InformationBook informationBook) {
+    public Book(int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, ReadingBook readingBook, InformationBook informationBook, Reservation reservation) {
         this.isbn = isbn;
         this.bookTitle = bookTitle;
         this.nameAuthor = nameAuthor;
@@ -43,6 +59,7 @@ public class Book {
         this.suitableAge = suitableAge;
         this.readingBook = readingBook;
         this.informationBook = informationBook;
+        this.reservation = reservation;
     }
 
     //getters & setters
@@ -60,6 +77,14 @@ public class Book {
 
     public void setInformationBook(InformationBook informationBook) {
         this.informationBook = informationBook;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }
 
