@@ -37,11 +37,12 @@ public class Book {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(
+    /*@JoinTable(
             name = "book_reservations",
             joinColumns = {@JoinColumn(name = "book_id")},
             inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
-    )
+    )*/
+    @JoinColumn(name = "book_reservation_id")
     private Reservation reservation;
 
 

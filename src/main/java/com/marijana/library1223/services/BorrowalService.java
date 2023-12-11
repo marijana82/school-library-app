@@ -111,6 +111,11 @@ public class BorrowalService {
             if(borrowalDto.getNumberOfBooksBorrowed() !=-1) {
                 borrowalToUpdate.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
             }
+
+            if(borrowalDto.getReservationDto() !=null) {
+                borrowalToUpdate.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
+            }
+
             Borrowal returnBorrowal = borrowalRepository.save(borrowal1);
             return transferBorrowalToBorrowalDto(returnBorrowal);
         }
@@ -120,6 +125,37 @@ public class BorrowalService {
     //TODO: CREATE NEW DELETE METHOD AS IN BOOK SERVICE CLASS
     public void deleteBorrowal(Long id) {
         borrowalRepository.deleteById(id);
+    }
+
+
+
+    //helper methods.........................................
+
+    //helper method - transfer BorrowalDto to Borrowal
+    public Borrowal transferBorrowalDtoToBorrowal(BorrowalDto borrowalDto) {
+        Borrowal borrowal = new Borrowal();
+        borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
+        borrowal.setDueDate(borrowalDto.getDueDate());
+        borrowal.setBookTitle(borrowalDto.getBookTitle());
+        borrowal.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
+        borrowal.setId(borrowalDto.getId());
+        borrowal.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
+        return borrowal;
+    }
+
+    //helper method = transfer Borrowal to BorrowalDto
+    public BorrowalDto transferBorrowalToBorrowalDto(Borrowal borrowal) {
+        BorrowalDto borrowalDto = new BorrowalDto();
+        borrowalDto.setDateOfBorrowal(borrowal.getDateOfBorrowal());
+        borrowalDto.setDueDate(borrowal.getDueDate());
+        borrowalDto.setBookTitle(borrowal.getBookTitle());
+        borrowalDto.setNumberOfBooksBorrowed(borrowal.getNumberOfBooksBorrowed());
+        borrowalDto.setId(borrowal.getId());
+        //null check
+        if(borrowal.getReservation() !=null) {
+            borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
+        }
+        return borrowalDto;
     }
 
     //assign Reservation to Borrowal
@@ -141,34 +177,6 @@ public class BorrowalService {
         } else {
             throw new RecordNotFoundException();
         }
-
     }
-
-
-    //helper methods.........................................
-
-    //helper method - transfer BorrowalDto to Borrowal
-    public Borrowal transferBorrowalDtoToBorrowal(BorrowalDto borrowalDto) {
-        Borrowal borrowal = new Borrowal();
-        borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
-        borrowal.setDueDate(borrowalDto.getDueDate());
-        borrowal.setBookTitle(borrowalDto.getBookTitle());
-        borrowal.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
-        borrowal.setId(borrowalDto.getId());
-        return borrowal;
-    }
-
-    //helper method = transfer Borrowal to BorrowalDto
-    public BorrowalDto transferBorrowalToBorrowalDto(Borrowal borrowal) {
-        BorrowalDto borrowalDto = new BorrowalDto();
-        borrowalDto.setDateOfBorrowal(borrowal.getDateOfBorrowal());
-        borrowalDto.setDueDate(borrowal.getDueDate());
-        borrowalDto.setBookTitle(borrowal.getBookTitle());
-        borrowalDto.setNumberOfBooksBorrowed(borrowal.getNumberOfBooksBorrowed());
-        borrowalDto.setId(borrowal.getId());
-        return borrowalDto;
-    }
-
-
 
 }

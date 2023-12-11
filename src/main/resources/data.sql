@@ -11,6 +11,22 @@ VALUES (1000, 'David Eric', 'Grohl', '2018-01-01', 'obb', 'Gaby'),
        (1008, 'John', 'Frusciante', '2013-07-07', 'bbc', 'Ricardo'),
        (1009, 'Krist', 'Novoselic', '2012-09-09', 'bbd', 'Max');
 
+--Reservation ............................
+INSERT INTO reservations(id, reservation_date, book_title, number_of_books_reserved, sidenote)
+VALUES(5000, '2023-12-12', 'Book', 1, 'Book reserved'),
+      (5001, '2023-12-12', 'Book 2', 1, 'Book will be picked up by a friend');
+
+--AccountReservations......................
+INSERT INTO accounts_reservations(accounts_id, reservations_id)
+VALUES(1001, 5000),
+      (1002, 5001);
+
+--UPDATE accounts SET reservations_id = 5000 WHERE id = 1001;
+
+
+
+
+
 --BookCopy......................................
 
 INSERT INTO copies (id, barcode, number_of_pages, total_word_count, format, in_written_form, audio_book, dyslexia_friendly, year_published)
@@ -42,11 +58,4 @@ VALUES (3000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Mart
        (3010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas', 11, 'family', 'beginners', 'dutch', 'adventure', 'basic');
 
 
---Account.................................
-INSERT INTO accounts(id, first_name_student, last_name_student, dob, student_class, name_of_teacher)
-VALUES(4000, 'Marijana', 'Mikolcic', '1982-07-09', 'bba', 'Austin');
 
-
---Reservation ............................
-INSERT INTO reservations(id, reservation_date, book_title, number_of_books_reserved, sidenote)
-VALUES(5000, '2023-12-12', 'Book', 1, 'Book reserved');

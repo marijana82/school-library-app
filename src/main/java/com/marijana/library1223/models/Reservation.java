@@ -27,6 +27,14 @@ public class Reservation {
 
     //Relations..............
     //NOT OWNER - target side....................
+
+    @OneToOne(
+            mappedBy = "reservation",
+            cascade = CascadeType.ALL)
+    private Borrowal borrowal;
+
+
+    //NOT OWNER - target side......................
     @ManyToMany(
             fetch = FetchType.LAZY,
             cascade = {
@@ -48,8 +56,6 @@ public class Reservation {
     @JsonIgnore
     private List<Book> books = new ArrayList<>();
 
-    //NOT OWNER - target side......................
-    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private Borrowal borrowal;
+
 
 }

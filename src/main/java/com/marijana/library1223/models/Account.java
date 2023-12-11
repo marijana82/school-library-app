@@ -39,6 +39,7 @@ public class Account {
             joinColumns = {@JoinColumn(name = "account_id")},
             inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
     )
+   // @JoinColumn(name = "account_reservations_id")
     private List<Reservation> reservations = new ArrayList<>();
 
 

@@ -1,6 +1,7 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BorrowalDto;
+import com.marijana.library1223.dtos.IdInputDto;
 import com.marijana.library1223.services.BorrowalService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +69,14 @@ public class BorrowalController {
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //put-mapping - to add reservation entity to borrowal entity
+    //put-mapping - to add reservation to borrowal, with one path variable and one request body
+    @PutMapping("/{idBorrowal}/reservation")
+    public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @Valid @RequestBody IdInputDto input) {
+        borrowalService.assignReservationToBorrowal(idBorrowal, input.id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //put-mapping - to add reservation entity to borrowal entity with 2 x path variables
     @PutMapping("/{idBorrowal}/{idReservation}")
     public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
         borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);

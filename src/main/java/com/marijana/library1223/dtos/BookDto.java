@@ -29,6 +29,10 @@ public class BookDto {
     //many-to-one relation (many books to one reservation id)
     public Long reservationId;
 
+    //is this necessary??
+    private ReservationDto reservationDto;
+
+
 
 
     public Long getId() {
