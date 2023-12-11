@@ -47,6 +47,7 @@ public class BorrowalController {
 
     }
 
+
     //get-mapping-all (all in general)
     @GetMapping
     public ResponseEntity<List<BorrowalDto>> getAllBorrowals() {
@@ -65,6 +66,13 @@ public class BorrowalController {
     public ResponseEntity<BorrowalDto> fullUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.fullUpdateBorrowal(idBorrowal, borrowalDto);
         return ResponseEntity.ok().body(borrowalDto1);
+    }
+
+    //put-mapping - to add reservation entity to borrowal entity
+    @PutMapping("/{idBorrowal}/{idReservation}")
+    public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
+        borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
+        return ResponseEntity.noContent().build();
     }
 
     //patch-mapping

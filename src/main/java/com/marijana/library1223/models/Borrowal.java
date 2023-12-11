@@ -25,13 +25,16 @@ public class Borrowal {
     //Relations...............
     //OWNER - configure relationship here.....................
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(
+    /*@JoinTable(
             name = "borrowal_reservation",
             joinColumns =
                     {@JoinColumn(name = "borrowal_id", referencedColumnName = "id")},
             inverseJoinColumns =
                     {@JoinColumn(name = "reservation_id", referencedColumnName = "id")}
-    )
+    )*/
+
+    //to specify the foreign key column as "reservation_id" in the borrowals table
+    @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
 }

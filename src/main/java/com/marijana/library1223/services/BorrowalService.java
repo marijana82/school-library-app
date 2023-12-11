@@ -123,16 +123,21 @@ public class BorrowalService {
     }
 
     //assign Reservation to Borrowal
-    public void assignReservationToBorrowal(Long borrowalId, Long reservationId) {
-        var optionalBorrowal = borrowalRepository.findById(borrowalId);
-        var optionalReservation = reservationRepository.findById(reservationId);
+    public void assignReservationToBorrowal(Long idBorrowal, Long idReservation) {
+        var optionalBorrowal = borrowalRepository.findById(idBorrowal);
+        var optionalReservation = reservationRepository.findById(idReservation);
 
-        if(optionalBorrowal.isPresent() && optionalBorrowal.isPresent()) {
+        if(optionalBorrowal.isPresent() && optionalReservation.isPresent()) {
             var borrowalPresent = optionalBorrowal.get();
             var reservationPresent = optionalReservation.get();
 
+            if(borrowalPresent.getReservation() !=null) {
+                throw new RuntimeException("Borrowal already has a reservation");
+            }
+
             borrowalPresent.setReservation(reservationPresent);
             borrowalRepository.save(borrowalPresent);
+
         } else {
             throw new RecordNotFoundException();
         }
