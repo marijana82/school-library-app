@@ -34,6 +34,7 @@ public class BookCopy {
     @Column(name = "year_published")
     private LocalDate yearPublished;
 
+
     //Relations...........
     //OWNER
     @ManyToOne(fetch = FetchType.EAGER)

@@ -1,9 +1,6 @@
 package com.marijana.library1223.dtos;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,10 +12,10 @@ public class BookCopyDto {
     private int barcode;
     @Positive(message = "Number of pages must be a positive number.")
     private Integer numberOfPages;
-    @Positive(message = "Number of pages must be a positive number.")
+    @Positive(message = "Word count must be a positive number.")
     private Integer totalWordCount;
     private String format;
-    @NotNull
+    @AssertTrue //null is also a valid input
     private boolean inWrittenForm;
     @NotNull(message = "Field cannot be null, please provide true or false value.")
     //or @AssertTrue (null is also a valid input)
@@ -28,8 +25,7 @@ public class BookCopyDto {
     private boolean dyslexiaFriendly;
     @Past
     private LocalDate yearPublished;
-
-    //relation
+    //many-to-one
     private BookDto bookDto;
 
 

@@ -8,6 +8,7 @@ import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.InformationBook;
 import com.marijana.library1223.models.ReadingBook;
 import com.marijana.library1223.models.Reservation;
+import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,12 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final ReservationRepository reservationRepository;
+    private final BookCopyRepository bookCopyRepository;
 
-    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository) {
+    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository, BookCopyRepository bookCopyRepository) {
         this.bookRepository = bookRepository;
         this.reservationRepository = reservationRepository;
+        this.bookCopyRepository = bookCopyRepository;
     }
 
 
@@ -207,6 +210,12 @@ public class BookService {
 
 
     //helper methods ...........................................
+    
+    //helper method - add book copies to book
+    public void addBookCopyToBook() {
+        
+    }
+    
 
     //helper method - transfer Book to BookDto
     private BookDto transferBookToBookDto(Book book) {
