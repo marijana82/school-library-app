@@ -1,9 +1,11 @@
 package com.marijana.library1223.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marijana.library1223.enums.TopicEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -44,6 +46,13 @@ public class Book {
     )*/
     @JoinColumn(name = "book_reservation_id")
     private Reservation reservation;
+
+
+    //Relations...........
+    //NOT OWNER
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    private List<BookCopy> bookCopy = new ArrayList<>();
 
 
 

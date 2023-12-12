@@ -1,14 +1,11 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BorrowalDto;
-import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;

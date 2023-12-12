@@ -2,6 +2,7 @@ package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.dtos.IdInputDto;
+import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.services.BorrowalService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -69,19 +70,21 @@ public class BorrowalController {
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //put-mapping (add reservation to borrowal, with one path variable and one request body)
+    //put-mapping (update a borrowal by adding a reservation to it, with one path variable and one request body)
     @PutMapping("/{idBorrowal}/reservation")
     public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @Valid @RequestBody IdInputDto input) {
         borrowalService.assignReservationToBorrowal(idBorrowal, input.id);
         return ResponseEntity.noContent().build();
     }
 
-    //put-mapping (add reservation entity to borrowal entity with 2 x path variables)
+    //put-mapping (update a borrowal by adding a reservation to it, with 2 x path variables)
     @PutMapping("/{idBorrowal}/{idReservation}")
     public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
         borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
         return ResponseEntity.noContent().build();
     }
+
+    //post-mapping to add a reservation to borrowal - will not make!
 
     //patch-mapping (borrowal incl. reservation)
     @PatchMapping("/{idBorrowal}")
