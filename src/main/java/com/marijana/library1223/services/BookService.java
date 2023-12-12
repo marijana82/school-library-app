@@ -1,13 +1,11 @@
 package com.marijana.library1223.services;
 
+import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.models.Book;
-import com.marijana.library1223.models.InformationBook;
-import com.marijana.library1223.models.ReadingBook;
-import com.marijana.library1223.models.Reservation;
+import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
@@ -210,12 +208,23 @@ public class BookService {
 
 
     //helper methods ...........................................
-    
-    //helper method - add book copies to book
-    public void addBookCopyToBook() {
-        
+
+    //helper - assign Book to BookCopy - delete???
+    public void assignBookToBookCopy(Long idBookCopy, Long idBook) {
+        var optionalBookCopy = bookCopyRepository.findById(idBookCopy);
+        var optionalBook = bookRepository.findById(idBook);
+
+        if(optionalBookCopy.isPresent() && optionalBook.isPresent()) {
+            var bookCopyIsPresent = optionalBookCopy.get();
+            var bookIsPresent = optionalBook.get();
+
+            bookCopyIsPresent.setBook(bookIsPresent);
+            bookCopyRepository.save(bookCopyIsPresent);
+        } else {
+            throw new RecordNotFoundException("Item not found");
+        }
+
     }
-    
 
     //helper method - transfer Book to BookDto
     private BookDto transferBookToBookDto(Book book) {

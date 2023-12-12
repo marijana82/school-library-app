@@ -6,6 +6,7 @@ import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
 import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookCopyRepository;
+import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class BookCopyService {
 
     private final BookCopyRepository bookCopyRepository;
+    private final BookRepository bookRepository;
 
-    public BookCopyService(BookCopyRepository bookCopyRepository) {
+    public BookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository) {
         this.bookCopyRepository = bookCopyRepository;
+        this.bookRepository = bookRepository;
     }
 
     //createNewBookCopy method - post mapping
@@ -145,6 +148,23 @@ public class BookCopyService {
         bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
         bookCopyDto.setYearPublished(bookCopyDto.getYearPublished());
         return bookCopy;
+    }
+
+    //assign
+    public void assignBookToBookCopy(Long idBookCopy, Long idBook) {
+        var optionalBookCopy = bookCopyRepository.findById(idBookCopy);
+        var optionalBook = bookRepository.findById(idBook);
+
+        if(optionalBookCopy.isPresent() && optionalBook.isPresent()) {
+            var bookCopyIsPresent = optionalBookCopy.get();
+            var bookIsPresent = optionalBook.get();
+
+            bookCopyIsPresent.setBook(bookIsPresent);
+            bookCopyRepository.save(bookCopyIsPresent);
+        } else {
+            throw new RecordNotFoundException("Item not found");
+        }
+
     }
 
 
