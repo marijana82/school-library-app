@@ -1,8 +1,10 @@
 package com.marijana.library1223.controllers;
 
+import com.marijana.library1223.dtos.AuthorDto;
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
+import com.marijana.library1223.services.AuthorBookService;
 import com.marijana.library1223.services.BookService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +24,11 @@ import java.util.Optional;
 public class BookController {
 
     private final BookService bookService;
+    private final AuthorBookService authorBookService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, AuthorBookService authorBookService) {
         this.bookService = bookService;
+        this.authorBookService = authorBookService;
     }
 
 
@@ -110,6 +115,14 @@ public class BookController {
     public ResponseEntity<BookDto> partialUpdateBook(@PathVariable Long idBook, @Valid @RequestBody BookDto bookDto) {
         BookDto bookDto1 = bookService.updateBookPartially(idBook, bookDto);
         return ResponseEntity.ok().body(bookDto1);
+    }
+
+    //method that gets all authors connected to a certain book
+    //makes use of authorBookService
+    @GetMapping("/authors/{idBook}")
+    public ResponseEntity<Collection<AuthorDto>> getAuthorsByIdBook(@PathVariable("idBook") Long idBook) {
+        //return ResponseEntity.ok();
+
     }
 
 
