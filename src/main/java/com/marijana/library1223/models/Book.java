@@ -54,5 +54,11 @@ public class Book {
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 
+    //NOT OWNER - relation with AuthorBook
+    @OneToMany(mappedBy = "book")
+    @JsonIgnore
+    List<AuthorBook> authorBooks = new ArrayList<>();
+
+
 }
 
