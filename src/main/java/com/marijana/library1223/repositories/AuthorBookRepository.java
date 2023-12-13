@@ -9,8 +9,8 @@ import java.util.List;
 public interface AuthorBookRepository extends JpaRepository<AuthorBook, AuthorBookKey> {
 
     //custom query to find all AuthorBooks that belong to a certain author
-    List<AuthorBook> findAllByIdAuthor(Long idAuthor);
+    List<AuthorBook> findAllByAuthorId(Long idAuthor);
 
     //custom query to find all AuthorBooks that belong to a certain Book
-    List<AuthorBook> findAllByIdBook(Long idBook);
+    List<AuthorBook> findAllByBookId(Long idBook);
 }

@@ -33,7 +33,7 @@ public class AuthorBookService {
     //getAuthorsByBookId
     public Collection<AuthorDto> getAuthorsByIdBook(Long idBook) {
         Collection<AuthorDto> authorDtos = new HashSet<>();
-        Collection<AuthorBook> authorBooks = authorBookRepository.findAllByIdBook(idBook);
+        Collection<AuthorBook> authorBooks = authorBookRepository.findAllByBookId(idBook);
         for(AuthorBook authorBook : authorBooks) {
             Author author = authorBook.getAuthor();
             AuthorDto authorDto = new AuthorDto();
