@@ -1,5 +1,6 @@
 package com.marijana.library1223.services;
 
+import com.marijana.library1223.repositories.AuthorBookRepository;
 import com.marijana.library1223.repositories.AuthorRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 public class AuthorBookService {
 
     private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
+    private final AuthorBookRepository authorBookRepository;
 
     public AuthorBookService(AuthorRepository authorRepository, BookRepository bookRepository, AuthorBookRepository authorBookRepository) {
         this.authorRepository = authorRepository;
