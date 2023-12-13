@@ -121,7 +121,8 @@ public class BookController {
     //makes use of authorBookService
     @GetMapping("/authors/{idBook}")
     public ResponseEntity<Collection<AuthorDto>> getAuthorsByIdBook(@PathVariable("idBook") Long idBook) {
-        //return ResponseEntity.ok();
+        return ResponseEntity.ok(authorBookService.getAuthorsByIdBook(idBook));
+
 
     }
 
