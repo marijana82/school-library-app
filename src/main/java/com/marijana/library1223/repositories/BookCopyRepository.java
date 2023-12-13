@@ -15,7 +15,5 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, Long> {
 
     List<BookCopy> findByAudioBook(boolean audio);
 
-    //-----------NOT IMPLEMENTED YET----------------
-    boolean existsBookCopiesByBarcode(int barcode);
 
 }

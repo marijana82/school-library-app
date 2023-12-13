@@ -21,6 +21,11 @@ public class AccountDto {
     @Size(min=1, max=128, message = "Name must contain at least 1 character.")
     private String nameOfTeacher;
 
+    //relations - here we give the ids of the reservations which we want to use for connecting the relation
+    //for api handleiding: i have to explain that the user can give the list of reservation ids
+    //by writing in the json the field: "reservationIds": 1 - for example
+    public Long[] reservationIds;
+
     //getters & setters
     public Long getId() {
         return id;

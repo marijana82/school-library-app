@@ -23,7 +23,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    //post-mapping
+    //post-mapping - reservation
     @PostMapping
     public ResponseEntity<Object> createNewReservation(@Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
@@ -44,7 +44,7 @@ public class ReservationController {
         return ResponseEntity.created(uri).body(reservationDto);
     }
 
-    //get mapping all (general)
+    //get mapping all (general) - reservation
     @GetMapping
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
         List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
@@ -57,13 +57,13 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
     }
 
-    //get mapping one (id)
+    //get mapping one (id) - reservation
     @GetMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> getSingleReservation(@PathVariable Long idReservation) {
         return ResponseEntity.ok(reservationService.getSingleReservation(idReservation));
     }
 
-    //put mapping
+    //put mapping - reservation
     @PutMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> fullUpdateReservation(@PathVariable Long idReservation, @Valid @RequestBody ReservationDto reservationDto) {
         ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
@@ -71,14 +71,16 @@ public class ReservationController {
     }
 
     //TODO: CREATE PATCH MAPPING
-    //patch mapping
+    //patch mapping - reservation
 
-    //delete mapping
+    //delete mapping - reservation
     @DeleteMapping("/{idReservation}")
     public ResponseEntity<Object> deleteReservation(@PathVariable Long idReservation) {
         reservationService.deleteReservation(idReservation);
         return ResponseEntity.noContent().build();
     }
+
+    //add
 
 
 }

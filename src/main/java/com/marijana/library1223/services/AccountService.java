@@ -5,7 +5,9 @@ import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.models.Account;
+import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.AccountRepository;
+import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,30 +19,36 @@ import java.util.Optional;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final ReservationRepository reservationRepository;
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, ReservationRepository reservationRepository) {
         this.accountRepository = accountRepository;
+        this.reservationRepository = reservationRepository;
     }
 
-    //createAccount method - post mapping
+    //createAccount2
     public AccountDto createAccount(AccountDto accountDto) {
 
         if(accountRepository.existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(accountDto.getFirstNameStudent(), accountDto.getLastNameStudent())) {
             //here i'm getting status 500 internal server error instead of "Account already exists".
             throw new ResourceAlreadyExistsException("Account already exists!");
-
         } else {
-        Account account = new Account();
-        account.setFirstNameStudent(accountDto.getFirstNameStudent());
-        account.setLastNameStudent(accountDto.getLastNameStudent());
-        account.setDob(accountDto.getDob());
-        account.setStudentClass(accountDto.getStudentClass());
-        account.setNameOfTeacher(accountDto.getNameOfTeacher());
-        accountRepository.save(account);
-        accountDto.setId(account.getId());
+            Account account = new Account();
+            account.setFirstNameStudent(accountDto.getFirstNameStudent());
+            account.setLastNameStudent(accountDto.getLastNameStudent());
+            account.setDob(accountDto.getDob());
+            account.setStudentClass(accountDto.getStudentClass());
+            account.setNameOfTeacher(accountDto.getNameOfTeacher());
+        for(Long id : accountDto.reservationIds) {
+            Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+            if(optionalReservation.isPresent()) {
+                account.getReservations().add(optionalReservation.get());
+            }
+        }
+            accountRepository.save(account);
+            accountDto.setId(account.getId());
 
-        return accountDto;
-
+            return accountDto;
         }
     }
 

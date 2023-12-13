@@ -1,9 +1,12 @@
 package com.marijana.library1223.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,5 +24,38 @@ public class Reservation {
     private int numberOfBooksReserved;
     @Column(name="sidenote")
     private String sidenote;
+
+    //Relations..............
+    //NOT OWNER - target side....................
+
+    @OneToOne(
+            mappedBy = "reservation",
+            cascade = CascadeType.ALL)
+    private Borrowal borrowal;
+
+
+    //NOT OWNER - target side......................
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "reservations")
+    @JsonIgnore
+    private List<Account> accounts = new ArrayList<>();
+
+    //NOT OWNER - target side.....................
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "reservation")
+    @JsonIgnore
+    private List<Book> books = new ArrayList<>();
+
+
 
 }

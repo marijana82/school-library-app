@@ -1,6 +1,8 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BorrowalDto;
+import com.marijana.library1223.dtos.IdInputDto;
+import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.services.BorrowalService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -47,27 +49,44 @@ public class BorrowalController {
 
     }
 
-    //get-mapping-all (all in general)
+
+    //get-mapping-all (all borrowals incl. reservations)
     @GetMapping
     public ResponseEntity<List<BorrowalDto>> getAllBorrowals() {
         List<BorrowalDto> borrowalDtoList = borrowalService.getAllBorrowals();
         return ResponseEntity.ok(borrowalDtoList);
     }
 
-    //get-mapping-one
+    //get-mapping-one (incl. reservation)
     @GetMapping("/{idBorrowal}")
     public ResponseEntity<Object> getSingleBorrowal(@PathVariable Long idBorrowal) {
         return ResponseEntity.ok(borrowalService.getSingleBorrowal(idBorrowal));
     }
 
-    //put-mapping
+    //put-mapping (update borrowal)
     @PutMapping("/{idBorrowal}")
     public ResponseEntity<BorrowalDto> fullUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.fullUpdateBorrowal(idBorrowal, borrowalDto);
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //patch-mapping
+    //put-mapping (update a borrowal by adding a reservation to it, with one path variable and one request body)
+    @PutMapping("/{idBorrowal}/reservation")
+    public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @Valid @RequestBody IdInputDto input) {
+        borrowalService.assignReservationToBorrowal(idBorrowal, input.id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //put-mapping (update a borrowal by adding a reservation to it, with 2 x path variables)
+    @PutMapping("/{idBorrowal}/{idReservation}")
+    public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
+        borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
+        return ResponseEntity.noContent().build();
+    }
+
+    //post-mapping to add a reservation to borrowal - will not make!
+
+    //patch-mapping (borrowal incl. reservation)
     @PatchMapping("/{idBorrowal}")
     public ResponseEntity<BorrowalDto> partialUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.partialUpdateBorrowal(idBorrowal, borrowalDto);
@@ -75,8 +94,7 @@ public class BorrowalController {
     }
 
 
-    //delete-mapping
-    //TODO: check why is DELETE MAPPING not working???
+    //delete-mapping (borrowal)
    @DeleteMapping("/{idBorrowal}")
     public ResponseEntity<Object> deleteBorrowal(@PathVariable Long idBorrowal) {
         borrowalService.deleteBorrowal(idBorrowal);

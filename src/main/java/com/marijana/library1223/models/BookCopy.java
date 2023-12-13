@@ -1,10 +1,12 @@
 package com.marijana.library1223.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
+@Data
 @Entity
-@Table(name="book_copies")
+@Table(name="copies")
 public class BookCopy {
 
     @Id
@@ -33,78 +35,12 @@ public class BookCopy {
     private LocalDate yearPublished;
 
 
-    //getters&setters
-    public Long getId() {
-        return id;
-    }
+    //Relations...........
+    //OWNER
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
+    private Book book;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(int barcode) {
-        this.barcode = barcode;
-    }
-
-    public Integer getNumberOfPages() {
-        return numberOfPages;
-    }
-
-    public void setNumberOfPages(Integer numberOfPages) {
-        this.numberOfPages = numberOfPages;
-    }
-
-    public Integer getTotalWordCount() {
-        return totalWordCount;
-    }
-
-    public void setTotalWordCount(Integer totalWordCount) {
-        this.totalWordCount = totalWordCount;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public boolean isInWrittenForm() {
-        return inWrittenForm;
-    }
-
-    public void setInWrittenForm(boolean inWrittenForm) {
-        this.inWrittenForm = inWrittenForm;
-    }
-
-    public boolean isAudioBook() {
-        return audioBook;
-    }
-
-    public void setAudioBook(boolean audioBook) {
-        this.audioBook = audioBook;
-    }
-
-    public boolean isDyslexiaFriendly() {
-        return dyslexiaFriendly;
-    }
-
-    public void setDyslexiaFriendly(boolean dyslexiaFriendly) {
-        this.dyslexiaFriendly = dyslexiaFriendly;
-    }
-
-    public LocalDate getYearPublished() {
-        return yearPublished;
-    }
-
-    public void setYearPublished(LocalDate yearPublished) {
-        this.yearPublished = yearPublished;
-    }
 }
 
 

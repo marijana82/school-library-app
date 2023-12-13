@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
+    //---try for relation many-to-many
+    //List<Account> findAccountsByReservationsId(Long reservationId);
+
     //-----------IMPLEMENTED--------------------------------------------
 
     //add a method that finds accounts belonging to the same student class

@@ -1,13 +1,14 @@
 package com.marijana.library1223.services;
 
+import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.models.Book;
-import com.marijana.library1223.models.InformationBook;
-import com.marijana.library1223.models.ReadingBook;
+import com.marijana.library1223.models.*;
+import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
+import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,9 +19,13 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final ReservationRepository reservationRepository;
+    private final BookCopyRepository bookCopyRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository, BookCopyRepository bookCopyRepository) {
         this.bookRepository = bookRepository;
+        this.reservationRepository = reservationRepository;
+        this.bookCopyRepository = bookCopyRepository;
     }
 
 
@@ -32,6 +37,13 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
+
+        //check if it exists & connect book and reservation objects
+        Optional<Reservation> optionalReservation = reservationRepository.findById(bookDto.reservationId);
+        if(optionalReservation.isPresent()){
+            Reservation reservation = optionalReservation.get();
+            book.setReservation(reservation);
+        }
 
         //create and set values for InformationBook
         InformationBook informationBook = new InformationBook();
@@ -196,6 +208,36 @@ public class BookService {
 
 
     //helper methods ...........................................
+
+
+    //helper transfer book copy dto to book copy
+    private BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
+        BookCopyDto bookCopyDto = new BookCopyDto();
+        bookCopyDto.setAudioBook(bookCopy.isAudioBook());
+        bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
+        bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
+        bookCopyDto.setFormat(bookCopy.getFormat());
+        bookCopyDto.setBarcode(bookCopy.getBarcode());
+        bookCopyDto.setTotalWordCount(bookCopy.getTotalWordCount());
+        bookCopyDto.setNumberOfPages(bookCopy.getNumberOfPages());
+        bookCopyDto.setId(bookCopy.getId());
+        return bookCopyDto;
+    }
+
+    private BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
+        BookCopy bookCopy = new BookCopy();
+        bookCopy.setAudioBook(bookCopyDto.isAudioBook());
+        bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
+        bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
+        bookCopy.setBarcode(bookCopyDto.getBarcode());
+        bookCopy.setFormat(bookCopyDto.getFormat());
+        bookCopy.setNumberOfPages(bookCopyDto.getNumberOfPages());
+        bookCopy.setTotalWordCount(bookCopyDto.getTotalWordCount());
+        bookCopy.setId(bookCopyDto.getId());
+        bookCopy.setYearPublished(bookCopyDto.getYearPublished());
+        return bookCopy;
+    }
+
 
     //helper method - transfer Book to BookDto
     private BookDto transferBookToBookDto(Book book) {
