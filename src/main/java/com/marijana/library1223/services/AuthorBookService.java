@@ -1,8 +1,11 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.AuthorDto;
+import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Author;
 import com.marijana.library1223.models.AuthorBook;
+import com.marijana.library1223.models.AuthorBookKey;
+import com.marijana.library1223.models.Book;
 import com.marijana.library1223.repositories.AuthorBookRepository;
 import com.marijana.library1223.repositories.AuthorRepository;
 import com.marijana.library1223.repositories.BookRepository;
@@ -40,6 +43,35 @@ public class AuthorBookService {
             authorDtos.add(authorDto);
         }
         return authorDtos;
+    }
+
+    //addAuthorBook
+    public AuthorBookKey addAuthorBook(Long idAuthor, Long idBook) {
+        AuthorBook authorBook = new AuthorBook();
+
+        if(!authorRepository.existsById(idAuthor)) {
+            throw new RecordNotFoundException();
+        }
+        Author author = authorRepository.findById(idAuthor).orElse(null);
+
+        if(!bookRepository.existsById(idBook)) {
+            throw new RecordNotFoundException();
+        }
+        Book book = bookRepository.findById(idBook).orElse(null);
+
+        authorBook.setAuthor(author);
+        authorBook.setBook(book);
+
+        //AuthorBookKey id = new AuthorBookKey(idAuthor, idBook); - with this one i'm getting error expected 0 but found 2
+        AuthorBookKey id = new AuthorBookKey();
+        id.setAuthorId(idAuthor);
+        id.setBookId(idBook);
+
+        authorBook.setId(id);
+
+        authorBookRepository.save(authorBook);
+
+        return id;
 
 
     }
