@@ -1,7 +1,9 @@
 package com.marijana.library1223.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 public class AuthorBook {
 
