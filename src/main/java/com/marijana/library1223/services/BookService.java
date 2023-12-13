@@ -209,22 +209,35 @@ public class BookService {
 
     //helper methods ...........................................
 
-    //helper - assign Book to BookCopy - delete???
-    public void assignBookToBookCopy(Long idBookCopy, Long idBook) {
-        var optionalBookCopy = bookCopyRepository.findById(idBookCopy);
-        var optionalBook = bookRepository.findById(idBook);
 
-        if(optionalBookCopy.isPresent() && optionalBook.isPresent()) {
-            var bookCopyIsPresent = optionalBookCopy.get();
-            var bookIsPresent = optionalBook.get();
-
-            bookCopyIsPresent.setBook(bookIsPresent);
-            bookCopyRepository.save(bookCopyIsPresent);
-        } else {
-            throw new RecordNotFoundException("Item not found");
-        }
-
+    //helper transfer book copy dto to book copy
+    private BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
+        BookCopyDto bookCopyDto = new BookCopyDto();
+        bookCopyDto.setAudioBook(bookCopy.isAudioBook());
+        bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
+        bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
+        bookCopyDto.setFormat(bookCopy.getFormat());
+        bookCopyDto.setBarcode(bookCopy.getBarcode());
+        bookCopyDto.setTotalWordCount(bookCopy.getTotalWordCount());
+        bookCopyDto.setNumberOfPages(bookCopy.getNumberOfPages());
+        bookCopyDto.setId(bookCopy.getId());
+        return bookCopyDto;
     }
+
+    private BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
+        BookCopy bookCopy = new BookCopy();
+        bookCopy.setAudioBook(bookCopyDto.isAudioBook());
+        bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
+        bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
+        bookCopy.setBarcode(bookCopyDto.getBarcode());
+        bookCopy.setFormat(bookCopyDto.getFormat());
+        bookCopy.setNumberOfPages(bookCopyDto.getNumberOfPages());
+        bookCopy.setTotalWordCount(bookCopyDto.getTotalWordCount());
+        bookCopy.setId(bookCopyDto.getId());
+        bookCopy.setYearPublished(bookCopyDto.getYearPublished());
+        return bookCopy;
+    }
+
 
     //helper method - transfer Book to BookDto
     private BookDto transferBookToBookDto(Book book) {

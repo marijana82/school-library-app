@@ -20,9 +20,5 @@ public class ReadingBook {
         this.currentGenre = currentGenre;
     }
 
-    //getter for the enum field
-    public String getCurrentGenre() {
-        return currentGenre;
-    }
 
 }

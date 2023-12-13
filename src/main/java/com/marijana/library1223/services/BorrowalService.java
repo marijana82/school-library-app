@@ -3,6 +3,7 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Borrowal;
+import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -157,12 +158,12 @@ public class BorrowalService {
 
     //assign Reservation to Borrowal
     public void assignReservationToBorrowal(Long idBorrowal, Long idReservation) {
-        var optionalBorrowal = borrowalRepository.findById(idBorrowal);
-        var optionalReservation = reservationRepository.findById(idReservation);
+        Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
+        Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
 
         if(optionalBorrowal.isPresent() && optionalReservation.isPresent()) {
-            var borrowalPresent = optionalBorrowal.get();
-            var reservationPresent = optionalReservation.get();
+             Borrowal borrowalPresent = optionalBorrowal.get();
+             Reservation reservationPresent = optionalReservation.get();
 
             if(borrowalPresent.getReservation() !=null) {
                 throw new RuntimeException("Borrowal already has a reservation");

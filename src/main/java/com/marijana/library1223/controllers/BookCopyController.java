@@ -90,6 +90,14 @@ public class BookCopyController {
     }
 
 
+    //put mapping to assign book to book copy
+    @PutMapping("/{idCopy}/book/{idBook}")
+    public ResponseEntity<Object> assignBookToBookCopy(@PathVariable Long idCopy, @PathVariable Long idBook) {
+        bookCopyService.assignBookToBookCopy(idCopy, idBook);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
     //TODO: CREATE PATCH AND DELETE!!!
     //patch-mapping

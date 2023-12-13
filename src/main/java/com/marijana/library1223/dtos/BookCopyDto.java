@@ -15,7 +15,7 @@ public class BookCopyDto {
     @Positive(message = "Word count must be a positive number.")
     private Integer totalWordCount;
     private String format;
-    @AssertTrue //null is also a valid input
+    @NotNull
     private boolean inWrittenForm;
     @NotNull(message = "Field cannot be null, please provide true or false value.")
     //or @AssertTrue (null is also a valid input)

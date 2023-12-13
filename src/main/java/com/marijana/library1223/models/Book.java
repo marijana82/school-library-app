@@ -52,49 +52,7 @@ public class Book {
     //NOT OWNER
     @OneToMany(mappedBy = "book")
     @JsonIgnore
-    private List<BookCopy> bookCopy = new ArrayList<>();
+    private List<BookCopy> bookCopyList = new ArrayList<>();
 
-
-
-    //constructors
-    public Book() {
-
-    }
-
-    public Book(int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, ReadingBook readingBook, InformationBook informationBook, Reservation reservation) {
-        this.isbn = isbn;
-        this.bookTitle = bookTitle;
-        this.nameAuthor = nameAuthor;
-        this.nameIllustrator = nameIllustrator;
-        this.suitableAge = suitableAge;
-        this.readingBook = readingBook;
-        this.informationBook = informationBook;
-        this.reservation = reservation;
-    }
-
-    //getters & setters
-    public ReadingBook getReadingBook() {
-        return readingBook;
-    }
-
-    public void setReadingBook(ReadingBook readingBook) {
-        this.readingBook = readingBook;
-    }
-
-    public InformationBook getInformationBook() {
-        return informationBook;
-    }
-
-    public void setInformationBook(InformationBook informationBook) {
-        this.informationBook = informationBook;
-    }
-
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
-    }
 }
 

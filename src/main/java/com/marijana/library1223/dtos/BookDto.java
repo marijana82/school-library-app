@@ -34,7 +34,7 @@ public class BookDto {
     private ReservationDto reservationDto;
 
     //one-to-many
-    private List<BookCopyDto> bookCopyDtos;
+    private List<BookCopyDto> bookCopyList;
 
 
 }

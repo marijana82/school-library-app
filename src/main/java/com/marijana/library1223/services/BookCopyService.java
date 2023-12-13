@@ -27,7 +27,6 @@ public class BookCopyService {
 
     //createNewBookCopy method - post mapping
     public BookCopyDto createBookCopy(BookCopyDto bookCopyDto) {
-
         BookCopy bookCopy = new BookCopy();
         bookCopy.setBarcode(bookCopyDto.getBarcode());
         bookCopy.setNumberOfPages(bookCopyDto.getNumberOfPages());
@@ -40,8 +39,6 @@ public class BookCopyService {
         bookCopyRepository.save(bookCopy);
         bookCopyDto.setId(bookCopy.getId());
         return bookCopyDto;
-
-
     }
 
     //showOneCopy - get mapping(one)
@@ -150,7 +147,7 @@ public class BookCopyService {
         return bookCopy;
     }
 
-    //assign
+    //assign Book to BookCopy
     public void assignBookToBookCopy(Long idBookCopy, Long idBook) {
         var optionalBookCopy = bookCopyRepository.findById(idBookCopy);
         var optionalBook = bookRepository.findById(idBook);
