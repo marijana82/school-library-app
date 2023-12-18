@@ -20,5 +20,7 @@ public class ReservationDto {
     private String sidenote;
     //relation
     private BookDto bookDto;
+    //relations - here we give the ids of accounts which we want to use for connecting the relation
+    private AccountDto accountDto;
 
 }

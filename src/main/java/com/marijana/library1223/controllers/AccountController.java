@@ -30,10 +30,9 @@ public class AccountController {
 
     //2.post-mapping
     @PostMapping
-    //add @Valid and BindingResult
     public ResponseEntity<Object> createNewAccount(@Valid @RequestBody AccountDto accountDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
-            //create a string which we return as body
+
             StringBuilder stringBuilder = new StringBuilder();
             for(FieldError fieldError : bindingResult.getFieldErrors()) {
                 stringBuilder.append(fieldError.getField());
@@ -53,7 +52,6 @@ public class AccountController {
     }
 
     //3.get-mapping-all (all in general + all belonging to the same class)
-
     @GetMapping
     public ResponseEntity<List<AccountDto>> getAllAccounts(@RequestParam(value="studentClass", required=false) Optional<String> studentClass) {
         List<AccountDto> accountDtos;
@@ -65,7 +63,6 @@ public class AccountController {
         }
         return ResponseEntity.ok().body(accountDtos);
     }
-
 
 
     //4.get-mapping-one (specific id)
@@ -84,7 +81,7 @@ public class AccountController {
     }
 
 
-    //6.patch-mapping       //am I testing it correctly?
+    //6.patch-mapping       //TODO: CHECK IF I am testing it correctly?
     @PatchMapping("/{idAccount}")
     public ResponseEntity<AccountDto> partialUpdateAccount(@PathVariable Long idAccount, @Valid @RequestBody AccountDto accountDto) {
         AccountDto accountDto1 = accountService.updateAccountPartially(idAccount, accountDto);

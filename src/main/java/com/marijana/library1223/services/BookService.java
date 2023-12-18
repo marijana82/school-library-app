@@ -253,12 +253,5 @@ public class BookService {
         return informationBookDto;
     }
 
-    //helper method - transferInformationBookToInformationBookDto ???
-    public InformationBook transferInformationBookDtoToInformationBook(InformationBookDto informationBookDto) {
-        InformationBook informationBook = new InformationBook();
-        informationBook.setEducationLevel(informationBookDto.getEducationLevel());
-        informationBook.setCurrentTopic(informationBookDto.getCurrentTopic());
-        return informationBook;
-    }
 
 }

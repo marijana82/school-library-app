@@ -28,20 +28,16 @@ public class Account {
     private String nameOfTeacher;
 
     //Relations.............
-    //OWNER - this is where we configure the relationship
-    @ManyToMany(
+    //TARGET - relation with Account
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            })
-    @JoinTable(
-            name = "account_reservations",
-            joinColumns = {@JoinColumn(name = "account_id")},
-            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
-    )
-   // @JoinColumn(name = "account_reservations_id")
-    private List<Reservation> reservations = new ArrayList<>();
+            },
+            mappedBy = "account")
+    @JsonIgnore
+    private Reservation reservation;
 
     //TARGET - relation with Borrowal
     @OneToMany(mappedBy = "account")

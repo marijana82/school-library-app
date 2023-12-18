@@ -26,8 +26,8 @@ public class Reservation {
     private String sidenote;
 
     //Relations..............
-    //NOT OWNER - target side....................
-
+    //TODO: CHANGE TARGET-OWNER BETWEEN RESERVATION AND BORROWAL OR TOTALLY BREAK THIS RELATIONSHIP
+    //TARGET
     @OneToOne(
             mappedBy = "reservation",
             cascade = CascadeType.ALL)
@@ -35,18 +35,17 @@ public class Reservation {
     private Borrowal borrowal;
 
 
-    //NOT OWNER - target side......................
-    @ManyToMany(
+    //OWNER
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            },
-            mappedBy = "reservations")
-    @JsonIgnore
-    private List<Account> accounts = new ArrayList<>();
+            })
+    @JoinColumn(name = "account_id")
+    private Account account;
 
-    //OWNER.....................
+    //OWNER
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {

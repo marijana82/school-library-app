@@ -39,15 +39,8 @@ public class AccountService {
             account.setDob(accountDto.getDob());
             account.setStudentClass(accountDto.getStudentClass());
             account.setNameOfTeacher(accountDto.getNameOfTeacher());
-        for(Long id : accountDto.reservationIds) {
-            Optional<Reservation> optionalReservation = reservationRepository.findById(id);
-            if(optionalReservation.isPresent()) {
-                account.getReservations().add(optionalReservation.get());
-            }
-        }
             accountRepository.save(account);
             accountDto.setId(account.getId());
-
             return accountDto;
         }
     }

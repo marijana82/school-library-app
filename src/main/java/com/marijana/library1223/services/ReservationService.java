@@ -2,8 +2,10 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Reservation;
+import com.marijana.library1223.repositories.AccountRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,17 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final BookService bookService;
     private final BookRepository bookRepository;
+    private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
 
-    public ReservationService(ReservationRepository reservationRepository, BookService bookService, BookRepository bookRepository) {
+    public ReservationService(ReservationRepository reservationRepository, BookService bookService, BookRepository bookRepository, AccountService accountService, AccountRepository accountRepository) {
         this.reservationRepository = reservationRepository;
         this.bookService = bookService;
         this.bookRepository = bookRepository;
+        this.accountService = accountService;
+        this.accountRepository = accountRepository;
+
     }
 
     //createReservation - post mapping
@@ -139,6 +146,22 @@ public class ReservationService {
             Book bookIsPresent = optionalBook.get();
 
             reservationIsPresent.setBook(bookIsPresent);
+            reservationRepository.save(reservationIsPresent);
+        } else {
+            throw new RecordNotFoundException("Reservation not found.");
+        }
+    }
+
+    //assign account to reservation
+    public void assignAccountToReservation(Long idAccount, Long idReservation) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
+        Optional<Account> optionalAccount = accountRepository.findById(idAccount);
+
+        if(optionalReservation.isPresent() && optionalAccount.isPresent()) {
+            Reservation reservationIsPresent = optionalReservation.get();
+            Account accountIsPresent = optionalAccount.get();
+
+            reservationIsPresent.setAccount(accountIsPresent);
             reservationRepository.save(reservationIsPresent);
         } else {
             throw new RecordNotFoundException("Reservation not found.");
