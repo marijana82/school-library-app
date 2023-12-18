@@ -39,7 +39,6 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setBookTitle(reservationDto.getBookTitle());
         reservation.setReservationDate(reservationDto.getReservationDate());
-        reservation.setNumberOfBooksReserved(reservationDto.getNumberOfBooksReserved());
         reservation.setSidenote(reservationDto.getSidenote());
         reservationRepository.save(reservation);
         reservationDto.setId(reservation.getId());
@@ -52,7 +51,16 @@ public class ReservationService {
         List<Reservation> reservationList = reservationRepository.findAll();
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
+
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
+
+            if(reservation.getAccount() !=null) {
+                reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
+            }
+            if(reservation.getBook() !=null) {
+                reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
+            }
+
             reservationDtoList.add(reservationDto);
         }
         return reservationDtoList;
@@ -64,6 +72,12 @@ public class ReservationService {
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
+            if(reservation.getAccount() !=null) {
+                reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
+            }
+            if(reservation.getBook() !=null) {
+                reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
+            }
             reservationDtoList.add(reservationDto);
         }
         return reservationDtoList;
@@ -73,12 +87,22 @@ public class ReservationService {
     //get single reservation - get mapping (id)
     public ReservationDto getSingleReservation(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+
         if(optionalReservation.isPresent()) {
             Reservation reservationFound = optionalReservation.get();
-            return transferReservationToReservationDto(reservationFound);
+            ReservationDto reservationDto = transferReservationToReservationDto(reservationFound);
+
+            if(reservationFound.getBook() != null) {
+                reservationDto.setBookDto(bookService.transferBookToBookDto(reservationFound.getBook()));
+            }
+            if(reservationFound.getAccount() !=null) {
+                reservationDto.setAccountDto((accountService.transferAccountToAccountDto(reservationFound.getAccount())));
+            }
+
+            return reservationDto;
 
         } else {
-            throw new RecordNotFoundException("Reservation with id number " + id + " has not been found.");
+            throw new RecordNotFoundException("Reservation has not been found.");
         }
     }
 
@@ -118,10 +142,14 @@ public class ReservationService {
         reservationDto.setId(reservation.getId());
         reservationDto.setBookTitle(reservation.getBookTitle());
         reservationDto.setReservationDate(reservation.getReservationDate());
-        reservationDto.setNumberOfBooksReserved(reservation.getNumberOfBooksReserved());
         reservationDto.setSidenote(reservation.getSidenote());
-        reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
-        reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
+        //null-check
+        if(reservation.getBook() != null) {
+            reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
+        }
+        if(reservation.getAccount() !=null) {
+            reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
+        }
         return reservationDto;
     }
 
@@ -131,8 +159,11 @@ public class ReservationService {
         reservation.setId(reservationDto.getId());
         reservation.setBookTitle(reservationDto.getBookTitle());
         reservation.setReservationDate(reservationDto.getReservationDate());
-        reservation.setNumberOfBooksReserved(reservationDto.getNumberOfBooksReserved());
         reservation.setSidenote(reservationDto.getSidenote());
+        //TODO: CHECK IF THIS IS NECESSARY:
+        reservation.setAccount(accountService.transferAccountDtoToAccount(reservationDto.getAccountDto()));
+        reservation.setBook(bookService.transferBookDtoToBook(reservationDto.getBookDto()));
+
         return reservation;
     }
 

@@ -12,9 +12,9 @@ VALUES (1000, 'David Eric', 'Grohl', '2018-01-01', 'obb', 'Gaby'),
        (1009, 'Krist', 'Novoselic', '2012-09-09', 'bbd', 'Max');
 
 --Reservation ............................
-INSERT INTO reservations(id, reservation_date, book_title, number_of_books_reserved, sidenote)
-VALUES(5000, '2023-12-12', 'Book', 1, 'Book reserved'),
-      (5001, '2023-12-12', 'Book 2', 1, 'Book will be picked up by a friend');
+INSERT INTO reservations(id, reservation_date, book_title, sidenote)
+VALUES(5000, '2023-12-12', 'Book', 'Book reserved'),
+      (5001, '2023-12-12', 'Book 2', 'Book will be picked up by a friend');
 
 --AccountReservations......................
 INSERT INTO accounts_reservations(accounts_id, reservations_id)

@@ -203,10 +203,10 @@ public class BookService {
 
     //helper methods ...........................................
 
-
     //helper method - transfer Book to BookDto
     public BookDto transferBookToBookDto(Book book) {
         BookDto bookDto = new BookDto();
+        //TODO: CHECK - why is here book is 0???
         bookDto.setId(book.getId());
         bookDto.setIsbn(book.getIsbn());
         bookDto.setBookTitle(book.getBookTitle());

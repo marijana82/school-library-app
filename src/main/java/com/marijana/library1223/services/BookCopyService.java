@@ -2,14 +2,12 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

@@ -3,10 +3,7 @@ package com.marijana.library1223.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -20,14 +17,12 @@ public class Reservation {
     private LocalDate reservationDate;
     @Column(name="book_title")
     private String bookTitle;
-    @Column(name="number_of_books_reserved")
-    private int numberOfBooksReserved;
     @Column(name="sidenote")
     private String sidenote;
 
     //Relations..............
     //TODO: CHANGE TARGET-OWNER BETWEEN RESERVATION AND BORROWAL OR TOTALLY BREAK THIS RELATIONSHIP
-    //TARGET
+    //TARGET..........
     @OneToOne(
             mappedBy = "reservation",
             cascade = CascadeType.ALL)
@@ -35,7 +30,7 @@ public class Reservation {
     private Borrowal borrowal;
 
 
-    //OWNER
+    //OWNER..........
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
@@ -45,7 +40,7 @@ public class Reservation {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    //OWNER
+    //OWNER..........
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {

@@ -109,19 +109,6 @@ public class BookController {
     }
 
 
-    //---DELETE but keep as example for now------------
-
-    //put mapping to assign reservation to book, 2nd possibility
-    /*@PutMapping("/{idBook}/reservation")
-    public ResponseEntity<Object> assignReservationToBookwithBody(@PathVariable Long idBook, @RequestBody IdInputDto input) {
-        bookService.assignReservationToBookWithId(idBook, input.id);
-        return ResponseEntity.noContent().build();
-
-    }*/
-
-
-
-
     //update partially
     @PatchMapping("/{idBook}")
     public ResponseEntity<BookDto> partialUpdateBook(@PathVariable Long idBook, @Valid @RequestBody BookDto bookDto) {
