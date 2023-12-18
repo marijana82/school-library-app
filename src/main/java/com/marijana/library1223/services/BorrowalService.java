@@ -189,6 +189,17 @@ public class BorrowalService {
     public void assignAccountToBorrowal(Long idBorrowal, Long idAccount) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
         Optional<Account> optionalAccount = accountRepository.findById(idAccount);
+
+        if(optionalBorrowal.isPresent() && optionalAccount.isPresent()) {
+            Borrowal borrowalPresent = optionalBorrowal.get();
+            Account accountPresent = optionalAccount.get();
+            borrowalPresent.setAccount(accountPresent);
+            borrowalRepository.save(borrowalPresent);
+        } else {
+            throw new RecordNotFoundException();
+        }
+
+
         
     }
 
