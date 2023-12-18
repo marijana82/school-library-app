@@ -2,8 +2,10 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.models.Reservation;
+import com.marijana.library1223.repositories.AccountRepository;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,20 @@ public class BorrowalService {
     private final BorrowalRepository borrowalRepository;
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
+    private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
     public BorrowalService(BorrowalRepository borrowalRepository,
                            ReservationRepository reservationRepository,
-                           ReservationService reservationService
+                           ReservationService reservationService,
+                           AccountService accountService,
+                           AccountRepository accountRepository
                            ) {
         this.borrowalRepository = borrowalRepository;
         this.reservationRepository = reservationRepository;
         this.reservationService = reservationService;
+        this.accountService = accountService;
+        this.accountRepository = accountRepository;
     }
 
     //createBorrowal - post mapping
@@ -175,6 +183,13 @@ public class BorrowalService {
         } else {
             throw new RecordNotFoundException();
         }
+    }
+    
+    //assign Account to Borrowal
+    public void assignAccountToBorrowal(Long idBorrowal, Long idAccount) {
+        Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
+        Optional<Account> optionalAccount = accountRepository.findById(idAccount);
+        
     }
 
 }

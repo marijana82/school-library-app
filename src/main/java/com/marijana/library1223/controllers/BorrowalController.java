@@ -84,7 +84,13 @@ public class BorrowalController {
         return ResponseEntity.noContent().build();
     }
 
-    //post-mapping to add a reservation to borrowal - will not make!
+    //put-mapping (update a borrowal by adding n account to it, with 2 x path variable)
+    @PutMapping("/{idBorrowal}/{idAccount}")
+    public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("/idBorrowal") Long idBorrowal, @PathVariable("/idAccount") Long idAccount) {
+        borrowalService.assignAccountToBorrowal(idBorrowal, idAccount);
+        return ResponseEntity.noContent().build();
+    }
+
 
     //patch-mapping (borrowal incl. reservation)
     @PatchMapping("/{idBorrowal}")
@@ -92,7 +98,6 @@ public class BorrowalController {
         BorrowalDto borrowalDto1 = borrowalService.partialUpdateBorrowal(idBorrowal, borrowalDto);
         return ResponseEntity.ok().body(borrowalDto1);
     }
-
 
     //delete-mapping (borrowal)
    @DeleteMapping("/{idBorrowal}")

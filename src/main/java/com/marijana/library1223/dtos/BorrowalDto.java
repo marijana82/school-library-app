@@ -21,5 +21,9 @@ public class BorrowalDto {
     private Integer numberOfBooksBorrowed;
     //relation
     private ReservationDto reservationDto;
+    //relation with account and book copy
+    private AccountDto accountDto;
+    private BookCopyDto bookCopyDto;
+
 
 }
