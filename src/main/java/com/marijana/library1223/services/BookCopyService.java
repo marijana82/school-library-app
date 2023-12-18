@@ -131,7 +131,7 @@ public class BookCopyService {
         bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
         bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
         bookCopyDto.setYearPublished(bookCopy.getYearPublished());
-        bookCopyDto.setBook(bookService.transferBookToBookDto(bookCopy.getBook()));
+        bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
         return bookCopyDto;
     }
 
