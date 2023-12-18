@@ -33,7 +33,7 @@ public class Book {
 
     //Relations..............
     //OWNER - here we specify the join-table/configure the relationship
-    @ManyToOne(
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,

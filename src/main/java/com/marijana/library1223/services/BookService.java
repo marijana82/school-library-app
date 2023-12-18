@@ -262,7 +262,7 @@ public class BookService {
         bookDto.setInformationBook(book.getInformationBook());
         bookDto.setReadingBook(book.getReadingBook());
         //bookDto.setBookCopyList(book.getBookCopyList());
-        //bookDto.setReservationDto(reservationService.transferReservationToReservationDto(book.getReservation()));
+        bookDto.setReservationDto(reservationService.transferReservationToReservationDto(book.getReservation()));
         return bookDto;
     }
 
@@ -278,10 +278,16 @@ public class BookService {
         book.setSuitableAge(bookDto.getSuitableAge());
         book.setInformationBook(bookDto.getInformationBook());
         book.setReadingBook(bookDto.getReadingBook());
-        //book.setBookCopyList(bookDto.getBookCopyList());
-        //book.setReservation(reservationService.transferReservationDtoToReservation(bookDto.getReservationDto()));
         return book;
     }
+
+
+
+
+
+
+
+    //---------------DELETE, NOT NECESSARY-----------------------------------------
 
     //transfer BookOutputDto To Book
     public Book transferBookOutputDtoToBook(BookOutputDto bookOutputDto) {
@@ -297,8 +303,6 @@ public class BookService {
         book1.setReservation(reservationService.transferReservationDtoToReservation(bookOutputDto.getReservationDto()));
         return book1;
     }
-
-
 
     //helper method - transfer InformationBookDto To Book ?????
     public Book transferInformationBookDtoToBook(InformationBookDto informationBookDto) {

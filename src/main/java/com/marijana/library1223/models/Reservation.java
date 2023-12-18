@@ -47,7 +47,7 @@ public class Reservation {
     private List<Account> accounts = new ArrayList<>();
 
     //NOT OWNER - target side.....................
-    @OneToMany(
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -55,10 +55,7 @@ public class Reservation {
             },
             mappedBy = "reservation")
     @JsonIgnore
-    private List<Book> books = new ArrayList<>();
-
-
-
+    private Book book;
 
 
 }

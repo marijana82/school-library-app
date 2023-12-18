@@ -171,9 +171,12 @@ public class BorrowalService {
         if(borrowal.getAccount() !=null) {
             borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowal.getAccount()));
         }
+
+        //TODO:ask why is this one not working!!(cannot resolve method...in object)
         /*if(borrowal.getBookCopy() !=null) {
-            borrowalDto.setBookCopyDto(bookCopyService.transferBookCopyToBookCopyDto(borrowal.getBookCopy());
+            borrowalDto.setBookCopyDto(bookCopyService.transferBookCopyToBookCopyDto(borrowal.getBookCopy()));
         }*/
+
         return borrowalDto;
     }
 

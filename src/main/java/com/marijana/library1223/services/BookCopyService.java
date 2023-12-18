@@ -115,8 +115,6 @@ public class BookCopyService {
     }
 
 
-
-
     //helper methods ...........................................
 
     //helper method - transfer BookCopy to BookCopyDto
@@ -131,6 +129,7 @@ public class BookCopyService {
         bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
         bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
         bookCopyDto.setYearPublished(bookCopy.getYearPublished());
+        //relation
         bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
         return bookCopyDto;
     }
