@@ -171,7 +171,7 @@ public class AccountService {
     //helper methods ...............................................................
 
     //helper method - transfer Account to AccountDto
-    private AccountDto transferAccountToAccountDto(Account account) {
+    public AccountDto transferAccountToAccountDto(Account account) {
         AccountDto accountDto = new AccountDto();
         accountDto.setFirstNameStudent(account.getFirstNameStudent());
         accountDto.setLastNameStudent(account.getLastNameStudent());

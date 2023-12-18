@@ -161,6 +161,9 @@ public class BorrowalService {
         if(borrowal.getReservation() !=null) {
             borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
         }
+        if(borrowal.getAccount() !=null) {
+            borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowal.getAccount()));
+        }
         return borrowalDto;
     }
 
@@ -198,8 +201,6 @@ public class BorrowalService {
         } else {
             throw new RecordNotFoundException();
         }
-
-
         
     }
 
