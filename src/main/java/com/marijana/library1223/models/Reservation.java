@@ -46,15 +46,14 @@ public class Reservation {
     @JsonIgnore
     private List<Account> accounts = new ArrayList<>();
 
-    //NOT OWNER - target side.....................
+    //OWNER.....................
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            },
-            mappedBy = "reservation")
-    @JsonIgnore
+            })
+    @JoinColumn(name = "book_id")
     private Book book;
 
 

@@ -32,19 +32,16 @@ public class Book {
     private InformationBook informationBook;
 
     //Relations..............
-    //OWNER - here we specify the join-table/configure the relationship
+    //TARGET
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            })
-    /*@JoinTable(
-            name = "book_reservations",
-            joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
-    )*/
-    @JoinColumn(name = "book_reservation_id")
+            },
+            mappedBy = "book"
+    )
+    @JsonIgnore
     private Reservation reservation;
 
 
