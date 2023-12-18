@@ -222,7 +222,7 @@ public class BookService {
 
 
     //helper transfer book copy dto to book copy
-    private BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
+    public BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
         BookCopyDto bookCopyDto = new BookCopyDto();
         bookCopyDto.setAudioBook(bookCopy.isAudioBook());
         bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
@@ -235,7 +235,7 @@ public class BookService {
         return bookCopyDto;
     }
 
-    private BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
+    public BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
         BookCopy bookCopy = new BookCopy();
         bookCopy.setAudioBook(bookCopyDto.isAudioBook());
         bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
@@ -251,7 +251,7 @@ public class BookService {
 
 
     //helper method - transfer Book to BookDto
-    private BookDto transferBookToBookDto(Book book) {
+    public BookDto transferBookToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
         bookDto.setIsbn(book.getIsbn());
@@ -268,7 +268,7 @@ public class BookService {
 
 
     //helper method - transfer BookDto to Book
-    private Book transferBookDtoToBook(BookDto bookDto) {
+    public Book transferBookDtoToBook(BookDto bookDto) {
         Book book = new Book();
         book.setId(bookDto.getId());
         book.setIsbn(bookDto.getIsbn());
@@ -284,7 +284,7 @@ public class BookService {
     }
 
     //transfer BookOutputDto To Book
-    private Book transferBookOutputDtoToBook(BookOutputDto bookOutputDto) {
+    public Book transferBookOutputDtoToBook(BookOutputDto bookOutputDto) {
         Book book1 = new Book();
         book1.setId(bookOutputDto.getId());
         book1.setIsbn(bookOutputDto.getIsbn());
@@ -301,7 +301,7 @@ public class BookService {
 
 
     //helper method - transfer InformationBookDto To Book ?????
-    private Book transferInformationBookDtoToBook(InformationBookDto informationBookDto) {
+    public Book transferInformationBookDtoToBook(InformationBookDto informationBookDto) {
         Book book = new Book();
         InformationBook informationBook = new InformationBook();
         informationBook.setCurrentTopic(book.getInformationBook().getCurrentTopic());
@@ -311,7 +311,7 @@ public class BookService {
     }
 
     //helper method - transfer Book To InformationBookDto  ?????
-    private InformationBookDto transferBookToInformationBookDto(Book book) {
+    public InformationBookDto transferBookToInformationBookDto(Book book) {
         InformationBookDto informationBookDto = new InformationBookDto();
         InformationBook informationBook = book.getInformationBook();
         if(informationBook != null) {
@@ -322,7 +322,7 @@ public class BookService {
     }
 
     //helper method - transferInformationBookToInformationBookDto ???
-    private InformationBook transferInformationBookDtoToInformationBook(InformationBookDto informationBookDto) {
+    public InformationBook transferInformationBookDtoToInformationBook(InformationBookDto informationBookDto) {
         InformationBook informationBook = new InformationBook();
         informationBook.setEducationLevel(informationBookDto.getEducationLevel());
         informationBook.setCurrentTopic(informationBookDto.getCurrentTopic());

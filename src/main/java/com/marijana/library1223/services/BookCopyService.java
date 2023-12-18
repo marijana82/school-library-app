@@ -20,10 +20,12 @@ public class BookCopyService {
 
     private final BookCopyRepository bookCopyRepository;
     private final BookRepository bookRepository;
+    private final BookService bookService;
 
-    public BookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository) {
+    public BookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository, BookService bookService) {
         this.bookCopyRepository = bookCopyRepository;
         this.bookRepository = bookRepository;
+        this.bookService = bookService;
     }
 
     //createNewBookCopy method - post mapping
@@ -118,7 +120,7 @@ public class BookCopyService {
     //helper methods ...........................................
 
     //helper method - transfer BookCopy to BookCopyDto
-    private BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
+    public BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
         BookCopyDto bookCopyDto = new BookCopyDto();
         bookCopyDto.setId(bookCopy.getId());
         bookCopyDto.setBarcode(bookCopy.getBarcode());
@@ -129,12 +131,13 @@ public class BookCopyService {
         bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
         bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
         bookCopyDto.setYearPublished(bookCopy.getYearPublished());
+        bookCopyDto.setBook(bookService.transferBookToBookDto(bookCopy.getBook()));
         return bookCopyDto;
     }
 
 
     //helper method - transfer BookCopyDto to BookCopy
-    private BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
+    public BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
         BookCopy bookCopy = new BookCopy();
         bookCopy.setId(bookCopyDto.getId());
         bookCopy.setBarcode(bookCopyDto.getBarcode());

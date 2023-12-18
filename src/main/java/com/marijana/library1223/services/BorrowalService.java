@@ -171,6 +171,9 @@ public class BorrowalService {
         if(borrowal.getAccount() !=null) {
             borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowal.getAccount()));
         }
+        /*if(borrowal.getBookCopy() !=null) {
+            borrowalDto.setBookCopyDto(bookCopyService.transferBookCopyToBookCopyDto(borrowal.getBookCopy());
+        }*/
         return borrowalDto;
     }
 
