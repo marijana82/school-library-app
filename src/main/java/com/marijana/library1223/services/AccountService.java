@@ -5,12 +5,9 @@ import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.models.Account;
-import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.AccountRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +27,7 @@ public class AccountService {
     public AccountDto createAccount(AccountDto accountDto) {
 
         if(accountRepository.existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(accountDto.getFirstNameStudent(), accountDto.getLastNameStudent())) {
-            //here i'm getting status 500 internal server error instead of "Account already exists".
+            //TODO CHECK: here i'm getting status 500 internal server error instead of "Account already exists".
             throw new ResourceAlreadyExistsException("Account already exists!");
         } else {
             Account account = new Account();
@@ -107,7 +104,6 @@ public class AccountService {
 
             Account account = optionalAccount.get();
             Account updatedAccount = transferAccountDtoToAccount(accountDto);
-            //setting the already existing id from the database
             updatedAccount.setId(account.getId());
             accountRepository.save(updatedAccount);
             return transferAccountToAccountDto(updatedAccount);

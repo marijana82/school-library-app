@@ -121,7 +121,7 @@ public class ReservationService {
         reservationDto.setNumberOfBooksReserved(reservation.getNumberOfBooksReserved());
         reservationDto.setSidenote(reservation.getSidenote());
         reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
-        //TODO:add account to reservation!!!
+        reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
         return reservationDto;
     }
 
