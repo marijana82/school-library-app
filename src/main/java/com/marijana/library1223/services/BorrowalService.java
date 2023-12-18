@@ -6,6 +6,7 @@ import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.AccountRepository;
+import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -23,18 +24,24 @@ public class BorrowalService {
     private final ReservationService reservationService;
     private final AccountService accountService;
     private final AccountRepository accountRepository;
+    private final Object bookCopyService;
+    private final BookCopyRepository bookCopyRepository;
 
     public BorrowalService(BorrowalRepository borrowalRepository,
                            ReservationRepository reservationRepository,
                            ReservationService reservationService,
                            AccountService accountService,
-                           AccountRepository accountRepository
+                           AccountRepository accountRepository,
+                           BookCopyService bookCopyService,
+                           BookCopyRepository bookCopyRepository
                            ) {
         this.borrowalRepository = borrowalRepository;
         this.reservationRepository = reservationRepository;
         this.reservationService = reservationService;
         this.accountService = accountService;
         this.accountRepository = accountRepository;
+        this.bookCopyService = bookCopyService;
+        this.bookCopyRepository = bookCopyRepository;
     }
 
     //createBorrowal - post mapping
