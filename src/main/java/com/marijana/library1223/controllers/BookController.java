@@ -108,20 +108,16 @@ public class BookController {
         return ResponseEntity.ok().body(bookDto1);
     }
 
-    //put mapping to assign reservation to book
-    @PutMapping("/{idBook}/{idReservation}")
-    public ResponseEntity<Object> assignReservationToBookwithId(@PathVariable Long idBook, @PathVariable Long idReservation) {
-        bookService.assignReservationToBookWithId(idBook, idReservation);
-        return ResponseEntity.noContent().build();
-    }
+
+    //---DELETE but keep as example for now------------
 
     //put mapping to assign reservation to book, 2nd possibility
-    @PutMapping("/{idBook}/reservation")
+    /*@PutMapping("/{idBook}/reservation")
     public ResponseEntity<Object> assignReservationToBookwithBody(@PathVariable Long idBook, @RequestBody IdInputDto input) {
         bookService.assignReservationToBookWithId(idBook, input.id);
         return ResponseEntity.noContent().build();
 
-    }
+    }*/
 
 
 

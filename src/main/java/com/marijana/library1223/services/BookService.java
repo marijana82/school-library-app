@@ -20,15 +20,13 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final ReservationRepository reservationRepository;
-    private final BookCopyRepository bookCopyRepository;
-    private final ReservationService reservationService;
 
-    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository, BookCopyRepository bookCopyRepository, ReservationService reservationService) {
+    private final BookCopyRepository bookCopyRepository;
+
+
+    public BookService(BookRepository bookRepository, BookCopyRepository bookCopyRepository) {
         this.bookRepository = bookRepository;
-        this.reservationRepository = reservationRepository;
         this.bookCopyRepository = bookCopyRepository;
-        this.reservationService = reservationService;
     }
 
 
@@ -199,55 +197,11 @@ public class BookService {
 
     }
 
-    //assign reservation to book
-    public void assignReservationToBookWithId(Long idBook, Long idReservation) {
-            Optional<Book> optionalBook = bookRepository.findById(idBook);
-            Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
-
-        if(optionalBook.isPresent() && optionalReservation.isPresent()) {
-            Book bookIsPresent = optionalBook.get();
-            Reservation reservationIsPresent = optionalReservation.get();
-
-            bookIsPresent.setReservation(reservationIsPresent);
-        } else {
-            throw new RecordNotFoundException("Book not found");
-        }
-    }
-
 
 
 
 
     //helper methods ...........................................
-
-
-    //helper transfer book copy dto to book copy
-    public BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
-        BookCopyDto bookCopyDto = new BookCopyDto();
-        bookCopyDto.setAudioBook(bookCopy.isAudioBook());
-        bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
-        bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
-        bookCopyDto.setFormat(bookCopy.getFormat());
-        bookCopyDto.setBarcode(bookCopy.getBarcode());
-        bookCopyDto.setTotalWordCount(bookCopy.getTotalWordCount());
-        bookCopyDto.setNumberOfPages(bookCopy.getNumberOfPages());
-        bookCopyDto.setId(bookCopy.getId());
-        return bookCopyDto;
-    }
-
-    public BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
-        BookCopy bookCopy = new BookCopy();
-        bookCopy.setAudioBook(bookCopyDto.isAudioBook());
-        bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
-        bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
-        bookCopy.setBarcode(bookCopyDto.getBarcode());
-        bookCopy.setFormat(bookCopyDto.getFormat());
-        bookCopy.setNumberOfPages(bookCopyDto.getNumberOfPages());
-        bookCopy.setTotalWordCount(bookCopyDto.getTotalWordCount());
-        bookCopy.setId(bookCopyDto.getId());
-        bookCopy.setYearPublished(bookCopyDto.getYearPublished());
-        return bookCopy;
-    }
 
 
     //helper method - transfer Book to BookDto
@@ -261,8 +215,6 @@ public class BookService {
         bookDto.setSuitableAge(book.getSuitableAge());
         bookDto.setInformationBook(book.getInformationBook());
         bookDto.setReadingBook(book.getReadingBook());
-        //bookDto.setBookCopyList(book.getBookCopyList());
-        bookDto.setReservationDto(reservationService.transferReservationToReservationDto(book.getReservation()));
         return bookDto;
     }
 
@@ -287,32 +239,8 @@ public class BookService {
 
 
 
-    //---------------DELETE, NOT NECESSARY-----------------------------------------
+    //---------------DELETE, IF NOT NECESSARY-----------------------------------------
 
-    //transfer BookOutputDto To Book
-    public Book transferBookOutputDtoToBook(BookOutputDto bookOutputDto) {
-        Book book1 = new Book();
-        book1.setId(bookOutputDto.getId());
-        book1.setIsbn(bookOutputDto.getIsbn());
-        book1.setReadingBook(bookOutputDto.getReadingBook());
-        book1.setInformationBook(bookOutputDto.getInformationBook());
-        book1.setBookTitle(bookOutputDto.getBookTitle());
-        book1.setNameAuthor(bookOutputDto.getNameAuthor());
-        book1.setNameIllustrator(bookOutputDto.getNameIllustrator());
-        book1.setSuitableAge(bookOutputDto.getSuitableAge());
-        book1.setReservation(reservationService.transferReservationDtoToReservation(bookOutputDto.getReservationDto()));
-        return book1;
-    }
-
-    //helper method - transfer InformationBookDto To Book ?????
-    public Book transferInformationBookDtoToBook(InformationBookDto informationBookDto) {
-        Book book = new Book();
-        InformationBook informationBook = new InformationBook();
-        informationBook.setCurrentTopic(book.getInformationBook().getCurrentTopic());
-        informationBook.setEducationLevel(book.getInformationBook().getEducationLevel());
-        book.setInformationBook(informationBook);
-        return book;
-    }
 
     //helper method - transfer Book To InformationBookDto  ?????
     public InformationBookDto transferBookToInformationBookDto(Book book) {

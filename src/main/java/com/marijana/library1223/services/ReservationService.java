@@ -2,7 +2,9 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Reservation;
+import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,14 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final BookService bookService;
+    private final BookRepository bookRepository;
 
-    public ReservationService(ReservationRepository reservationRepository) {
+
+    public ReservationService(ReservationRepository reservationRepository, BookService bookService, BookRepository bookRepository) {
         this.reservationRepository = reservationRepository;
+        this.bookService = bookService;
+        this.bookRepository = bookRepository;
     }
 
     //createReservation - post mapping
@@ -55,6 +62,7 @@ public class ReservationService {
         return reservationDtoList;
     }
 
+
     //get single reservation - get mapping (id)
     public ReservationDto getSingleReservation(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
@@ -68,7 +76,6 @@ public class ReservationService {
     }
 
     //put
-
     public ReservationDto fullUpdateReservation(Long id, ReservationDto reservationDto) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
         if(optionalReservation.isEmpty()) {
@@ -106,6 +113,8 @@ public class ReservationService {
         reservationDto.setReservationDate(reservation.getReservationDate());
         reservationDto.setNumberOfBooksReserved(reservation.getNumberOfBooksReserved());
         reservationDto.setSidenote(reservation.getSidenote());
+        reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
+        //TODO:add account to reservation!!!
         return reservationDto;
     }
 
@@ -119,6 +128,23 @@ public class ReservationService {
         reservation.setSidenote(reservationDto.getSidenote());
         return reservation;
     }
+
+    //assign book to reservation
+    public void assignBookToReservation(Long idBook, Long idReservation) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
+        Optional<Book> optionalBook = bookRepository.findById(idBook);
+
+        if(optionalReservation.isPresent() && optionalBook.isPresent()) {
+            Reservation reservationIsPresent = optionalReservation.get();
+            Book bookIsPresent = optionalBook.get();
+
+            reservationIsPresent.setBook(bookIsPresent);
+            reservationRepository.save(reservationIsPresent);
+        } else {
+            throw new RecordNotFoundException("Reservation not found.");
+        }
+    }
+
 
 
 

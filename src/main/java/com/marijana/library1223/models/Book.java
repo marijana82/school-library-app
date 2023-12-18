@@ -1,7 +1,6 @@
 package com.marijana.library1223.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.marijana.library1223.enums.TopicEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 

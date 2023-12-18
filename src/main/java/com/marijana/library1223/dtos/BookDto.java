@@ -29,10 +29,6 @@ public class BookDto {
     private InformationBook informationBook;
     private ReadingBook readingBook;
 
-    //many-to-one relation (many books to one reservation id)
-    //public Long reservationId;
-    private ReservationDto reservationDto;
-
     //one-to-many
     //private List<BookCopyDto> bookCopyList;
 
