@@ -4,6 +4,7 @@ import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
+import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
@@ -143,23 +144,23 @@ public class BookCopyService {
         bookCopy.setAudioBook(bookCopyDto.isAudioBook());
         bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
         bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
-        bookCopyDto.setYearPublished(bookCopyDto.getYearPublished());
+        bookCopy.setYearPublished(bookCopyDto.getYearPublished());
         return bookCopy;
     }
 
     //assign Book to BookCopy
     public void assignBookToBookCopy(Long idBookCopy, Long idBook) {
-        var optionalBookCopy = bookCopyRepository.findById(idBookCopy);
-        var optionalBook = bookRepository.findById(idBook);
+        Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(idBookCopy);
+        Optional<Book> optionalBook = bookRepository.findById(idBook);
 
         if(optionalBookCopy.isPresent() && optionalBook.isPresent()) {
-            var bookCopyIsPresent = optionalBookCopy.get();
-            var bookIsPresent = optionalBook.get();
+            BookCopy bookCopyIsPresent = optionalBookCopy.get();
+            Book bookIsPresent = optionalBook.get();
 
             bookCopyIsPresent.setBook(bookIsPresent);
             bookCopyRepository.save(bookCopyIsPresent);
         } else {
-            throw new RecordNotFoundException("Item not found");
+            throw new RecordNotFoundException("Book copy not found");
         }
 
     }

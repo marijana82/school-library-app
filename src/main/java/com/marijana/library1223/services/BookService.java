@@ -3,6 +3,7 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
+import com.marijana.library1223.dtosoutput.BookOutputDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.*;
@@ -21,11 +22,13 @@ public class BookService {
     private final BookRepository bookRepository;
     private final ReservationRepository reservationRepository;
     private final BookCopyRepository bookCopyRepository;
+    private final ReservationService reservationService;
 
-    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository, BookCopyRepository bookCopyRepository) {
+    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository, BookCopyRepository bookCopyRepository, ReservationService reservationService) {
         this.bookRepository = bookRepository;
         this.reservationRepository = reservationRepository;
         this.bookCopyRepository = bookCopyRepository;
+        this.reservationService = reservationService;
     }
 
 
@@ -37,13 +40,6 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
-
-        //check if it exists & connect book and reservation objects
-        Optional<Reservation> optionalReservation = reservationRepository.findById(bookDto.reservationId);
-        if(optionalReservation.isPresent()){
-            Reservation reservation = optionalReservation.get();
-            book.setReservation(reservation);
-        }
 
         //create and set values for InformationBook
         InformationBook informationBook = new InformationBook();
@@ -203,6 +199,21 @@ public class BookService {
 
     }
 
+    //assign reservation to book
+    public void assignReservationToBookWithId(Long idBook, Long idReservation) {
+            Optional<Book> optionalBook = bookRepository.findById(idBook);
+            Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
+
+        if(optionalBook.isPresent() && optionalReservation.isPresent()) {
+            Book bookIsPresent = optionalBook.get();
+            Reservation reservationIsPresent = optionalReservation.get();
+
+            bookIsPresent.setReservation(reservationIsPresent);
+        } else {
+            throw new RecordNotFoundException("Book not found");
+        }
+    }
+
 
 
 
@@ -248,6 +259,10 @@ public class BookService {
         bookDto.setNameAuthor(book.getNameAuthor());
         bookDto.setNameIllustrator(book.getNameIllustrator());
         bookDto.setSuitableAge(book.getSuitableAge());
+        bookDto.setInformationBook(book.getInformationBook());
+        bookDto.setReadingBook(book.getReadingBook());
+        //bookDto.setBookCopyList(book.getBookCopyList());
+        //bookDto.setReservationDto(reservationService.transferReservationToReservationDto(book.getReservation()));
         return bookDto;
     }
 
@@ -261,8 +276,28 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
+        book.setInformationBook(bookDto.getInformationBook());
+        book.setReadingBook(bookDto.getReadingBook());
+        //book.setBookCopyList(bookDto.getBookCopyList());
+        //book.setReservation(reservationService.transferReservationDtoToReservation(bookDto.getReservationDto()));
         return book;
     }
+
+    //transfer BookOutputDto To Book
+    private Book transferBookOutputDtoToBook(BookOutputDto bookOutputDto) {
+        Book book1 = new Book();
+        book1.setId(bookOutputDto.getId());
+        book1.setIsbn(bookOutputDto.getIsbn());
+        book1.setReadingBook(bookOutputDto.getReadingBook());
+        book1.setInformationBook(bookOutputDto.getInformationBook());
+        book1.setBookTitle(bookOutputDto.getBookTitle());
+        book1.setNameAuthor(bookOutputDto.getNameAuthor());
+        book1.setNameIllustrator(bookOutputDto.getNameIllustrator());
+        book1.setSuitableAge(bookOutputDto.getSuitableAge());
+        book1.setReservation(reservationService.transferReservationDtoToReservation(bookOutputDto.getReservationDto()));
+        return book1;
+    }
+
 
 
     //helper method - transfer InformationBookDto To Book ?????

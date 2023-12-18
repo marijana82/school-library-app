@@ -21,11 +21,15 @@ INSERT INTO accounts_reservations(accounts_id, reservations_id)
 VALUES(1001, 5000),
       (1002, 5001);
 
---UPDATE accounts SET reservations_id = 5000 WHERE id = 1001;
 
+--Borrowal ............................
+INSERT INTO borrowals (id, date_of_borrowal, due_date, book_title, number_of_books_borrowed)
+VALUES(6000, '2024-02-02', '2024-03-03', 'Book', 1);
 
-
-
+/*--BorrowalsReservations......................
+INSERT INTO borrowal_reservation(borrowal_id, reservation_id)
+VALUES(6050, 5050);
+*/
 
 --BookCopy......................................
 
@@ -57,5 +61,15 @@ VALUES (3000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Mart
        (3009, 720936, 'Ufo alarm', 'Jozua Douglas', 'Elly Hees', 10, 'humor', 'beginners', 'dutch', 'adventure', 'basic'),
        (3010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas', 11, 'family', 'beginners', 'dutch', 'adventure', 'basic');
 
+--Author......................................
+INSERT INTO authors (id, name, country)
+VALUES(1000, 'Toon Tellegen', 'The Netherlands'),
+      (1001, 'Roald Dahl', 'Norway'),
+      (1002, 'Dick Bruna', 'The Netherlands');
 
+
+INSERT INTO author_book (author_id, book_id)
+VALUES (1000, 3000),
+       (1001, 3001),
+       (1002, 3002);
 

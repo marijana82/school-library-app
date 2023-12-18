@@ -22,7 +22,6 @@ import java.util.Set;
 
 @Service
 public class AuthorBookService {
-
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
     private final AuthorBookRepository authorBookRepository;

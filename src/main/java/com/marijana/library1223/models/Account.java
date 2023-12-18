@@ -1,5 +1,6 @@
 package com.marijana.library1223.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -42,5 +43,9 @@ public class Account {
    // @JoinColumn(name = "account_reservations_id")
     private List<Reservation> reservations = new ArrayList<>();
 
+    //TARGET - relation with Borrowal
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    private List<Borrowal> borrowals = new ArrayList<>();
 
 }

@@ -1,9 +1,7 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.dtos.AuthorDto;
-import com.marijana.library1223.dtos.BookCopyDto;
-import com.marijana.library1223.dtos.BookDto;
-import com.marijana.library1223.dtos.InformationBookDto;
+import com.marijana.library1223.dtos.*;
+import com.marijana.library1223.dtosoutput.BookOutputDto;
 import com.marijana.library1223.services.AuthorBookService;
 import com.marijana.library1223.services.BookService;
 import jakarta.validation.Valid;
@@ -109,6 +107,24 @@ public class BookController {
         BookDto bookDto1 = bookService.updateOneBook(idBook, bookDto);
         return ResponseEntity.ok().body(bookDto1);
     }
+
+    //put mapping to assign reservation to book
+    @PutMapping("/{idBook}/{idReservation}")
+    public ResponseEntity<Object> assignReservationToBookwithId(@PathVariable Long idBook, @PathVariable Long idReservation) {
+        bookService.assignReservationToBookWithId(idBook, idReservation);
+        return ResponseEntity.noContent().build();
+    }
+
+    //put mapping to assign reservation to book, 2nd possibility
+    @PutMapping("/{idBook}/reservation")
+    public ResponseEntity<Object> assignReservationToBookwithBody(@PathVariable Long idBook, @RequestBody IdInputDto input) {
+        bookService.assignReservationToBookWithId(idBook, input.id);
+        return ResponseEntity.noContent().build();
+
+    }
+
+
+
 
     //update partially
     @PatchMapping("/{idBook}")

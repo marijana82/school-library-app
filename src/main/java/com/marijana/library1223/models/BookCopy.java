@@ -1,5 +1,6 @@
 package com.marijana.library1223.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -36,10 +37,15 @@ public class BookCopy {
 
 
     //Relations...........
-    //OWNER
+    //OWNER - relation with Book
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
+
+    //TARGET - relation with Borrowal
+    @OneToOne(mappedBy = "bookCopy")
+    @JsonIgnore
+    private Borrowal borrowal;
 
 }
 

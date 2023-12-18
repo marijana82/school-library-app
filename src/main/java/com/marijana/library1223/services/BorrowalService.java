@@ -137,7 +137,7 @@ public class BorrowalService {
         borrowal.setBookTitle(borrowalDto.getBookTitle());
         borrowal.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
         borrowal.setId(borrowalDto.getId());
-        borrowal.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
+        //borrowal.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
         return borrowal;
     }
 

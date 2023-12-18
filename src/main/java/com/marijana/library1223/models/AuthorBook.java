@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "author_book")
 public class AuthorBook {
 
     //embedded id - so that there's no new id created, use AuthorBookKey id

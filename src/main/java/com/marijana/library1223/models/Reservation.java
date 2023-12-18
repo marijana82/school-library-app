@@ -31,6 +31,7 @@ public class Reservation {
     @OneToOne(
             mappedBy = "reservation",
             cascade = CascadeType.ALL)
+    @JsonIgnore
     private Borrowal borrowal;
 
 
@@ -55,6 +56,8 @@ public class Reservation {
             mappedBy = "reservation")
     @JsonIgnore
     private List<Book> books = new ArrayList<>();
+
+
 
 
 

@@ -49,15 +49,15 @@ public class Book {
 
 
     //Relations...........
-    //NOT OWNER
+    //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 
-    //NOT OWNER - relation with AuthorBook
+    //TARGET - relation with AuthorBook
     @OneToMany(mappedBy = "book")
     @JsonIgnore
-    List<AuthorBook> authorBooks = new ArrayList<>();
+    private List<AuthorBook> authorBooks = new ArrayList<>();
 
 
 }
