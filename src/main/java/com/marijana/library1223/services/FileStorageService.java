@@ -1,5 +1,6 @@
 package com.marijana.library1223.services;
 
+import com.marijana.library1223.repositories.FileUploadRepository;
 import jakarta.annotation.Resource;
 import lombok.Value;
 import org.springframework.core.io.UrlResource;
@@ -19,12 +20,14 @@ import java.util.Objects;
 
 @Service
 public class FileStorageService {
+    private final FileUploadRepository fileUploadRepository;
     private Path fileStoragePath;
     private final String fileStorageLocation;
 
-    public FileStorageService(@Value("${my.upload_location}") String fileStorageLocation) {
+    public FileStorageService(@Value("${my.upload_location}") String fileStorageLocation, FileUploadRepository fileUploadRepository) {
         fileStoragePath = Paths.get(fileStorageLocation).toAbsolutePath().normalize();
         this.fileStorageLocation = fileStorageLocation;
+        this.fileUploadRepository = fileUploadRepository;
 
         try {
             Files.createDirectories(fileStoragePath);
@@ -34,9 +37,8 @@ public class FileStorageService {
 
     }
 
-    public String storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file, String url, Long id) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-
         Path filePath = Paths.get(fileStoragePath + File.separator + fileName);
 
         try {
