@@ -5,12 +5,9 @@ import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.models.Account;
-import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.AccountRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +27,7 @@ public class AccountService {
     public AccountDto createAccount(AccountDto accountDto) {
 
         if(accountRepository.existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(accountDto.getFirstNameStudent(), accountDto.getLastNameStudent())) {
-            //here i'm getting status 500 internal server error instead of "Account already exists".
+            //TODO CHECK: here i'm getting status 500 internal server error instead of "Account already exists".
             throw new ResourceAlreadyExistsException("Account already exists!");
         } else {
             Account account = new Account();
@@ -39,15 +36,8 @@ public class AccountService {
             account.setDob(accountDto.getDob());
             account.setStudentClass(accountDto.getStudentClass());
             account.setNameOfTeacher(accountDto.getNameOfTeacher());
-        for(Long id : accountDto.reservationIds) {
-            Optional<Reservation> optionalReservation = reservationRepository.findById(id);
-            if(optionalReservation.isPresent()) {
-                account.getReservations().add(optionalReservation.get());
-            }
-        }
             accountRepository.save(account);
             accountDto.setId(account.getId());
-
             return accountDto;
         }
     }
@@ -114,7 +104,6 @@ public class AccountService {
 
             Account account = optionalAccount.get();
             Account updatedAccount = transferAccountDtoToAccount(accountDto);
-            //setting the already existing id from the database
             updatedAccount.setId(account.getId());
             accountRepository.save(updatedAccount);
             return transferAccountToAccountDto(updatedAccount);
@@ -140,23 +129,18 @@ public class AccountService {
 
             if(accountDto.getFirstNameStudent() !=null) {
                 accountToUpdate.setFirstNameStudent(accountDto.getFirstNameStudent());
-                //account1.....as in patch book service
             }
             if(accountDto.getLastNameStudent() !=null) {
                 accountToUpdate.setLastNameStudent(accountDto.getLastNameStudent());
-                //account1.....as in patch book service
             }
             if(accountDto.getDob() !=null) {
                 accountToUpdate.setDob(accountDto.getDob());
-                //account1.....as in patch book service
             }
             if(accountDto.getStudentClass() !=null) {
                 accountToUpdate.setStudentClass(accountDto.getStudentClass());
-                //account1.....as in patch book service
             }
             if(accountDto.getNameOfTeacher() !=null) {
                 accountToUpdate.setNameOfTeacher(accountDto.getNameOfTeacher());
-                //account1.....as in patch book service
             }
 
             Account returnAccount = accountRepository.save(account1);
@@ -171,7 +155,7 @@ public class AccountService {
     //helper methods ...............................................................
 
     //helper method - transfer Account to AccountDto
-    private AccountDto transferAccountToAccountDto(Account account) {
+    public AccountDto transferAccountToAccountDto(Account account) {
         AccountDto accountDto = new AccountDto();
         accountDto.setFirstNameStudent(account.getFirstNameStudent());
         accountDto.setLastNameStudent(account.getLastNameStudent());
@@ -193,8 +177,6 @@ public class AccountService {
         account.setId(accountDto.getId());
         return account;
     }
-
-
 
 
 }

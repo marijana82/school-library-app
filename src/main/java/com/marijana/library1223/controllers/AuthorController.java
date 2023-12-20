@@ -20,7 +20,7 @@ public class AuthorController {
     }
 
     //method to get all books connected to a certain author
-    @GetMapping("/books/{idAuthor}")
+    @GetMapping("/book-author/{idAuthor}")
     public ResponseEntity<Collection<BookDto>> getBooksByIdAuthor(@PathVariable("idAuthor") Long idAuthor) {
         return ResponseEntity.ok(authorBookService.getBooksByIdAuthor(idAuthor));
     }

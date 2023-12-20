@@ -2,8 +2,12 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.models.Account;
+import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.models.Reservation;
+import com.marijana.library1223.repositories.AccountRepository;
+import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -19,14 +23,26 @@ public class BorrowalService {
     private final BorrowalRepository borrowalRepository;
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
+    private final AccountService accountService;
+    private final AccountRepository accountRepository;
+    private final BookCopyRepository bookCopyRepository;
+    private final BookCopyService bookCopyService;
 
     public BorrowalService(BorrowalRepository borrowalRepository,
                            ReservationRepository reservationRepository,
-                           ReservationService reservationService
+                           ReservationService reservationService,
+                           AccountService accountService,
+                           AccountRepository accountRepository,
+                           BookCopyService bookCopyService,
+                           BookCopyRepository bookCopyRepository
                            ) {
         this.borrowalRepository = borrowalRepository;
         this.reservationRepository = reservationRepository;
         this.reservationService = reservationService;
+        this.accountService = accountService;
+        this.accountRepository = accountRepository;
+        this.bookCopyService = bookCopyService;
+        this.bookCopyRepository = bookCopyRepository;
     }
 
     //createBorrowal - post mapping
@@ -47,9 +63,18 @@ public class BorrowalService {
         List<BorrowalDto> borrowalDtoList = new ArrayList<>();
         for (Borrowal borrowal : borrowalList) {
             BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowal);
+
             if(borrowal.getReservation() !=null) {
                 borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
             }
+            if(borrowal.getBookCopy() !=null) {
+                borrowalDto.setBookCopyDto(bookCopyService.transferBookCopyToBookCopyDto(borrowal.getBookCopy()));
+            }
+
+            if(borrowal.getAccount() !=null) {
+                borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowal.getAccount()));
+            }
+
             borrowalDtoList.add(borrowalDto);
         }
         return borrowalDtoList;
@@ -61,12 +86,19 @@ public class BorrowalService {
         if(optionalBorrowal.isPresent()) {
             Borrowal borrowalFound = optionalBorrowal.get();
             BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowalFound);
+
             if(borrowalFound.getReservation() != null) {
                 borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowalFound.getReservation()));
             }
+            if(borrowalFound.getAccount() !=null) {
+                borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowalFound.getAccount()));
+            }
+            if(borrowalFound.getBookCopy() !=null) {
+                borrowalDto.setBookCopyDto(bookCopyService.transferBookCopyToBookCopyDto(borrowalFound.getBookCopy()));
+            }
             return borrowalDto;
                 } else {
-            throw new RecordNotFoundException("Borrowal with id number " + id + " has not been found.");
+            throw new RecordNotFoundException("Borrowal has not been found.");
         }
     }
 
@@ -114,6 +146,14 @@ public class BorrowalService {
                 borrowalToUpdate.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
             }
 
+            if(borrowalDto.getAccountDto() !=null) {
+                borrowalToUpdate.setAccount(accountService.transferAccountDtoToAccount(borrowalDto.getAccountDto()));
+            }
+
+            if(borrowalDto.getBookCopyDto() !=null) {
+                borrowalToUpdate.setBookCopy(bookCopyService.transferBookCopyDtoToBookCopy(borrowalDto.getBookCopyDto()));
+            }
+
             Borrowal returnBorrowal = borrowalRepository.save(borrowal1);
             return transferBorrowalToBorrowalDto(returnBorrowal);
         }
@@ -126,7 +166,6 @@ public class BorrowalService {
     }
 
 
-
     //helper methods.........................................
 
     //helper method - transfer BorrowalDto to Borrowal
@@ -135,9 +174,12 @@ public class BorrowalService {
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
         borrowal.setDueDate(borrowalDto.getDueDate());
         borrowal.setBookTitle(borrowalDto.getBookTitle());
-        borrowal.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
         borrowal.setId(borrowalDto.getId());
+        //TODO: CHECK IF THIS IS NECESSARY:
         borrowal.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
+        borrowal.setBookCopy(bookCopyService.transferBookCopyDtoToBookCopy(borrowalDto.getBookCopyDto()));
+        borrowal.setAccount(accountService.transferAccountDtoToAccount(borrowalDto.getAccountDto()));
+
         return borrowal;
     }
 
@@ -147,11 +189,16 @@ public class BorrowalService {
         borrowalDto.setDateOfBorrowal(borrowal.getDateOfBorrowal());
         borrowalDto.setDueDate(borrowal.getDueDate());
         borrowalDto.setBookTitle(borrowal.getBookTitle());
-        borrowalDto.setNumberOfBooksBorrowed(borrowal.getNumberOfBooksBorrowed());
         borrowalDto.setId(borrowal.getId());
         //null check
         if(borrowal.getReservation() !=null) {
             borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
+        }
+        if(borrowal.getAccount() !=null) {
+            borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowal.getAccount()));
+        }
+        if(borrowal.getBookCopy() !=null) {
+            borrowalDto.setBookCopyDto(bookCopyService.transferBookCopyToBookCopyDto(borrowal.getBookCopy()));
         }
         return borrowalDto;
     }
@@ -175,6 +222,47 @@ public class BorrowalService {
         } else {
             throw new RecordNotFoundException();
         }
+    }
+
+    //assign book copy to borrowal
+    public void assignBookCopyToBorrowal(Long idBorrowal, Long idCopy) {
+        Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
+        Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(idCopy);
+
+        if(optionalBookCopy.isPresent() && optionalBorrowal.isPresent()) {
+            BookCopy copyFound = optionalBookCopy.get();
+            Borrowal borrowalFound = optionalBorrowal.get();
+
+            if(borrowalFound.getBookCopy() !=null) {
+                throw new RuntimeException("This borrowal already contains an assigned book copy");
+            }
+
+            borrowalFound.setBookCopy(copyFound);
+            borrowalRepository.save(borrowalFound);
+        } else {
+            throw new RecordNotFoundException();
+        }
+    }
+    
+    //assign Account to Borrowal
+    public void assignAccountToBorrowal(Long idBorrowal, Long idAccount) {
+        Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
+        Optional<Account> optionalAccount = accountRepository.findById(idAccount);
+
+        if(optionalBorrowal.isPresent() && optionalAccount.isPresent()) {
+            Borrowal borrowalPresent = optionalBorrowal.get();
+            Account accountPresent = optionalAccount.get();
+
+            if(borrowalPresent.getAccount() !=null) {
+                throw new RuntimeException("Borrowal is already connected to an account.");
+            }
+
+            borrowalPresent.setAccount(accountPresent);
+            borrowalRepository.save(borrowalPresent);
+        } else {
+            throw new RecordNotFoundException();
+        }
+        
     }
 
 }

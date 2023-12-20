@@ -2,7 +2,11 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.models.Account;
+import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Reservation;
+import com.marijana.library1223.repositories.AccountRepository;
+import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +19,19 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final BookService bookService;
+    private final BookRepository bookRepository;
+    private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
-    public ReservationService(ReservationRepository reservationRepository) {
+
+    public ReservationService(ReservationRepository reservationRepository, BookService bookService, BookRepository bookRepository, AccountService accountService, AccountRepository accountRepository) {
         this.reservationRepository = reservationRepository;
+        this.bookService = bookService;
+        this.bookRepository = bookRepository;
+        this.accountService = accountService;
+        this.accountRepository = accountRepository;
+
     }
 
     //createReservation - post mapping
@@ -25,7 +39,6 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setBookTitle(reservationDto.getBookTitle());
         reservation.setReservationDate(reservationDto.getReservationDate());
-        reservation.setNumberOfBooksReserved(reservationDto.getNumberOfBooksReserved());
         reservation.setSidenote(reservationDto.getSidenote());
         reservationRepository.save(reservation);
         reservationDto.setId(reservation.getId());
@@ -38,7 +51,16 @@ public class ReservationService {
         List<Reservation> reservationList = reservationRepository.findAll();
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
+
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
+
+            if(reservation.getAccount() !=null) {
+                reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
+            }
+            if(reservation.getBook() !=null) {
+                reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
+            }
+
             reservationDtoList.add(reservationDto);
         }
         return reservationDtoList;
@@ -50,25 +72,41 @@ public class ReservationService {
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
+            if(reservation.getAccount() !=null) {
+                reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
+            }
+            if(reservation.getBook() !=null) {
+                reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
+            }
             reservationDtoList.add(reservationDto);
         }
         return reservationDtoList;
     }
 
+
     //get single reservation - get mapping (id)
     public ReservationDto getSingleReservation(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+
         if(optionalReservation.isPresent()) {
             Reservation reservationFound = optionalReservation.get();
-            return transferReservationToReservationDto(reservationFound);
+            ReservationDto reservationDto = transferReservationToReservationDto(reservationFound);
+
+            if(reservationFound.getBook() != null) {
+                reservationDto.setBookDto(bookService.transferBookToBookDto(reservationFound.getBook()));
+            }
+            if(reservationFound.getAccount() !=null) {
+                reservationDto.setAccountDto((accountService.transferAccountToAccountDto(reservationFound.getAccount())));
+            }
+
+            return reservationDto;
 
         } else {
-            throw new RecordNotFoundException("Reservation with id number " + id + " has not been found.");
+            throw new RecordNotFoundException("Reservation has not been found.");
         }
     }
 
     //put
-
     public ReservationDto fullUpdateReservation(Long id, ReservationDto reservationDto) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
         if(optionalReservation.isEmpty()) {
@@ -104,8 +142,14 @@ public class ReservationService {
         reservationDto.setId(reservation.getId());
         reservationDto.setBookTitle(reservation.getBookTitle());
         reservationDto.setReservationDate(reservation.getReservationDate());
-        reservationDto.setNumberOfBooksReserved(reservation.getNumberOfBooksReserved());
         reservationDto.setSidenote(reservation.getSidenote());
+        //null-check
+        if(reservation.getBook() != null) {
+            reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
+        }
+        if(reservation.getAccount() !=null) {
+            reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
+        }
         return reservationDto;
     }
 
@@ -115,10 +159,46 @@ public class ReservationService {
         reservation.setId(reservationDto.getId());
         reservation.setBookTitle(reservationDto.getBookTitle());
         reservation.setReservationDate(reservationDto.getReservationDate());
-        reservation.setNumberOfBooksReserved(reservationDto.getNumberOfBooksReserved());
         reservation.setSidenote(reservationDto.getSidenote());
+        //TODO: CHECK IF THIS IS NECESSARY:
+        reservation.setAccount(accountService.transferAccountDtoToAccount(reservationDto.getAccountDto()));
+        reservation.setBook(bookService.transferBookDtoToBook(reservationDto.getBookDto()));
+
         return reservation;
     }
+
+    //assign book to reservation
+    public void assignBookToReservation(Long idBook, Long idReservation) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
+        Optional<Book> optionalBook = bookRepository.findById(idBook);
+
+        if(optionalReservation.isPresent() && optionalBook.isPresent()) {
+            Reservation reservationIsPresent = optionalReservation.get();
+            Book bookIsPresent = optionalBook.get();
+
+            reservationIsPresent.setBook(bookIsPresent);
+            reservationRepository.save(reservationIsPresent);
+        } else {
+            throw new RecordNotFoundException("Reservation not found.");
+        }
+    }
+
+    //assign account to reservation
+    public void assignAccountToReservation(Long idAccount, Long idReservation) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
+        Optional<Account> optionalAccount = accountRepository.findById(idAccount);
+
+        if(optionalReservation.isPresent() && optionalAccount.isPresent()) {
+            Reservation reservationIsPresent = optionalReservation.get();
+            Account accountIsPresent = optionalAccount.get();
+
+            reservationIsPresent.setAccount(accountIsPresent);
+            reservationRepository.save(reservationIsPresent);
+        } else {
+            throw new RecordNotFoundException("Reservation not found.");
+        }
+    }
+
 
 
 

@@ -1,7 +1,6 @@
 package com.marijana.library1223.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.marijana.library1223.enums.TopicEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -32,32 +31,31 @@ public class Book {
     private InformationBook informationBook;
 
     //Relations..............
-    //OWNER - here we specify the join-table/configure the relationship
-    @ManyToOne(
+    //TARGET
+    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            })
-    /*@JoinTable(
-            name = "book_reservations",
-            joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
-    )*/
-    @JoinColumn(name = "book_reservation_id")
+            },
+            mappedBy = "book"
+    )
+    @JsonIgnore
     private Reservation reservation;
 
 
     //Relations...........
-    //NOT OWNER
+    //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 
-    //NOT OWNER - relation with AuthorBook
+
+
+    //TARGET - relation with AuthorBook
     @OneToMany(mappedBy = "book")
     @JsonIgnore
-    List<AuthorBook> authorBooks = new ArrayList<>();
+    private List<AuthorBook> authorBooks = new ArrayList<>();
 
 
 }

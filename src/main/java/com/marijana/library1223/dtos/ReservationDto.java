@@ -15,8 +15,9 @@ public class ReservationDto {
     private LocalDate reservationDate;
     @NotBlank(message="Please provide book title.")
     private String bookTitle;
-    @Max(value=3)
-    private Integer numberOfBooksReserved;
     private String sidenote;
+    //relation
+    private AccountDto accountDto;
+    private BookDto bookDto;
 
 }

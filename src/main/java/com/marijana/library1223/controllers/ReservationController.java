@@ -80,7 +80,19 @@ public class ReservationController {
         return ResponseEntity.noContent().build();
     }
 
-    //add
+    //put - assign book to reservation
+    @PutMapping("/{idReservation}/books/{idBook}")
+    public ResponseEntity<Object> assignBookToReservation(@PathVariable Long idBook, @PathVariable Long idReservation) {
+        reservationService.assignBookToReservation(idBook, idReservation);
+        return ResponseEntity.noContent().build();
+    }
+
+    //put - assign account to reservation
+    @PutMapping("/{idReservation}/accounts/{idAccount}")
+    public ResponseEntity<Object> assignAccountToReservation(@PathVariable Long idAccount, @PathVariable Long idReservation) {
+        reservationService.assignAccountToReservation(idAccount, idReservation);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

@@ -2,13 +2,12 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
+import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +18,12 @@ public class BookCopyService {
 
     private final BookCopyRepository bookCopyRepository;
     private final BookRepository bookRepository;
+    private final BookService bookService;
 
-    public BookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository) {
+    public BookCopyService(BookCopyRepository bookCopyRepository, BookRepository bookRepository, BookService bookService) {
         this.bookCopyRepository = bookCopyRepository;
         this.bookRepository = bookRepository;
+        this.bookService = bookService;
     }
 
     //createNewBookCopy method - post mapping
@@ -58,6 +59,11 @@ public class BookCopyService {
         List<BookCopyDto> bookCopyDtoList = new ArrayList<>();
         for(BookCopy bookCopy : bookCopyList) {
             BookCopyDto bookCopyDto = transferBookCopyToBookCopyDto(bookCopy);
+
+            if(bookCopy.getBook() !=null) {
+                bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
+            }
+
             bookCopyDtoList.add(bookCopyDto);
         }
         return bookCopyDtoList;
@@ -112,12 +118,10 @@ public class BookCopyService {
     }
 
 
-
-
     //helper methods ...........................................
 
     //helper method - transfer BookCopy to BookCopyDto
-    private BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
+    public BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
         BookCopyDto bookCopyDto = new BookCopyDto();
         bookCopyDto.setId(bookCopy.getId());
         bookCopyDto.setBarcode(bookCopy.getBarcode());
@@ -128,12 +132,16 @@ public class BookCopyService {
         bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
         bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
         bookCopyDto.setYearPublished(bookCopy.getYearPublished());
+        //relation
+        if(bookCopy.getBook() !=null) {
+            bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
+        }
         return bookCopyDto;
     }
 
 
     //helper method - transfer BookCopyDto to BookCopy
-    private BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
+    public BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
         BookCopy bookCopy = new BookCopy();
         bookCopy.setId(bookCopyDto.getId());
         bookCopy.setBarcode(bookCopyDto.getBarcode());
@@ -143,23 +151,25 @@ public class BookCopyService {
         bookCopy.setAudioBook(bookCopyDto.isAudioBook());
         bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
         bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
-        bookCopyDto.setYearPublished(bookCopyDto.getYearPublished());
+        bookCopy.setYearPublished(bookCopyDto.getYearPublished());
+        //relation
+        bookCopy.setBook(bookService.transferBookDtoToBook(bookCopyDto.getBookDto()));
         return bookCopy;
     }
 
     //assign Book to BookCopy
     public void assignBookToBookCopy(Long idBookCopy, Long idBook) {
-        var optionalBookCopy = bookCopyRepository.findById(idBookCopy);
-        var optionalBook = bookRepository.findById(idBook);
+        Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(idBookCopy);
+        Optional<Book> optionalBook = bookRepository.findById(idBook);
 
         if(optionalBookCopy.isPresent() && optionalBook.isPresent()) {
-            var bookCopyIsPresent = optionalBookCopy.get();
-            var bookIsPresent = optionalBook.get();
+            BookCopy bookCopyIsPresent = optionalBookCopy.get();
+            Book bookIsPresent = optionalBook.get();
 
             bookCopyIsPresent.setBook(bookIsPresent);
             bookCopyRepository.save(bookCopyIsPresent);
         } else {
-            throw new RecordNotFoundException("Item not found");
+            throw new RecordNotFoundException("Book copy not found");
         }
 
     }

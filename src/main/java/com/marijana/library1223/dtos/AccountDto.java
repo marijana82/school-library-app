@@ -4,9 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.time.LocalDate;
-
+@Data
 public class AccountDto {
 
     private Long id;
@@ -21,57 +22,4 @@ public class AccountDto {
     @Size(min=1, max=128, message = "Name must contain at least 1 character.")
     private String nameOfTeacher;
 
-    //relations - here we give the ids of the reservations which we want to use for connecting the relation
-    //for api handleiding: i have to explain that the user can give the list of reservation ids
-    //by writing in the json the field: "reservationIds": 1 - for example
-    public Long[] reservationIds;
-
-    //getters & setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstNameStudent() {
-        return firstNameStudent;
-    }
-
-    public void setFirstNameStudent(String firstNameStudent) {
-        this.firstNameStudent = firstNameStudent;
-    }
-
-    public String getLastNameStudent() {
-        return lastNameStudent;
-    }
-
-    public void setLastNameStudent(String lastNameStudent) {
-        this.lastNameStudent = lastNameStudent;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
-    public String getStudentClass() {
-        return studentClass;
-    }
-
-    public void setStudentClass(String studentClass) {
-        this.studentClass = studentClass;
-    }
-
-    public String getNameOfTeacher() {
-        return nameOfTeacher;
-    }
-
-    public void setNameOfTeacher(String nameOfTeacher) {
-        this.nameOfTeacher = nameOfTeacher;
-    }
 }

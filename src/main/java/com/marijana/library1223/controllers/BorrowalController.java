@@ -28,7 +28,6 @@ public class BorrowalController {
     //post-mapping
     @PostMapping
     public ResponseEntity<Object> createNewBorrowal(@Valid @RequestBody BorrowalDto borrowalDto, BindingResult bindingResult) {
-        //if there are field errors
        if(bindingResult.hasFieldErrors()) {
            StringBuilder stringBuilder = new StringBuilder();
            for(FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -39,7 +38,6 @@ public class BorrowalController {
            }
            return ResponseEntity.badRequest().body(stringBuilder.toString());
        }
-       //if there are no errors
         borrowalService.createBorrowal(borrowalDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -70,21 +68,28 @@ public class BorrowalController {
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //put-mapping (update a borrowal by adding a reservation to it, with one path variable and one request body)
-    @PutMapping("/{idBorrowal}/reservation")
-    public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @Valid @RequestBody IdInputDto input) {
-        borrowalService.assignReservationToBorrowal(idBorrowal, input.id);
+    //put-mapping (add book copy to borrowal)
+    @PutMapping("/{idBorrowal}/copies/{idCopy}")
+    public ResponseEntity<Object> assignBookCopyToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idCopy") Long idCopy) {
+        borrowalService.assignBookCopyToBorrowal(idBorrowal, idCopy);
         return ResponseEntity.noContent().build();
     }
 
+
     //put-mapping (update a borrowal by adding a reservation to it, with 2 x path variables)
-    @PutMapping("/{idBorrowal}/{idReservation}")
+    @PutMapping("/{idBorrowal}/reservations/{idReservation}")
     public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
         borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
         return ResponseEntity.noContent().build();
     }
 
-    //post-mapping to add a reservation to borrowal - will not make!
+    //put-mapping (update a borrowal by adding an account to it, with 2 x path variable)
+    @PutMapping("/{idBorrowal}/accounts/{idAccount}")
+    public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idAccount") Long idAccount) {
+        borrowalService.assignAccountToBorrowal(idBorrowal, idAccount);
+        return ResponseEntity.noContent().build();
+    }
+
 
     //patch-mapping (borrowal incl. reservation)
     @PatchMapping("/{idBorrowal}")
@@ -92,7 +97,6 @@ public class BorrowalController {
         BorrowalDto borrowalDto1 = borrowalService.partialUpdateBorrowal(idBorrowal, borrowalDto);
         return ResponseEntity.ok().body(borrowalDto1);
     }
-
 
     //delete-mapping (borrowal)
    @DeleteMapping("/{idBorrowal}")

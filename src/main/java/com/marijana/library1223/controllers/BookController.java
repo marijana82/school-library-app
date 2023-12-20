@@ -1,9 +1,7 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.dtos.AuthorDto;
-import com.marijana.library1223.dtos.BookCopyDto;
-import com.marijana.library1223.dtos.BookDto;
-import com.marijana.library1223.dtos.InformationBookDto;
+import com.marijana.library1223.dtos.*;
+import com.marijana.library1223.dtosoutput.BookOutputDto;
 import com.marijana.library1223.services.AuthorBookService;
 import com.marijana.library1223.services.BookService;
 import jakarta.validation.Valid;
@@ -109,6 +107,7 @@ public class BookController {
         BookDto bookDto1 = bookService.updateOneBook(idBook, bookDto);
         return ResponseEntity.ok().body(bookDto1);
     }
+
 
     //update partially
     @PatchMapping("/{idBook}")

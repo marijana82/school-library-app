@@ -3,6 +3,7 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
+import com.marijana.library1223.dtosoutput.BookOutputDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.*;
@@ -19,12 +20,12 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final ReservationRepository reservationRepository;
+
     private final BookCopyRepository bookCopyRepository;
 
-    public BookService(BookRepository bookRepository, ReservationRepository reservationRepository, BookCopyRepository bookCopyRepository) {
+
+    public BookService(BookRepository bookRepository, BookCopyRepository bookCopyRepository) {
         this.bookRepository = bookRepository;
-        this.reservationRepository = reservationRepository;
         this.bookCopyRepository = bookCopyRepository;
     }
 
@@ -37,13 +38,6 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
-
-        //check if it exists & connect book and reservation objects
-        Optional<Reservation> optionalReservation = reservationRepository.findById(bookDto.reservationId);
-        if(optionalReservation.isPresent()){
-            Reservation reservation = optionalReservation.get();
-            book.setReservation(reservation);
-        }
 
         //create and set values for InformationBook
         InformationBook informationBook = new InformationBook();
@@ -209,51 +203,24 @@ public class BookService {
 
     //helper methods ...........................................
 
-
-    //helper transfer book copy dto to book copy
-    private BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
-        BookCopyDto bookCopyDto = new BookCopyDto();
-        bookCopyDto.setAudioBook(bookCopy.isAudioBook());
-        bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
-        bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
-        bookCopyDto.setFormat(bookCopy.getFormat());
-        bookCopyDto.setBarcode(bookCopy.getBarcode());
-        bookCopyDto.setTotalWordCount(bookCopy.getTotalWordCount());
-        bookCopyDto.setNumberOfPages(bookCopy.getNumberOfPages());
-        bookCopyDto.setId(bookCopy.getId());
-        return bookCopyDto;
-    }
-
-    private BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
-        BookCopy bookCopy = new BookCopy();
-        bookCopy.setAudioBook(bookCopyDto.isAudioBook());
-        bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
-        bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
-        bookCopy.setBarcode(bookCopyDto.getBarcode());
-        bookCopy.setFormat(bookCopyDto.getFormat());
-        bookCopy.setNumberOfPages(bookCopyDto.getNumberOfPages());
-        bookCopy.setTotalWordCount(bookCopyDto.getTotalWordCount());
-        bookCopy.setId(bookCopyDto.getId());
-        bookCopy.setYearPublished(bookCopyDto.getYearPublished());
-        return bookCopy;
-    }
-
-
     //helper method - transfer Book to BookDto
-    private BookDto transferBookToBookDto(Book book) {
+    public BookDto transferBookToBookDto(Book book) {
         BookDto bookDto = new BookDto();
+        //TODO: CHECK - why is here book is 0???
         bookDto.setId(book.getId());
         bookDto.setIsbn(book.getIsbn());
         bookDto.setBookTitle(book.getBookTitle());
         bookDto.setNameAuthor(book.getNameAuthor());
         bookDto.setNameIllustrator(book.getNameIllustrator());
         bookDto.setSuitableAge(book.getSuitableAge());
+        bookDto.setInformationBook(book.getInformationBook());
+        bookDto.setReadingBook(book.getReadingBook());
         return bookDto;
     }
 
 
     //helper method - transfer BookDto to Book
-    private Book transferBookDtoToBook(BookDto bookDto) {
+    public Book transferBookDtoToBook(BookDto bookDto) {
         Book book = new Book();
         book.setId(bookDto.getId());
         book.setIsbn(bookDto.getIsbn());
@@ -261,22 +228,22 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
+        book.setInformationBook(bookDto.getInformationBook());
+        book.setReadingBook(bookDto.getReadingBook());
         return book;
     }
 
 
-    //helper method - transfer InformationBookDto To Book ?????
-    private Book transferInformationBookDtoToBook(InformationBookDto informationBookDto) {
-        Book book = new Book();
-        InformationBook informationBook = new InformationBook();
-        informationBook.setCurrentTopic(book.getInformationBook().getCurrentTopic());
-        informationBook.setEducationLevel(book.getInformationBook().getEducationLevel());
-        book.setInformationBook(informationBook);
-        return book;
-    }
+
+
+
+
+
+    //---------------DELETE, IF NOT NECESSARY-----------------------------------------
+
 
     //helper method - transfer Book To InformationBookDto  ?????
-    private InformationBookDto transferBookToInformationBookDto(Book book) {
+    public InformationBookDto transferBookToInformationBookDto(Book book) {
         InformationBookDto informationBookDto = new InformationBookDto();
         InformationBook informationBook = book.getInformationBook();
         if(informationBook != null) {
@@ -286,12 +253,5 @@ public class BookService {
         return informationBookDto;
     }
 
-    //helper method - transferInformationBookToInformationBookDto ???
-    private InformationBook transferInformationBookDtoToInformationBook(InformationBookDto informationBookDto) {
-        InformationBook informationBook = new InformationBook();
-        informationBook.setEducationLevel(informationBookDto.getEducationLevel());
-        informationBook.setCurrentTopic(informationBookDto.getCurrentTopic());
-        return informationBook;
-    }
 
 }
