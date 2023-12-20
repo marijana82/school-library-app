@@ -1,8 +1,10 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.repositories.FileUploadRepository;
-import jakarta.annotation.Resource;
-import lombok.Value;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,6 +22,9 @@ import java.util.Objects;
 
 @Service
 public class FileStorageService {
+    //uploads - defined in application.properties
+    //@Value("uploads")
+
     private final FileUploadRepository fileUploadRepository;
     private Path fileStoragePath;
     private final String fileStorageLocation;
@@ -51,24 +56,27 @@ public class FileStorageService {
     }
 
 
+    //download one file
     public Resource downloadFile(String fileName) {
-
         Path path = Paths.get(fileStorageLocation).toAbsolutePath().resolve(fileName);
         Resource resource;
 
         try {
             resource = new UrlResource(path.toUri());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Issue in reading the file", e);
+
+        } catch(MalformedURLException exception) {
+            throw new RuntimeException("The file cannot be read.", exception);
         }
 
-        if(resource.exists()&& resource.isReadable()) {
+        if(resource.exists() && resource.isReadable()) {
             return resource;
         } else {
-            throw new RuntimeException("the file doesn't exist or not readable");
+            throw new RuntimeException("The file does not exist or is not readable.");
         }
     }
 
+
+    //download list
     public List<String> downLoad() {
         // Directory path here
         var list = new ArrayList<String>();
@@ -88,4 +96,4 @@ public class FileStorageService {
 }
 
 
-}
+

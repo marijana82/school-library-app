@@ -25,16 +25,17 @@ public class FileUploadController {
     @PostMapping("single/upload")
     FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file, Long id) {
 
-    //to create url
+        //to create url
         String url = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/download/")
-                //.path(String.valueOf(file))
                 .path(Objects.requireNonNull(file.getOriginalFilename()))
                 .toUriString();
 
-        String contentType = file.getContentType();
+        //to store file
         String fileName = fileStorageService.storeFile(file, url, id);
+
+        String contentType = file.getContentType();
 
         return new FileUploadResponse(fileName, contentType, url);
 
