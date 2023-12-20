@@ -37,10 +37,12 @@ public class BookCopy {
 
 
     //Relations...........
+
     //OWNER - relation with Book
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
+
 
     //TARGET - relation with Borrowal
     @OneToOne(mappedBy = "bookCopy")

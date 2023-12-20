@@ -59,6 +59,11 @@ public class BookCopyService {
         List<BookCopyDto> bookCopyDtoList = new ArrayList<>();
         for(BookCopy bookCopy : bookCopyList) {
             BookCopyDto bookCopyDto = transferBookCopyToBookCopyDto(bookCopy);
+
+            if(bookCopy.getBook() !=null) {
+                bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
+            }
+
             bookCopyDtoList.add(bookCopyDto);
         }
         return bookCopyDtoList;
@@ -128,7 +133,9 @@ public class BookCopyService {
         bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
         bookCopyDto.setYearPublished(bookCopy.getYearPublished());
         //relation
-        bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
+        if(bookCopy.getBook() !=null) {
+            bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
+        }
         return bookCopyDto;
     }
 
@@ -145,6 +152,8 @@ public class BookCopyService {
         bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
         bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
         bookCopy.setYearPublished(bookCopyDto.getYearPublished());
+        //relation
+        bookCopy.setBook(bookService.transferBookDtoToBook(bookCopyDto.getBookDto()));
         return bookCopy;
     }
 

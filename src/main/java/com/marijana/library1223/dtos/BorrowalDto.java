@@ -25,5 +25,4 @@ public class BorrowalDto {
     private AccountDto accountDto;
     private BookCopyDto bookCopyDto;
 
-
 }

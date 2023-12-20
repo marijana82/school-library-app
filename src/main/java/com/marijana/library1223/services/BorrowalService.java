@@ -3,6 +3,7 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Account;
+import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.models.Borrowal;
 import com.marijana.library1223.models.Reservation;
 import com.marijana.library1223.repositories.AccountRepository;
@@ -222,6 +223,26 @@ public class BorrowalService {
             throw new RecordNotFoundException();
         }
     }
+
+    //assign book copy to borrowal
+    public void assignBookCopyToBorrowal(Long idBorrowal, Long idCopy) {
+        Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
+        Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(idCopy);
+
+        if(optionalBookCopy.isPresent() && optionalBorrowal.isPresent()) {
+            BookCopy copyFound = optionalBookCopy.get();
+            Borrowal borrowalFound = optionalBorrowal.get();
+
+            if(borrowalFound.getBookCopy() !=null) {
+                throw new RuntimeException("This borrowal already contains an assigned book copy");
+            }
+
+            borrowalFound.setBookCopy(copyFound);
+            borrowalRepository.save(borrowalFound);
+        } else {
+            throw new RecordNotFoundException();
+        }
+    }
     
     //assign Account to Borrowal
     public void assignAccountToBorrowal(Long idBorrowal, Long idAccount) {
@@ -231,6 +252,11 @@ public class BorrowalService {
         if(optionalBorrowal.isPresent() && optionalAccount.isPresent()) {
             Borrowal borrowalPresent = optionalBorrowal.get();
             Account accountPresent = optionalAccount.get();
+
+            if(borrowalPresent.getAccount() !=null) {
+                throw new RuntimeException("Borrowal is already connected to an account.");
+            }
+
             borrowalPresent.setAccount(accountPresent);
             borrowalRepository.save(borrowalPresent);
         } else {

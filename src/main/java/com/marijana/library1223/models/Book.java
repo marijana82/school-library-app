@@ -50,6 +50,8 @@ public class Book {
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 
+
+
     //TARGET - relation with AuthorBook
     @OneToMany(mappedBy = "book")
     @JsonIgnore

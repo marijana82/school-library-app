@@ -68,6 +68,13 @@ public class BorrowalController {
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
+    //put-mapping (add book copy to borrowal)
+    @PutMapping("/{idBorrowal}/copies/{idCopy}")
+    public ResponseEntity<Object> assignBookCopyToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idCopy") Long idCopy) {
+        borrowalService.assignBookCopyToBorrowal(idBorrowal, idCopy);
+        return ResponseEntity.noContent().build();
+    }
+
 
     //put-mapping (update a borrowal by adding a reservation to it, with 2 x path variables)
     @PutMapping("/{idBorrowal}/reservations/{idReservation}")
@@ -78,7 +85,7 @@ public class BorrowalController {
 
     //put-mapping (update a borrowal by adding an account to it, with 2 x path variable)
     @PutMapping("/{idBorrowal}/accounts/{idAccount}")
-    public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("/idBorrowal") Long idBorrowal, @PathVariable("/idAccount") Long idAccount) {
+    public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idAccount") Long idAccount) {
         borrowalService.assignAccountToBorrowal(idBorrowal, idAccount);
         return ResponseEntity.noContent().build();
     }
