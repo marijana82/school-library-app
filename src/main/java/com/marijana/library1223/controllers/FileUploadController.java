@@ -51,8 +51,10 @@ public class FileUploadController {
         Resource resource = fileStorageService.downloadFile(fileName);
         //for multiple file types
         String mimeType;
+
         //for 1 file type
         //MediaType contentType = MediaType.IMAGE_JPEG;
+
         try {
             mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException e) {

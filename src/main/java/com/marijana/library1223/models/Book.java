@@ -57,6 +57,10 @@ public class Book {
     @JsonIgnore
     private List<AuthorBook> authorBooks = new ArrayList<>();
 
+    //relation with FileDocument for upload
+    @OneToOne
+    FileDocument fileDocument;
+
 
 }
 
