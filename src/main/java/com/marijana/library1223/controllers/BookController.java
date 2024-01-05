@@ -116,8 +116,8 @@ public class BookController {
         return ResponseEntity.ok().body(bookDto1);
     }
 
-    //method that gets all authors connected to a certain book
-    //makes use of authorBookService
+    //method that gets all authors(*reviews!!!) connected to a certain book
+    //makes use of authorBookService (!!!reviewsBookService)
     @GetMapping("/authors/{idBook}")
     public ResponseEntity<Collection<AuthorDto>> getAuthorsByIdBook(@PathVariable("idBook") Long idBook) {
         return ResponseEntity.ok(authorBookService.getAuthorsByIdBook(idBook));

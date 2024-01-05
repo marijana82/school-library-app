@@ -22,8 +22,6 @@ import java.util.Objects;
 
 @Service
 public class FileStorageService {
-    //uploads - defined in application.properties
-    //@Value("uploads")
 
     private final FileUploadRepository fileUploadRepository;
     private Path fileStoragePath;
