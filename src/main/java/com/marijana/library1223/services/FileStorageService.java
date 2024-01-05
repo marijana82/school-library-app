@@ -1,9 +1,8 @@
 package com.marijana.library1223.services;
 
+import com.marijana.library1223.models.FileDocument;
 import com.marijana.library1223.repositories.FileUploadRepository;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,6 @@ import java.util.Objects;
 
 @Service
 public class FileStorageService {
-    //uploads - defined in application.properties
-    //@Value("uploads")
 
     private final FileUploadRepository fileUploadRepository;
     private Path fileStoragePath;
@@ -42,7 +39,7 @@ public class FileStorageService {
 
     }
 
-    public String storeFile(MultipartFile file, String url, Long id) {
+    public String storeFile(MultipartFile file, String url) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         Path filePath = Paths.get(fileStoragePath + File.separator + fileName);
 
@@ -51,6 +48,7 @@ public class FileStorageService {
         } catch (IOException e) {
             throw new RuntimeException("Issue in storing the file", e);
         }
+        fileUploadRepository.save(new FileDocument(fileName, file.getContentType(), url));
 
         return fileName;
     }

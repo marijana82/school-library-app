@@ -31,6 +31,12 @@ public class Book {
     private InformationBook informationBook;
 
     //Relations..............
+
+    //FileDocument for upload
+    @OneToOne
+    FileDocument fileDocument;
+
+
     //TARGET
     @OneToOne(
             fetch = FetchType.LAZY,
@@ -44,7 +50,6 @@ public class Book {
     private Reservation reservation;
 
 
-    //Relations...........
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
@@ -52,10 +57,11 @@ public class Book {
 
 
 
-    //TARGET - relation with AuthorBook
+    //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
-    private List<AuthorBook> authorBooks = new ArrayList<>();
+    private List<ReviewBook> reviewBooks = new ArrayList<>();
+
 
 
 }

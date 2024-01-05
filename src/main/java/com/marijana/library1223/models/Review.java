@@ -10,24 +10,24 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "authors")
-public class Author {
+@Table(name = "reviews")
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "country")
-    private String country;
+    @Column(name = "review")
+    private String review;
 
     //Relations..............
     //NOT OWNER - target side....................
     //nothing in the database
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "review")
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
-    Collection<AuthorBook> authorBooks;
+    Collection<ReviewBook> reviewBooks;
 
 
 }

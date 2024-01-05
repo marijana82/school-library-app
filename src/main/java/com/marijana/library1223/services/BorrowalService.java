@@ -138,6 +138,7 @@ public class BorrowalService {
                 borrowalToUpdate.setBookTitle(borrowalDto.getBookTitle());
             }
             //TODO: check error "operator != cannot be applied to int null
+            // - MAYBE BECAUSE IT'S INT AND NOT INTEGER! (int cannot go through null check - thic could be a technical choice!)
             if(borrowalDto.getNumberOfBooksBorrowed() !=-1) {
                 borrowalToUpdate.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
             }
@@ -233,6 +234,7 @@ public class BorrowalService {
             BookCopy copyFound = optionalBookCopy.get();
             Borrowal borrowalFound = optionalBorrowal.get();
 
+            //TODO: CREATE CUSTOM-MADE EXCEPTION HERE IN EXCEPTION CONTROLLER
             if(borrowalFound.getBookCopy() !=null) {
                 throw new RuntimeException("This borrowal already contains an assigned book copy");
             }
@@ -240,6 +242,7 @@ public class BorrowalService {
             borrowalFound.setBookCopy(copyFound);
             borrowalRepository.save(borrowalFound);
         } else {
+            //TODO: ADD CUSTOM MESSAGE TO THIS EXCEPTION?
             throw new RecordNotFoundException();
         }
     }

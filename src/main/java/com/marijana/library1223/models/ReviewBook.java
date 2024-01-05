@@ -5,21 +5,21 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "author_book")
-public class AuthorBook {
+@Table(name = "review_book")
+public class ReviewBook {
 
     //embedded id - so that there's no new id created, use AuthorBookKey id
     @EmbeddedId
-    private AuthorBookKey id;
+    private ReviewBookKey id;
 
     //this is the owner of the relation
     //there's a foreign key in the database
     //why sometimes Lazy and sometimes Eager?
     @ManyToOne(fetch = FetchType.LAZY)
     //@MapsId makes it happen that the variables get combined to a key?
-    @MapsId("authorId")
-    @JoinColumn(name = "author_id")
-    private Author author;
+    @MapsId("reviewId")
+    @JoinColumn(name = "review_id")
+    private Review review;
 
     //this is the owner of the relation
     //there's a foreign key in the database

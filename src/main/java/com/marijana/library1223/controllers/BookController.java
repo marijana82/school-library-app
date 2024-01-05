@@ -1,11 +1,9 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.*;
-import com.marijana.library1223.dtosoutput.BookOutputDto;
-import com.marijana.library1223.services.AuthorBookService;
 import com.marijana.library1223.services.BookService;
+import com.marijana.library1223.services.ReviewBookService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -22,11 +20,11 @@ import java.util.Optional;
 public class BookController {
 
     private final BookService bookService;
-    private final AuthorBookService authorBookService;
+    private final ReviewBookService reviewBookService;
 
-    public BookController(BookService bookService, AuthorBookService authorBookService) {
+    public BookController(BookService bookService, ReviewBookService reviewBookService) {
         this.bookService = bookService;
-        this.authorBookService = authorBookService;
+        this.reviewBookService = reviewBookService;
     }
 
 
@@ -116,11 +114,11 @@ public class BookController {
         return ResponseEntity.ok().body(bookDto1);
     }
 
-    //method that gets all authors connected to a certain book
-    //makes use of authorBookService
-    @GetMapping("/authors/{idBook}")
-    public ResponseEntity<Collection<AuthorDto>> getAuthorsByIdBook(@PathVariable("idBook") Long idBook) {
-        return ResponseEntity.ok(authorBookService.getAuthorsByIdBook(idBook));
+    //method that gets all reviews connected to a certain book
+    //makes use of reviewsBookService
+    @GetMapping("/reviews/{idBook}")
+    public ResponseEntity<Collection<ReviewDto>> getReviewsByIdBook(@PathVariable("idBook") Long idBook) {
+        return ResponseEntity.ok(reviewBookService.getReviewsByIdBook(idBook));
 
 
     }

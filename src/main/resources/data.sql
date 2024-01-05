@@ -62,13 +62,13 @@ VALUES (3000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Mart
        (3010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas', 11, 'family', 'beginners', 'dutch', 'adventure', 'basic');
 
 --Author......................................
-INSERT INTO authors (id, name, country)
-VALUES(1000, 'Toon Tellegen', 'The Netherlands'),
-      (1001, 'Roald Dahl', 'Norway'),
-      (1002, 'Dick Bruna', 'The Netherlands');
+INSERT INTO reviews (id, name, review)
+VALUES(1000, 'Toon Tellegen', 'This is the best book ever'),
+      (1001, 'Roald Dahl', 'A bit boring but ok'),
+      (1002, 'Dick Bruna', 'Funny.');
 
 
-INSERT INTO author_book (author_id, book_id)
+INSERT INTO review_book (review_id, book_id)
 VALUES (1000, 3000),
        (1001, 3001),
        (1002, 3002);
