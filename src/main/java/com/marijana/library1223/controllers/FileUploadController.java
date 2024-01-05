@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @CrossOrigin
@@ -62,7 +63,11 @@ public class FileUploadController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType)).header(HttpHeaders.CONTENT_DISPOSITION,"inline;fileName=" + resource.getFilename()).body(resource);
     }
 
-    //
+    //get all names in directory
+    @GetMapping("/download/allNames")
+    List<String> downloadMultipleFile() {
+        return fileStorageService.downLoad();
+    }
 
 
 
