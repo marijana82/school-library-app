@@ -4,8 +4,6 @@ import com.marijana.library1223.FileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.services.FileStorageService;
 import org.springframework.core.io.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-//import org.apache.catalina.connector.Response;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +26,7 @@ public class FileUploadController {
 
     //single upload
     @PostMapping("single/upload")
-    FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file, Long id) {
+    FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file) {
 
         //to create url
         String url = ServletUriComponentsBuilder
@@ -38,7 +36,7 @@ public class FileUploadController {
                 .toUriString();
 
         //to store file
-        String fileName = fileStorageService.storeFile(file, url, id);
+        String fileName = fileStorageService.storeFile(file, url);
 
         String contentType = file.getContentType();
 

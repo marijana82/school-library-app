@@ -17,4 +17,11 @@ public class FileDocument {
     private String fileName;
     private String contentType;
     private String url;
+
+    public FileDocument(String fileName, String contentType, String url) {
+    }
+
+    public FileDocument() {
+
+    }
 }
