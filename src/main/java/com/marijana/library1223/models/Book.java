@@ -60,7 +60,7 @@ public class Book {
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
-    private List<AuthorBook> authorBooks = new ArrayList<>();
+    private List<ReviewBook> reviewBooks = new ArrayList<>();
 
 
 

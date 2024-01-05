@@ -1,15 +1,14 @@
 package com.marijana.library1223.dtos;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
-public class AuthorDto {
+public class ReviewDto {
     //fill in validations
     private Long id;
 
     private String name;
 
-    private String country;
+    private String review;
 
 }
