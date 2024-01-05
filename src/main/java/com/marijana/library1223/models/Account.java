@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 @Data
 @Entity
@@ -28,7 +27,7 @@ public class Account {
     private String nameOfTeacher;
 
     //Relations.............
-    //TARGET - relation with Account
+    //TARGET
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
@@ -39,7 +38,7 @@ public class Account {
     @JsonIgnore
     private Reservation reservation;
 
-    //TARGET - relation with Borrowal
+    //TARGET
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     private List<Borrowal> borrowals = new ArrayList<>();

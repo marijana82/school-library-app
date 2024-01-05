@@ -15,7 +15,4 @@ public class ReviewBookKey implements Serializable {
     private Long reviewId;
     @Column(name = "book_id")
     private Long bookId;
-
-    //constructor created by data
-    //getters&setters created by data
 }
