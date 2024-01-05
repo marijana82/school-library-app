@@ -46,14 +46,11 @@ public class FileUploadController {
 
 
     //single download
-    @GetMapping("/download/{fileName}")
+    @GetMapping("/download/one/{fileName}")
     ResponseEntity<Resource> downloadSingleFile(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = fileStorageService.downloadFile(fileName);
-        //for multiple file types
-        String mimeType;
 
-        //for 1 file type
-        //MediaType contentType = MediaType.IMAGE_JPEG;
+        String mimeType;
 
         try {
             mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
