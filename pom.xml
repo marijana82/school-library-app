@@ -50,18 +50,18 @@
 
         <!--hibernate dependency-->
         <dependency>
-            <groupId>org.hibernate.orm</groupId>
+            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.3.1.Final</version>
         </dependency>
 
         <!--devtools dependency MISSING???-->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
-        </dependency>-->
+        </dependency>
 
         <!--postgresql dependency-->
         <dependency>

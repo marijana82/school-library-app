@@ -16,20 +16,25 @@ public class User {
     private String username;
     @Column(nullable = false, length = 255)
     private String password;
+
+    //the following three fields are not necessary, can be also deleted for now
+    //to send confirmation mail when user creates a new account
     @Column(nullable = false)
     private boolean enabled = true;
+
     @Column
     private String apiKey;
     @Column
     private String email;
 
-    //create one to many relationship
+    //create one-to-many relationship
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
+    //authorities = roles
     private Set<Authority> authorities = new HashSet<>();
 
     //---------

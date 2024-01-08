@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@IdClass(AuthorityKey.class)
+@IdClass(AuthorityKey.class) //combines id in one class, findById works for both username as for authority
 @Table(name = "authorities")
 public class Authority implements Serializable {
     @Id
