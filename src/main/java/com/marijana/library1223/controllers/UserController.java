@@ -4,7 +4,9 @@ import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @CrossOrigin
@@ -33,7 +35,23 @@ public class UserController {
         return ResponseEntity.ok().body(userDtos);
     }
 
-    //post mapping
+    //create new user
+    @PostMapping
+    public ResponseEntity<UserDto> createNewUser(@RequestBody UserDto userDto) {
+        String newUsername = userService.createUser(userDto);
+        userService.addAuthority(newUsername, "ROLE_USER");
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{username}")
+                .buildAndExpand(newUsername)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+
+
     //put mapping
     //delete mapping
     //get, post, delete for authorities

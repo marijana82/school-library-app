@@ -31,10 +31,11 @@ public class User {
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
+            //this is the reason there's no authorities repository, .ALL saves authority together with user
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
-    //authorities = roles
+    //authorities = roles - is the owner of the relationship
     private Set<Authority> authorities = new HashSet<>();
 
 
