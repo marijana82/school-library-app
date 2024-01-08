@@ -1,6 +1,6 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.FileUploadResponse.FileUploadResponse;
+import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.services.FileStorageService;
 import org.springframework.core.io.Resource;
 import jakarta.servlet.http.HttpServletRequest;
