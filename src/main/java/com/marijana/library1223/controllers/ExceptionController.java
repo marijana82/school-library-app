@@ -27,6 +27,8 @@ public class ExceptionController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    //also: example, name too short/too long exception
+
 
 
 }
