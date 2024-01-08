@@ -26,7 +26,7 @@ public class UserService {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
-            collection.add(fromUser(user));
+            //collection.add(fromUser(user));
         }
         return collection;
     }
@@ -36,7 +36,7 @@ public class UserService {
         UserDto dto = new UserDto();
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()){
-            dto = fromUser(user.get());
+            //dto = fromUser(user.get());
         }else {
             throw new UsernameNotFoundException(username);
         }
