@@ -33,6 +33,13 @@ public class UserController {
         return ResponseEntity.ok().body(userDtos);
     }
 
+    //post mapping
+    //put mapping
+    //delete mapping
+    //get, post, delete for authorities
+
+
+
 
 
 
