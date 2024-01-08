@@ -37,6 +37,7 @@ public class User {
     //authorities = roles
     private Set<Authority> authorities = new HashSet<>();
 
+
     //---------
         public Set<Authority> getAuthorities() { return authorities; }
         public void addAuthority(Authority authority) {
