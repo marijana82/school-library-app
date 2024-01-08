@@ -1,6 +1,7 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.UserDto;
+import com.marijana.library1223.exceptions.BadRequestException;
 import com.marijana.library1223.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -64,11 +66,35 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    //-----authorities
+
+    //post user authorities
+    @PostMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+        try {
+            String authorityName = (String) fields.get("authority");
+            userService.addAuthority(username, authorityName);
+            return ResponseEntity.noContent().build();
+        }
+        catch (Exception exception) {
+            throw new BadRequestException();
+        }
+    }
+
+    //get all user authorities(roles)
+    @GetMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+        return ResponseEntity.ok().body(userService.getAuthorities(username));
+    }
+
+    //delete user authorities
+    @DeleteMapping(value = "/{username}/authorities/{authority}")
+    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
+        userService.removeAuthority(username, authority);
+        return ResponseEntity.noContent().build();
+    }
 
 
-    //put mapping
-    //delete mapping
-    //get, post, delete for authorities
 
 
 
