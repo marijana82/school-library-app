@@ -4,6 +4,7 @@ import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.UsernameNotFoundException;
 import com.marijana.library1223.models.User;
 import com.marijana.library1223.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,11 +15,12 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    //PasswordEncoder passwordEncoder; - add after adding dependencies
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     //get all users
@@ -26,17 +28,18 @@ public class UserService {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
-            //collection.add(fromUser(user));
+            collection.add(fromUser(user));
         }
         return collection;
     }
+
 
     //get one user
     public UserDto getUser(String username) {
         UserDto dto = new UserDto();
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()){
-            //dto = fromUser(user.get());
+            dto = fromUser(user.get());
         }else {
             throw new UsernameNotFoundException(username);
         }
