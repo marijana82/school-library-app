@@ -50,6 +50,13 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
+    //update one user
+    @PutMapping("/{username}")
+    public ResponseEntity<UserDto> updateOneUser(@PathVariable("username") String username, @RequestBody UserDto userDto) {
+        userService.updateUser(username, userDto);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
     //put mapping
