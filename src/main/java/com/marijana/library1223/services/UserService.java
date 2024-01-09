@@ -28,7 +28,7 @@ public class UserService {
     }
 
     //get all users
-    public List<UserDto> getUsers() {
+    public List<UserDto> getAllUsers() {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
@@ -39,7 +39,7 @@ public class UserService {
 
 
     //get one user
-    public UserDto getUser(String username) {
+    public UserDto getUserByUsername(String username) {
         UserDto dto;
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()){
@@ -51,14 +51,14 @@ public class UserService {
     }
 
 
-    //user exists
+    //user exists ???
     public boolean userExists(String username) {
         return userRepository.existsById(username);
     }
 
 
     //create user
-    public String createUser(UserDto userDto) {
+    public String createNewUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));

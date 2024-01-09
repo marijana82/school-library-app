@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+@CrossOrigin    //toegang vanuit frontend
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -23,24 +23,10 @@ public class UserController {
     }
 
 
-    //get one user
-    @GetMapping(value = "/{username}")
-    ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
-        UserDto optionalUser = userService.getUser(username);
-        return ResponseEntity.ok().body(optionalUser);
-    }
-
-    //get all users
-    @GetMapping
-    ResponseEntity<List<UserDto>> getUsers() {
-        List<UserDto> userDtos = userService.getUsers();
-        return ResponseEntity.ok().body(userDtos);
-    }
-
     //create new user
     @PostMapping
-    public ResponseEntity<UserDto> createNewUser(@RequestBody UserDto userDto) {
-        String newUsername = userService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        String newUsername = userService.createNewUser(userDto);
         userService.addAuthority(newUsername, "ROLE_USER");
 
         URI location = ServletUriComponentsBuilder
@@ -51,6 +37,22 @@ public class UserController {
 
         return ResponseEntity.created(location).build();
     }
+
+
+    //get one user
+    @GetMapping(value = "/{username}")
+    ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
+        UserDto optionalUser = userService.getUserByUsername(username);
+        return ResponseEntity.ok().body(optionalUser);
+    }
+
+    //get all users
+    @GetMapping
+    ResponseEntity<List<UserDto>> getUsers() {
+        List<UserDto> userDtos = userService.getAllUsers();
+        return ResponseEntity.ok().body(userDtos);
+    }
+
 
     //update one user
     @PutMapping("/{username}")
