@@ -27,6 +27,16 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    //create user
+    public String createNewUser(UserDto userDto) {
+        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
+        userDto.setApikey(randomString);
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        User newUser = userRepository.save(transferUserDtoToUser(userDto));
+        return newUser.getUsername();
+    }
+
     //get all users
     public List<UserDto> getAllUsers() {
         List<UserDto> collection = new ArrayList<>();
@@ -56,15 +66,6 @@ public class UserService {
         return userRepository.existsById(username);
     }
 
-
-    //create user
-    public String createNewUser(UserDto userDto) {
-        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        userDto.setApikey(randomString);
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        User newUser = userRepository.save(transferUserDtoToUser(userDto));
-        return newUser.getUsername();
-    }
 
     //delete user
     public void deleteUser(String username) {

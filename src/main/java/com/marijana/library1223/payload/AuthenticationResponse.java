@@ -10,8 +10,8 @@ public class AuthenticationResponse {
         this.jwt = jwt;
     }
 
-    public String getJwt() {
+    /*public String getJwt() {
         return jwt;
-    }
+    }*/
 
 }
