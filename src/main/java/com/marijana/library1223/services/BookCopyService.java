@@ -1,6 +1,7 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookCopyDto;
+import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
 import com.marijana.library1223.models.Book;
@@ -113,8 +114,17 @@ public class BookCopyService {
             bookCopyUpdate.setId(bookCopyFound.getId());
             return transferBookCopyToBookCopyDto(bookCopyUpdate);
         }
+    }
 
-
+    public String deleteCopyById(Long id) {
+        if(bookCopyRepository.existsById(id)) {
+            Optional<BookCopy> bookCopyFound = bookCopyRepository.findById(id);
+            BookCopy copyToDelete = bookCopyFound.get();
+            bookCopyRepository.delete(copyToDelete);
+            return "Requested book copy has successfully been deleted.";
+        } else {
+            throw new IdNotFoundException("Requested book copy does not exist.");
+        }
     }
 
 

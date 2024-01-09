@@ -17,17 +17,14 @@ import java.util.List;
 @RequestMapping("/book-copy")
 public class BookCopyController {
 
-    //constructor injection
     private final BookCopyService bookCopyService;
     public BookCopyController(BookCopyService bookCopyService) {
         this.bookCopyService = bookCopyService;
     }
 
-    //post-mapping
     @PostMapping
     public ResponseEntity<Object> createBookCopy(@Valid @RequestBody BookCopyDto bookCopyDto, BindingResult bindingResult) {
        if(bindingResult.hasFieldErrors()) {
-           //create a string which we return as body
            StringBuilder stringBuilder = new StringBuilder();
            for(FieldError fieldError : bindingResult.getFieldErrors()) {
                stringBuilder.append(fieldError.getField());
@@ -46,7 +43,7 @@ public class BookCopyController {
     }
 
 
-    //get-mapping-one
+    //get one
     @GetMapping("/{idCopy}")
     public ResponseEntity<BookCopyDto> getOneCopy(@PathVariable Long idCopy) {
         BookCopyDto bookCopyDto = bookCopyService.showOneCopy(idCopy);
@@ -54,7 +51,7 @@ public class BookCopyController {
     }
 
 
-    //get-mapping-all
+    //get all
     @GetMapping
     public ResponseEntity<List<BookCopyDto>> getAllBookCopies() {
         List<BookCopyDto> bookCopyDtoList = bookCopyService.getAllBookCopies();
@@ -81,27 +78,33 @@ public class BookCopyController {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesAudio(audio));
     }
 
-    //TODO: check why is it not working???
-    //put-mapping
     @PutMapping("/{idCopy}")
     public ResponseEntity<BookCopyDto> fullUpdateBookCopy(@PathVariable Long idCopy, @Valid @RequestBody BookCopyDto bookCopyDto) {
         BookCopyDto bookCopyDto1 = bookCopyService.updateOneBookCopy(idCopy, bookCopyDto);
         return ResponseEntity.ok().body(bookCopyDto1);
     }
 
-
-    //put mapping to assign book to book copy
     @PutMapping("/{idCopy}/books/{idBook}")
     public ResponseEntity<Object> assignBookToBookCopy(@PathVariable Long idCopy, @PathVariable Long idBook) {
         bookCopyService.assignBookToBookCopy(idCopy, idBook);
         return ResponseEntity.noContent().build();
     }
 
+    //delete
+    //TODO:CREATE REQUEST IN POSTMAN!
+    @DeleteMapping("/{idCopy}")
+    public ResponseEntity<Object> deleteOneCopy(@PathVariable Long idCopy) {
+        bookCopyService.deleteCopyById(idCopy);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 
     //TODO: CREATE PATCH AND DELETE!!!
     //patch-mapping
-    //delete-mapping
+
+
 
 
 

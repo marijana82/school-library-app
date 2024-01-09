@@ -27,8 +27,6 @@ public class BookController {
         this.reviewBookService = reviewBookService;
     }
 
-
-    //post mapping books
     @PostMapping
     public ResponseEntity<Object> createBook(@Valid @RequestBody BookDto bookDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
@@ -50,7 +48,7 @@ public class BookController {
         return ResponseEntity.created(uri).body(bookDto);
     }
 
-    //get mapping one
+    //get one
     @GetMapping("/{idBook}")
     public ResponseEntity<BookDto> getOneBook(@PathVariable Long idBook) {
         BookDto bookDto = bookService.showOneBook(idBook);
@@ -58,7 +56,7 @@ public class BookController {
     }
 
 
-    //get mapping all + name Author + name Illustrator
+    //get all + name Author + name Illustrator
     @GetMapping
     public ResponseEntity<List<BookDto>> getAllBooks(
             @RequestParam(value="nameAuthor", required=false) Optional<String> nameAuthor,
@@ -66,26 +64,26 @@ public class BookController {
 
         List<BookDto> bookDtoList;
 
-            //no parameters present
+            //no parameters
         if(nameAuthor.isEmpty() && nameIllustrator.isEmpty() ) {
             bookDtoList = bookService.showAllBooks();
 
-            //only nameAuthor parameter is present
+            //only nameAuthor present
         } else if(nameAuthor.isPresent()) {
             bookDtoList = bookService.showAllBooksByNameAuthor(nameAuthor.get());
 
-            //only nameIllustrator parameter is present
+            //only nameIllustrator present
         } else if(nameIllustrator.isPresent()) {
             bookDtoList = bookService.showAllBooksByNameIllustrator(nameIllustrator.get());
 
-            //both parameters are present
+            //both parameters present
         } else {
             bookDtoList = bookService.showAllBooksByNameIllustratorAndNameAuthor(nameIllustrator.get(), nameAuthor.get());
         }
         return ResponseEntity.ok().body(bookDtoList);
     }
 
-    //get mapping all + current topic
+    //get all + current topic
     @GetMapping("/topics")
     public ResponseEntity<List<InformationBookDto>> getAllBooksByTopic(@RequestParam String currentTopic) {
         return ResponseEntity.ok(bookService.showAllBooksByTopic(currentTopic));
@@ -114,8 +112,7 @@ public class BookController {
         return ResponseEntity.ok().body(bookDto1);
     }
 
-    //method that gets all reviews connected to a certain book
-    //makes use of reviewsBookService
+    //all reviews connected to a certain book
     @GetMapping("/reviews/{idBook}")
     public ResponseEntity<Collection<ReviewDto>> getReviewsByIdBook(@PathVariable("idBook") Long idBook) {
         return ResponseEntity.ok(reviewBookService.getReviewsByIdBook(idBook));
