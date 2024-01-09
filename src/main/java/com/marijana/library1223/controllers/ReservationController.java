@@ -23,7 +23,6 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    //post-mapping - reservation
     @PostMapping
     public ResponseEntity<Object> createNewReservation(@Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
@@ -44,26 +43,26 @@ public class ReservationController {
         return ResponseEntity.created(uri).body(reservationDto);
     }
 
-    //get mapping all (general) - reservation
+    //get all
     @GetMapping
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
         List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
         return ResponseEntity.ok(reservationDtoList);
     }
 
-    //get mapping all per reservation date
+    //get all per reservation date
     @GetMapping("/dates")
     public ResponseEntity<List<ReservationDto>> getAllReservationsPerDate(@RequestParam LocalDate reservationDate) {
         return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
     }
 
-    //get mapping one (id) - reservation
+    //get one
     @GetMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> getSingleReservation(@PathVariable Long idReservation) {
         return ResponseEntity.ok(reservationService.getSingleReservation(idReservation));
     }
 
-    //put mapping - reservation
+    //update reservation
     @PutMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> fullUpdateReservation(@PathVariable Long idReservation, @Valid @RequestBody ReservationDto reservationDto) {
         ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
@@ -73,21 +72,21 @@ public class ReservationController {
     //TODO: CREATE PATCH MAPPING
     //patch mapping - reservation
 
-    //delete mapping - reservation
+    //delete reservation
     @DeleteMapping("/{idReservation}")
     public ResponseEntity<Object> deleteReservation(@PathVariable Long idReservation) {
         reservationService.deleteReservation(idReservation);
         return ResponseEntity.noContent().build();
     }
 
-    //put - assign book to reservation
+    //add book to reservation
     @PutMapping("/{idReservation}/books/{idBook}")
     public ResponseEntity<Object> assignBookToReservation(@PathVariable Long idBook, @PathVariable Long idReservation) {
         reservationService.assignBookToReservation(idBook, idReservation);
         return ResponseEntity.noContent().build();
     }
 
-    //put - assign account to reservation
+    //add account to reservation
     @PutMapping("/{idReservation}/accounts/{idAccount}")
     public ResponseEntity<Object> assignAccountToReservation(@PathVariable Long idAccount, @PathVariable Long idReservation) {
         reservationService.assignAccountToReservation(idAccount, idReservation);

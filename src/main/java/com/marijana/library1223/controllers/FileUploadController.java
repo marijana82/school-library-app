@@ -24,18 +24,15 @@ public class FileUploadController {
         this.fileStorageService = fileStorageService;
     }
 
-    //single upload
-    @PostMapping("single/upload")
+    @PostMapping("/single/upload")
     FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file) {
 
-        //to create url
         String url = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/download/")
                 .path(Objects.requireNonNull(file.getOriginalFilename()))
                 .toUriString();
 
-        //to store file
         String fileName = fileStorageService.storeFile(file, url);
 
         String contentType = file.getContentType();
@@ -44,8 +41,6 @@ public class FileUploadController {
 
     }
 
-
-    //single download
     @GetMapping("/download/one/{fileName}")
     ResponseEntity<Resource> downloadSingleFile(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = fileStorageService.downloadFile(fileName);

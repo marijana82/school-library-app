@@ -20,7 +20,7 @@ public class ReviewController {
         this.reviewBookService = reviewBookService;
     }
 
-    //method to get all books connected to a certain review
+    //get all books connected to a certain review
     @GetMapping("/book-review/{idReview}")
     public ResponseEntity<Collection<BookDto>> getBooksByIdReview(@PathVariable("idReview") Long idReview) {
         return ResponseEntity.ok(reviewBookService.getBooksByIdReview(idReview));

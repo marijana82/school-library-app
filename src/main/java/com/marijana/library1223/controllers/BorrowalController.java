@@ -19,13 +19,11 @@ import java.util.List;
 
 public class BorrowalController {
 
-    //constructor injection
     private final BorrowalService borrowalService;
     public BorrowalController(BorrowalService borrowalService) {
         this.borrowalService = borrowalService;
     }
 
-    //post-mapping
     @PostMapping
     public ResponseEntity<Object> createNewBorrowal(@Valid @RequestBody BorrowalDto borrowalDto, BindingResult bindingResult) {
        if(bindingResult.hasFieldErrors()) {
@@ -48,27 +46,27 @@ public class BorrowalController {
     }
 
 
-    //get-mapping-all (all borrowals incl. reservations)
+    //get all borrowals incl. reservations
     @GetMapping
     public ResponseEntity<List<BorrowalDto>> getAllBorrowals() {
         List<BorrowalDto> borrowalDtoList = borrowalService.getAllBorrowals();
         return ResponseEntity.ok(borrowalDtoList);
     }
 
-    //get-mapping-one (incl. reservation)
+    //get one incl. reservation
     @GetMapping("/{idBorrowal}")
     public ResponseEntity<Object> getSingleBorrowal(@PathVariable Long idBorrowal) {
         return ResponseEntity.ok(borrowalService.getSingleBorrowal(idBorrowal));
     }
 
-    //put-mapping (update borrowal)
+    //update one borrowal
     @PutMapping("/{idBorrowal}")
     public ResponseEntity<BorrowalDto> fullUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.fullUpdateBorrowal(idBorrowal, borrowalDto);
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //put-mapping (add book copy to borrowal)
+    //add book copy to borrowal
     @PutMapping("/{idBorrowal}/copies/{idCopy}")
     public ResponseEntity<Object> assignBookCopyToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idCopy") Long idCopy) {
         borrowalService.assignBookCopyToBorrowal(idBorrowal, idCopy);
@@ -76,14 +74,14 @@ public class BorrowalController {
     }
 
 
-    //put-mapping (update a borrowal by adding a reservation to it, with 2 x path variables)
+    //add reservation to borrowal
     @PutMapping("/{idBorrowal}/reservations/{idReservation}")
     public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
         borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
         return ResponseEntity.noContent().build();
     }
 
-    //put-mapping (update a borrowal by adding an account to it, with 2 x path variable)
+    //add account to borrowal
     @PutMapping("/{idBorrowal}/accounts/{idAccount}")
     public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idAccount") Long idAccount) {
         borrowalService.assignAccountToBorrowal(idBorrowal, idAccount);
@@ -91,14 +89,13 @@ public class BorrowalController {
     }
 
 
-    //patch-mapping (borrowal incl. reservation)
+    //partial update (borrowal incl. reservation)
     @PatchMapping("/{idBorrowal}")
     public ResponseEntity<BorrowalDto> partialUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.partialUpdateBorrowal(idBorrowal, borrowalDto);
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //delete-mapping (borrowal)
    @DeleteMapping("/{idBorrowal}")
     public ResponseEntity<Object> deleteBorrowal(@PathVariable Long idBorrowal) {
         borrowalService.deleteBorrowal(idBorrowal);

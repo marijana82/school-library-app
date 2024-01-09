@@ -22,8 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    //create new user
+    //------users
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         String newUsername = userService.createNewUser(userDto);
@@ -38,30 +37,24 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
-
-    //get one user
     @GetMapping(value = "/{username}")
     ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
         UserDto optionalUser = userService.getUserByUsername(username);
         return ResponseEntity.ok().body(optionalUser);
     }
 
-    //get all users
     @GetMapping
     ResponseEntity<List<UserDto>> getUsers() {
         List<UserDto> userDtos = userService.getAllUsers();
         return ResponseEntity.ok().body(userDtos);
     }
 
-
-    //update one user
     @PutMapping("/{username}")
     public ResponseEntity<UserDto> updateOneUser(@PathVariable("username") String username, @RequestBody UserDto userDto) {
         userService.updateUser(username, userDto);
         return ResponseEntity.noContent().build();
     }
 
-    //delete one user
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<Object> deleteOneUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
