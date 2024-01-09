@@ -23,5 +23,6 @@ public class AuthenticationController {
 
     //get mapping, this method returns the basic user details from the logged in user
 
+
     //post mapping, this method returns a jwt token when the user logs in with the right login details
 }
