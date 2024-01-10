@@ -2,9 +2,7 @@ package com.marijana.library1223.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
-import java.util.List;
 @Data
 @Entity
 @Table(name="borrowals")
@@ -37,12 +35,12 @@ public class Borrowal {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
-    //OWNER - relation with Account
+    //OWNER
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    //OWNER - relation with BookCopy
+    //OWNER
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_copy_id")
     private BookCopy bookCopy;

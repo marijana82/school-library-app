@@ -20,15 +20,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
-
-    //1.constructor injection
     private final AccountService accountService;
 
     public AccountController(AccountService accountService, ReservationService reservationService) {
         this.accountService = accountService;
     }
 
-    //2.post-mapping
     @PostMapping
     public ResponseEntity<Object> createNewAccount(@Valid @RequestBody AccountDto accountDto, BindingResult bindingResult) {
         if(bindingResult.hasFieldErrors()) {
@@ -51,7 +48,7 @@ public class AccountController {
         return ResponseEntity.created(uri).body(accountDto);
     }
 
-    //3.get-mapping-all (all in general + all belonging to the same class)
+    //3.(all in general + all belonging to the same class)
     @GetMapping
     public ResponseEntity<List<AccountDto>> getAllAccounts(@RequestParam(value="studentClass", required=false) Optional<String> studentClass) {
         List<AccountDto> accountDtos;

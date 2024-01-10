@@ -1,7 +1,7 @@
 package com.marijana.library1223.controllers;
 
 //only used for the "in between class" AuthorBook
-//it only contains post-method to add author to book
+//it only contains post-method to add review to book
 //no get method because this is only backend implementation, 
 // user is not aware of its existence
 
@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/review-book")
+@RequestMapping("/reviews-books")
 public class ReviewBookController {
-
 
     private final ReviewBookService reviewBookService;
 

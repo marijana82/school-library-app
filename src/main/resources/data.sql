@@ -1,3 +1,13 @@
+--User......................................
+INSERT INTO users (username, password)
+VALUES ('Marijana', '$2a$10$qE0oZtzS1fqthOUYebCPxucengug3Oh9Okq2eKONl8k6eIkX3AHc2' );
+
+INSERT INTO authorities (username, authority)
+VALUES ('Marijana', 'ROLE_ADMIN'),
+       ('Maj', 'ROLE_LIBRARIAN'),
+       ('Ivar', 'ROLE_STUDENT');
+
+
 --Account.....................................
 INSERT INTO accounts (id, first_name_student, last_name_student, dob, student_class, name_of_teacher)
 VALUES (1000, 'David Eric', 'Grohl', '2018-01-01', 'obb', 'Gaby'),

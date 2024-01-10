@@ -1,10 +1,6 @@
 package com.marijana.library1223.models;
 
-import com.marijana.library1223.enums.GenreEnum;
-import com.marijana.library1223.enums.TopicEnum;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 @Data

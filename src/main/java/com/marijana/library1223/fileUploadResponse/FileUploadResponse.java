@@ -1,4 +1,4 @@
-package com.marijana.library1223.FileUploadResponse;
+package com.marijana.library1223.fileUploadResponse;
 
 import lombok.*;
 
