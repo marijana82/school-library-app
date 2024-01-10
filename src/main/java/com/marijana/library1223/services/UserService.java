@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -31,7 +30,7 @@ public class UserService {
     //create user
     public String createNewUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        userDto.setApikey(randomString);
+        //userDto.setApikey(randomString);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User newUser = userRepository.save(transferUserDtoToUser(userDto));
         return newUser.getUsername();
@@ -83,7 +82,8 @@ public class UserService {
     //----authorities
 
     //get authorities
-    public Set<Authority> getAuthorities(String username) {
+    //public Set<Authority> getAuthorities(String username) {
+    public List<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         UserDto userDto = transferUserToUserDto(user);
@@ -110,8 +110,6 @@ public class UserService {
 
 
 
-
-
     //helper methods
     public static UserDto transferUserToUserDto(User user){
 
@@ -119,10 +117,11 @@ public class UserService {
 
         dto.username = user.getUsername();
         dto.password = user.getPassword();
-        dto.enabled = user.isEnabled();
-        dto.apikey = user.getApiKey();
-        dto.email = user.getEmail();
         dto.authorities = user.getAuthorities();
+        //dto.enabled = user.isEnabled();
+        //dto.apikey = user.getApiKey();
+        //dto.email = user.getEmail();
+
 
         return dto;
     }
@@ -133,9 +132,9 @@ public class UserService {
 
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
-        user.setEnabled(userDto.getEnabled());
-        user.setApiKey(userDto.getApikey());
-        user.setEmail(userDto.getEmail());
+        //user.setEnabled(userDto.getEnabled());
+        //user.setApiKey(userDto.getApikey());
+        //user.setEmail(userDto.getEmail());
 
         return user;
     }

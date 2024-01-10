@@ -3,7 +3,9 @@ package com.marijana.library1223.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,13 +21,13 @@ public class User {
 
     //the following three fields are not necessary, can be also deleted for now
     //to send confirmation mail when user creates a new account
-    @Column(nullable = false)
+    /*@Column(nullable = false)
     private boolean enabled = true;
 
     @Column
     private String apiKey;
     @Column
-    private String email;
+    private String email;*/
 
     //create one-to-many relationship
     @OneToMany(
@@ -36,11 +38,13 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     //authorities = roles - is the owner of the relationship
-    private Set<Authority> authorities = new HashSet<>();
+    //private Set<Authority> authorities = new HashSet<>();
+    private List<Authority> authorities = new ArrayList<>();
 
 
     //---------
-        public Set<Authority> getAuthorities() { return authorities; }
+        //public Set<Authority> getAuthorities() { return authorities; }
+        public List<Authority> getAuthorities() { return authorities; }
         public void addAuthority(Authority authority) {
             this.authorities.add(authority);
         }

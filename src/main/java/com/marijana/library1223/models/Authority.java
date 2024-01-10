@@ -1,8 +1,6 @@
 package com.marijana.library1223.models;
-
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.io.Serializable;
 
 @Data
@@ -21,6 +19,11 @@ public class Authority implements Serializable {
     public Authority() {}
     public Authority(String username, String authority) {
         this.username = username;
+        this.authority = authority;
+    }
+
+    //this constructor is important for deserialization (to create Authority object from String value)
+    public Authority(String authority) {
         this.authority = authority;
     }
 

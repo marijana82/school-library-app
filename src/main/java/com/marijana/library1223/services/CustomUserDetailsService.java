@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -23,17 +22,23 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         UserDto userDto = userService.getUserByUsername(username);
 
         String password = userDto.getPassword();
 
-        Set<Authority> authorities = userDto.getAuthorities();
+        //Set<Authority> authorities = userDto.getAuthorities();
+        List<Authority> authorities = userDto.getAuthorities();
+
+
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
         for(Authority authority : authorities) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
         }
-        return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
 
+        return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
     }
+
 }

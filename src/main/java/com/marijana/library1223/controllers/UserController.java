@@ -23,7 +23,7 @@ public class UserController {
     }
 
     //------users
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         String newUsername = userService.createNewUser(userDto);
         userService.addAuthority(newUsername, "ROLE_USER");
@@ -63,7 +63,7 @@ public class UserController {
 
     //-----authorities
 
-    //post user authorities
+    //add authority to user
     @PostMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
         try {
