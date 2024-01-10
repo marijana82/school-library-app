@@ -4,6 +4,7 @@ import com.marijana.library1223.filter.JwtRequestFilter;
 import com.marijana.library1223.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -58,17 +59,23 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth ->
 
                         auth
-                                //TODO:set this line out after adding precise requestMatchers
+                                //TODO:set this line OUT after adding precise requestMatchers
                                 .requestMatchers("/**").permitAll()
 
                                 //TODO: here create a list of all requestMatchers
                                 //---------------
-
+                                //for users
+                                .requestMatchers(HttpMethod.POST, "/users").hasAnyRole("ADMIN", "LIBRARIAN", "STUDENT") //or permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/users").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "LIBRARIAN", "STUDENT")
 
 
                                 //for authentication
                                 .requestMatchers("/authentication/get").authenticated()
-                                .requestMatchers("/authentication/post").permitAll()
+                                .requestMatchers("/authentication/post").permitAll() //for non-logged in users
 
                                 //all other requests not defined above
                                 .anyRequest().permitAll() //TODO:later change this to denyAll()
