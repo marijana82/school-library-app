@@ -69,23 +69,28 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "LIBRARIAN")
+
+                                //for authentication []
+                                .requestMatchers("/authentication/post").permitAll()
+                                .requestMatchers("/authentication/get").authenticated()
 
                                 //for accounts []
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated() //to create an account a user has to be authenticated
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/accounts/{idAccount}").hasAnyRole("LIBRARIAN", "STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("LIBRARIAN", "STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAnyRole("STUDENT", "LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAnyRole("STUDENT", "LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/accounts/{idAccount}").hasRole("ADMIN")
 
                                 //for books []
                                 .requestMatchers(HttpMethod.POST, "/books").hasAnyRole("ADMIN","LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/books/reviews/{idBook}").permitAll() //anybody can read a review for a specific book
                                 .requestMatchers(HttpMethod.GET, "/books/**").hasAnyRole("LIBRARIAN", "STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/books/**").hasRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/books/reviews/{idBook}").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
 
                                 //for book copies []
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAnyRole("ADMIN", "LIBRARIAN")
@@ -117,10 +122,6 @@ public class SpringSecurityConfiguration {
                                 //for book reviews []
                                 .requestMatchers(HttpMethod.POST, "/reviews-books/**").authenticated() //only authenticated users can post a book review
                                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll() //anybody can read a book review
-
-                                //for authentication []
-                                .requestMatchers("/authentication/post").permitAll()
-                                .requestMatchers("/authentication/get").authenticated()
 
                                 //all other requests not defined above
                                 .anyRequest().permitAll() //TODO:later change this to denyAll()

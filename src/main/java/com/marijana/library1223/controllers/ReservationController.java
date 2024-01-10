@@ -3,7 +3,10 @@ package com.marijana.library1223.controllers;
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -57,10 +60,28 @@ public class ReservationController {
     }
 
     //get one
-    @GetMapping("/{idReservation}")
+   /* @GetMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> getSingleReservation(@PathVariable Long idReservation) {
         return ResponseEntity.ok(reservationService.getSingleReservation(idReservation));
+    }*/
+
+    //TODO:CHECK IF THIS USAGE OF @AuthenticationPrincipal IS CORRECT
+    @GetMapping("/{idReservation}")
+    public ResponseEntity<ReservationDto> getSingleReservation(
+            @PathVariable Long idReservation,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        String username = userDetails.getUsername();
+        ReservationDto reservationDto = reservationService.getSingleReservation(idReservation, username);
+
+        if (reservationDto != null) {
+            return ResponseEntity.ok(reservationDto);
+
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
+
 
     //update reservation
     @PutMapping("/{idReservation}")

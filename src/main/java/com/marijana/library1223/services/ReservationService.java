@@ -2,6 +2,8 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.exceptions.UsernameNotFoundException;
+import com.marijana.library1223.exceptions.UsernameNotProvidedException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Reservation;
@@ -85,8 +87,13 @@ public class ReservationService {
 
 
     //get single reservation - get mapping (id)
-    public ReservationDto getSingleReservation(Long id) {
+    public ReservationDto getSingleReservation(Long id, String username) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+
+        //delete if not necessary
+        if (username == null) {
+            throw new UsernameNotProvidedException("Please provide a username.");
+        } else {
 
         if(optionalReservation.isPresent()) {
             Reservation reservationFound = optionalReservation.get();
@@ -103,6 +110,8 @@ public class ReservationService {
 
         } else {
             throw new RecordNotFoundException("Reservation has not been found.");
+        }
+        //this } belongs to delete if not necessary
         }
     }
 
@@ -123,8 +132,6 @@ public class ReservationService {
     //TODO: CREATE PATCH METHOD
     //patch
 
-    //TODO: CREATE NEW DELETE METHOD AS IN BOOK SERVICE CLASS
-    //delete
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
     }
