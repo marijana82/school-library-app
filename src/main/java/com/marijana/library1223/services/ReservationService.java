@@ -86,6 +86,7 @@ public class ReservationService {
     }
 
 
+    //TODO: CHECK IF THIS CODE IS OK (connected to @AuthenticationPrincipal in ReservationController)
     //get single reservation - get mapping (id)
     public ReservationDto getSingleReservation(Long id, String username) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);

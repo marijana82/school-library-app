@@ -26,8 +26,17 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    //TODO:CHECK IF THIS USAGE OF @AuthenticationPrincipal IS CORRECT
     @PostMapping
-    public ResponseEntity<Object> createNewReservation(@Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createNewReservation(
+            @Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        //
+        if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservations can only be created by librarians.");
+        }
+
         if(bindingResult.hasFieldErrors()) {
             StringBuilder stringBuilder = new StringBuilder();
             for(FieldError fieldError : bindingResult.getFieldErrors()) {
