@@ -1,16 +1,19 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.UserDto;
+import com.marijana.library1223.exceptions.PasswordNotValidException;
 import com.marijana.library1223.exceptions.UsernameNotFoundException;
 import com.marijana.library1223.models.Authority;
 import com.marijana.library1223.models.User;
 import com.marijana.library1223.repositories.UserRepository;
+import com.marijana.library1223.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -24,15 +27,25 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //helper method - checks if user exists
+    //helper method - checks if user exists - delete if not used
     public boolean usernameExists(String username) {
         return userRepository.existsById(username);
     }
 
     //create user
     public String createNewUser(UserDto userDto) {
-         User newUser = userRepository.save(transferUserDtoToUser(userDto));
-         return newUser.getUsername();
+        String password = userDto.getPassword();
+        if(validatePassword(password)) {
+            String randomString = RandomStringGenerator.generateAlphaNumeric(20);
+            userDto.setApikey(randomString);
+            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            User newUser = userRepository.save(transferUserDtoToUser(userDto));
+            return newUser.getUsername();
+        } else {
+            throw new PasswordNotValidException("Please edit your password to this minimum: 5 characters, 1 uppercase, 1 lowercase, 1 special character, no whitespaces.");
+        }
+
+
     }
 
     //get all users
@@ -48,13 +61,15 @@ public class UserService {
 
     //get one user
     public UserDto getUserByUsername(String username) {
+        UserDto userDto = new UserDto();
         Optional<User> optionalUser = userRepository.findById(username);
-        if(usernameExists(String.valueOf(optionalUser.get()))) {
-            User requestedUser = optionalUser.get();
-            return transferUserToUserDto(requestedUser);
+
+        if(optionalUser.isPresent()) {
+            userDto = transferUserToUserDto(optionalUser.get());
         } else {
             throw new UsernameNotFoundException(username);
         }
+        return userDto;
     }
 
 
@@ -75,11 +90,11 @@ public class UserService {
     //----authorities
 
     //get authority
-    public List<Authority> getAuthority(String username) {
+    public Set<Authority> getAuthority(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         UserDto userDto = transferUserToUserDto(user);
-        return userDto.getAuthority();
+        return userDto.getAuthorities();
     }
 
     //add authority
@@ -107,7 +122,7 @@ public class UserService {
         dto.username = user.getUsername();
         dto.password = user.getPassword();
         //TODO:is this the problem???
-        dto.setAuthority(user.getAuthority());
+        dto.setAuthorities(user.getAuthorities());
         return dto;
     }
 
@@ -117,6 +132,18 @@ public class UserService {
         user.setPassword(userDto.getPassword());
         return user;
     }
+
+    public Boolean validatePassword(String password) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{5,}$");
+    }
+/*  ^                 - start-of-string
+    (?=.*[0-9])       - a digit must occur at least once
+    (?=.*[a-z])       - a lower case letter must occur at least once
+    (?=.*[A-Z])       - an upper case letter must occur at least once
+    (?=.*[@#$%^&+=])  - a special character must occur at least once
+    (?=\S+$)          - no whitespace allowed in the entire string
+    .{5,}             - minimum 5 characters
+    $                 # end-of-string*/
 
 
 

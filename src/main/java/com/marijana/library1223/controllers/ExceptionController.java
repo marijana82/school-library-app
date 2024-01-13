@@ -35,7 +35,10 @@ public class ExceptionController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    //also: example, name too short/too long exception
+    @ExceptionHandler(value = PasswordNotValidException.class)
+    public ResponseEntity<String> exception(PasswordNotValidException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
 
 

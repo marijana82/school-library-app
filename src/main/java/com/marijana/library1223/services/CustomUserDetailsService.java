@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -28,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         String password = userDto.getPassword();
 
-        List<Authority> authorities = userDto.getAuthority();
+        Set<Authority> authorities = userDto.getAuthorities();
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
