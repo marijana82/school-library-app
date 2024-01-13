@@ -66,13 +66,12 @@ public class SpringSecurityConfiguration {
                                 //---------------
                                 //for users [x]
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()  //also non registered users can create account
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasRole("LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
-                                //for authentication []
+                                //for authentication [x]
                                 .requestMatchers("/authentication/post").permitAll()
                                 .requestMatchers("/authentication/get").authenticated()
 
@@ -82,12 +81,12 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("LIBRARIAN", "STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAnyRole( "LIBRARIAN", "STUDENT")
                                 .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAnyRole("LIBRARIAN", "STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/accounts/{idAccount}").hasRole("LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasRole("LIBRARIAN")
 
                                 //for books []
                                 .requestMatchers(HttpMethod.POST, "/books").hasAnyRole("ADMIN","LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/books/reviews/{idBook}").permitAll() //anybody can read a review for a specific book
-                                .requestMatchers(HttpMethod.GET, "/books/**").hasAnyRole("LIBRARIAN", "STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll() //anybody can read a review for a specific book
                                 .requestMatchers(HttpMethod.PUT, "/books/**").hasRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
@@ -97,7 +96,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAnyRole("ADMIN", "LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/book-copy/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.DELETE, "/book-copy/{idCopy}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasRole("ADMIN")
 
                                 //for borrowals []
                                 .requestMatchers(HttpMethod.POST, "/borrowals").hasRole("LIBRARIAN")
@@ -109,7 +108,7 @@ public class SpringSecurityConfiguration {
                                 //for reservations []
                                 .requestMatchers(HttpMethod.POST, "/reservations").hasAnyRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/reservations/dates").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/reservations/{idReservation}").hasAnyRole("LIBRARIAN", "STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/reservations/**").hasAnyRole("LIBRARIAN", "STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/reservations/**").hasAnyRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyRole("LIBRARIAN")
@@ -117,7 +116,7 @@ public class SpringSecurityConfiguration {
                                 //for file upload []
                                 .requestMatchers(HttpMethod.POST, "/single/upload").hasRole("LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAnyRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()  //anybody can download a file
+                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()  //anybody can download a book image file
 
                                 //for book reviews []
                                 .requestMatchers(HttpMethod.POST, "/reviews-books/**").authenticated() //only authenticated users can post a book review

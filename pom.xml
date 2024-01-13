@@ -18,7 +18,7 @@
     </properties>
     <dependencies>
 
-        <!--is this duplicated dependency?-->
+        <!--vulnerable???-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

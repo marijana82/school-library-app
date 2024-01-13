@@ -63,8 +63,6 @@ public class BookService {
         return bookDto;
     }
 
-
-
     //showOneBook method
     public BookDto showOneBook(Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
@@ -206,7 +204,6 @@ public class BookService {
     //helper method - transfer Book to BookDto
     public BookDto transferBookToBookDto(Book book) {
         BookDto bookDto = new BookDto();
-        //TODO: CHECK - why is here book is 0???
         bookDto.setId(book.getId());
         bookDto.setIsbn(book.getIsbn());
         bookDto.setBookTitle(book.getBookTitle());
