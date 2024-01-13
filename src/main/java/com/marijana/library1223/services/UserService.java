@@ -109,7 +109,7 @@ public class UserService {
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User userFound = userRepository.findById(username).get();
-        Authority authorityToRemove = userFound.getAuthority().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        Authority authorityToRemove = userFound.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
         userFound.removeAuthority(authorityToRemove);
         userRepository.save(userFound);
     }
