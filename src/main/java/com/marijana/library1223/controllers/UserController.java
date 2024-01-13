@@ -3,7 +3,10 @@ package com.marijana.library1223.controllers;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.BadRequestException;
 import com.marijana.library1223.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -11,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin    //toegang vanuit frontend
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -24,17 +27,28 @@ public class UserController {
 
     //------users
     @PostMapping("/register")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        String newUsername = userService.createNewUser(userDto);
-        userService.addAuthority(newUsername, "ROLE_USER");
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{username}")
-                .buildAndExpand(newUsername)
-                .toUri();
+        if(bindingResult.hasErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder.toString());
+        } else {
 
-        return ResponseEntity.created(location).build();
+            String newUsername = userService.createNewUser(userDto);
+            userService.addAuthority(newUsername, "ROLE_USER"); //userDto.getAuthority()
+
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{username}")
+                    .buildAndExpand(newUsername)
+                    .toUri();
+
+            return ResponseEntity.created(location).build();
+        }
     }
 
     @GetMapping(value = "/{username}")
@@ -49,13 +63,13 @@ public class UserController {
         return ResponseEntity.ok().body(userDtos);
     }
 
-    @PutMapping("/{username}")
+    @PutMapping("/update/{username}")
     public ResponseEntity<UserDto> updateOneUser(@PathVariable("username") String username, @RequestBody UserDto userDto) {
-        userService.updateUser(username, userDto);
+        userService.updateUserPassword(username, userDto);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(value = "/{username}")
+    @DeleteMapping(value = "/delete/{username}")
     public ResponseEntity<Object> deleteOneUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
         return ResponseEntity.noContent().build();
@@ -78,8 +92,8 @@ public class UserController {
 
     //get all user authorities(roles)
     @GetMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
-        return ResponseEntity.ok().body(userService.getAuthorities(username));
+    public ResponseEntity<Object> getUserAuthority(@PathVariable("username") String username) {
+        return ResponseEntity.ok().body(userService.getAuthority(username));
     }
 
     //delete user authorities
@@ -88,15 +102,6 @@ public class UserController {
         userService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
-
-
-
-
-
 
     
 }

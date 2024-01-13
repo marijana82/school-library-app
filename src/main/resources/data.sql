@@ -2,10 +2,10 @@
 INSERT INTO users (username, password)
 VALUES ('Marijana', '$2a$10$qE0oZtzS1fqthOUYebCPxucengug3Oh9Okq2eKONl8k6eIkX3AHc2' );
 
-INSERT INTO authorities (username, authority)
-VALUES ('Marijana', 'ROLE_ADMIN'),
-       ('Maj', 'ROLE_LIBRARIAN'),
-       ('Ivar', 'ROLE_STUDENT');
+--INSERT INTO authorities (username, authority)
+--VALUES ('Marijana', 'ADMIN'),
+--       ('Maj', 'LIBRARIAN'),
+--       ('Vid', 'STUDENT');
 
 
 --Account.....................................

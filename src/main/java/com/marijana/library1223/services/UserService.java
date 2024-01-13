@@ -1,12 +1,10 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.UserDto;
-import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.UsernameNotFoundException;
 import com.marijana.library1223.models.Authority;
 import com.marijana.library1223.models.User;
 import com.marijana.library1223.repositories.UserRepository;
-import com.marijana.library1223.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +24,15 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //helper method - checks if user exists
+    public boolean usernameExists(String username) {
+        return userRepository.existsById(username);
+    }
 
     //create user
     public String createNewUser(UserDto userDto) {
-        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        //userDto.setApikey(randomString);
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        User newUser = userRepository.save(transferUserDtoToUser(userDto));
-        return newUser.getUsername();
+         User newUser = userRepository.save(transferUserDtoToUser(userDto));
+         return newUser.getUsername();
     }
 
     //get all users
@@ -49,20 +48,13 @@ public class UserService {
 
     //get one user
     public UserDto getUserByUsername(String username) {
-        UserDto dto;
-        Optional<User> user = userRepository.findById(username);
-        if (user.isPresent()){
-            dto = transferUserToUserDto(user.get());
-        }else {
+        Optional<User> optionalUser = userRepository.findById(username);
+        if(usernameExists(String.valueOf(optionalUser.get()))) {
+            User requestedUser = optionalUser.get();
+            return transferUserToUserDto(requestedUser);
+        } else {
             throw new UsernameNotFoundException(username);
         }
-        return dto;
-    }
-
-
-    //user exists ???
-    public boolean userExists(String username) {
-        return userRepository.existsById(username);
     }
 
 
@@ -71,9 +63,10 @@ public class UserService {
         userRepository.deleteById(username);
     }
 
+
     //update user
-    public void updateUser(String username, UserDto newUser) {
-        if(!userRepository.existsById(username)) throw new RecordNotFoundException();
+    public void updateUserPassword(String username, UserDto newUser) {
+        if(!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         user.setPassword(newUser.getPassword());
         userRepository.save(user);
@@ -81,18 +74,16 @@ public class UserService {
 
     //----authorities
 
-    //get authorities
-    //public Set<Authority> getAuthorities(String username) {
-    public List<Authority> getAuthorities(String username) {
+    //get authority
+    public List<Authority> getAuthority(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         UserDto userDto = transferUserToUserDto(user);
-        return userDto.getAuthorities();
+        return userDto.getAuthority();
     }
 
     //add authority
     public void addAuthority(String username, String authority) {
-
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         user.addAuthority(new Authority(username, authority));
@@ -102,40 +93,28 @@ public class UserService {
     //delete authority
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
-        User user = userRepository.findById(username).get();
-        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
-        user.removeAuthority(authorityToRemove);
-        userRepository.save(user);
+        User userFound = userRepository.findById(username).get();
+        Authority authorityToRemove = userFound.getAuthority().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        userFound.removeAuthority(authorityToRemove);
+        userRepository.save(userFound);
     }
 
 
 
     //helper methods
     public static UserDto transferUserToUserDto(User user){
-
         UserDto dto = new UserDto();
-
         dto.username = user.getUsername();
         dto.password = user.getPassword();
-        dto.authorities = user.getAuthorities();
-        //dto.enabled = user.isEnabled();
-        //dto.apikey = user.getApiKey();
-        //dto.email = user.getEmail();
-
-
+        //TODO:is this the problem???
+        dto.setAuthority(user.getAuthority());
         return dto;
     }
 
     public User transferUserDtoToUser(UserDto userDto) {
-
         User user = new User();
-
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
-        //user.setEnabled(userDto.getEnabled());
-        //user.setApiKey(userDto.getApikey());
-        //user.setEmail(userDto.getEmail());
-
         return user;
     }
 
