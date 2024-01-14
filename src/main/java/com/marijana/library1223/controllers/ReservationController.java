@@ -34,7 +34,7 @@ public class ReservationController {
 
         //
         if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized users.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized librarians.");
         }
 
         if(bindingResult.hasFieldErrors()) {

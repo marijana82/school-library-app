@@ -66,7 +66,7 @@ public class SpringSecurityConfiguration {
                                 //---------------
                                 //for users [x]
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()  //also non registered users can create account
-                                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_USER")
+                                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/{username}/authorities/{authority}").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_LIBRARIAN")
@@ -80,11 +80,11 @@ public class SpringSecurityConfiguration {
 
                                 //for accounts [] - add @AuthenticationPrincipal
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated() //to create an account a user has to be authenticated
-                                .requestMatchers(HttpMethod.GET, "/accounts" ).hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority("ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAuthority( "ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAuthority("ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/accounts" ).hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_ADMIN")
 
                                 //for books []
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
@@ -111,13 +111,13 @@ public class SpringSecurityConfiguration {
                                 //for reservations []
                                 .requestMatchers(HttpMethod.POST, "/reservations").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.GET, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
 
                                 //for file upload []
-                                .requestMatchers(HttpMethod.POST, "/single/upload").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/single/upload").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()  //anybody can download a book image file
 
