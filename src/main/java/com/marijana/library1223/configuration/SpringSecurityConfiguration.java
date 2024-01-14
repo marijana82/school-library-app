@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -75,13 +74,15 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
 
                                 //for authentication [x]
-                                .requestMatchers("/authentication/post").permitAll()
-                                .requestMatchers("/authentication/get").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/authentication/get").authenticated()
 
                                 //for accounts [] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated() //to create an account a user has to be authenticated
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
+                                    //add user to account
+                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_ADMIN")
@@ -97,15 +98,20 @@ public class SpringSecurityConfiguration {
                                 //for book copies []
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
+                                    //add book to copy
+                                .requestMatchers(HttpMethod.PUT, "/book-copy/{idCopy}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PATCH, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasAuthority("ROLE_ADMIN")
 
                                 //for borrowals []
                                 .requestMatchers(HttpMethod.POST, "/borrowals").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PATCH, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
+                                    //add book-copy, reservation, and account to borrowal:
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/**/copies/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/**/reservations/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/**/accounts/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PATCH, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
 
                                 //for reservations []
@@ -114,9 +120,9 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-                                //add book to reservation
+                                    //add book to reservation
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
-                                //add account to reservation
+                                    //add account to reservation
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
 

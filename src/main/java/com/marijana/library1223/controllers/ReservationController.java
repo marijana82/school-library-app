@@ -27,7 +27,6 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    //TODO:CHECK IF THIS USAGE OF @AuthenticationPrincipal IS CORRECT
     @PostMapping
     public ResponseEntity<Object> createNewReservation(
             @Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult,
@@ -78,13 +77,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
     }
 
-    //get one
-   /* @GetMapping("/{idReservation}")
-    public ResponseEntity<ReservationDto> getSingleReservation(@PathVariable Long idReservation) {
-        return ResponseEntity.ok(reservationService.getSingleReservation(idReservation));
-    }*/
 
-    //TODO:CHECK IF THIS USAGE OF @AuthenticationPrincipal IS CORRECT
     @GetMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> getSingleReservation (
             @PathVariable Long idReservation,
@@ -97,7 +90,6 @@ public class ReservationController {
             return ResponseEntity.ok(reservationDto);
 
         } else {
-            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             throw new AccessDeniedException("It seems you are not authorized to access this reservation");
         }
     }

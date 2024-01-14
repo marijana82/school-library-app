@@ -109,7 +109,7 @@ public class AccountController {
         if (userDetails.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
 
-            AccountDto accountDto1 = accountService.updateOneAccount(idAccount, accountDto);
+            AccountDto accountDto1 = accountService.updateAccountPartially(idAccount, accountDto);
             return ResponseEntity.ok().body(accountDto1);
 
         } else {

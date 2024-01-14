@@ -62,9 +62,7 @@ public class BookCopyController {
     @GetMapping("/after")
     public ResponseEntity<List<BookCopyDto>> getAllBookCopiesPublishedAfter(@RequestParam LocalDate date) {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesPublishedAfter(date));
-
     }
-
 
     //get-all-dyslexia-friendly
     @GetMapping("/dyslexia")
@@ -91,23 +89,11 @@ public class BookCopyController {
     }
 
     //delete
-    //TODO:CREATE REQUEST IN POSTMAN!
     @DeleteMapping("/{idCopy}")
     public ResponseEntity<Object> deleteOneCopy(@PathVariable Long idCopy) {
         bookCopyService.deleteCopyById(idCopy);
         return ResponseEntity.noContent().build();
     }
-
-
-    //TODO: CREATE PATCH
-    //patch-mapping
-
-
-
-
-
-
-
 
 
 
