@@ -28,10 +28,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //helper method - checks if user exists - delete if not used
-    public boolean usernameExists(String username) {
-        return userRepository.existsById(username);
-    }
 
     //create user
     public String createNewUser(UserDto userDto) {
@@ -52,7 +48,6 @@ public class UserService {
                 throw new PasswordNotValidException("Please edit your password to minimum 5 characters containing at least 1 uppercase/and 1 lowercase/and 1 special character, no whitespaces.");
              }
              }
-
 
 
     //get all users
@@ -124,7 +119,7 @@ public class UserService {
 
 
 
-    //helper methods
+    //--------------helper methods---------------------
     public static UserDto transferUserToUserDto(User user){
         UserDto dto = new UserDto();
         dto.setUsername(user.getUsername());
@@ -154,15 +149,25 @@ public class UserService {
         return user;
     }
 
+
+    //checks if user exists
+    public boolean usernameExists(String username) {
+        return userRepository.existsById(username);
+    }
+
+
+    //validates password
     public Boolean validatePassword(String password) {
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{6,}$");
     }
+
+    //explanation regex:
 /*  ^                 - start-of-string
-    (?=.*[0-9])       - a digit must occur at least once
-    (?=.*[a-z])       - a lower case letter must occur at least once
-    (?=.*[A-Z])       - an upper case letter must occur at least once
-    (?=.*[@#$%^&+=])  - a special character must occur at least once
-    (?=\S+$)          - no whitespace allowed in the entire string
+    (?=.*[0-9])       - at least one digit
+    (?=.*[a-z])       - at least one lower case letter
+    (?=.*[A-Z])       - at least one upper case letter
+    (?=.*[@#$%^&+=])  - at least one special character
+    (?=\S+$)          - no whitespace allowed
     .{6,}             - minimum 6 characters
     $                 # end-of-string*/
 

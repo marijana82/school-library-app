@@ -1,19 +1,19 @@
 --User......................................
 INSERT INTO users (username, password, email, enabled)
-VALUES ('Admin1', '$2a$10$qE0oZtzS1fqthOUYebCPxucengug3Oh9Okq2eKONl8k6eIkX3AHc2', 'admin1@test.com', TRUE );
+VALUES ('Axl', '$2a$10$qE0oZtzS1fqthOUYebCPxucengug3Oh9Okq2eKONl8k6eIkX3AHc2', 'admin1@test.com', TRUE );
 
 INSERT INTO authorities (username, authority)
-VALUES ('Admin1', 'ROLE_ADMIN'),
-      ('Librarian1', 'ROLE_LIBRARIAN'),
-      ('Student1', 'ROLE_STUDENT'),
-      ('User1', 'ROLE_USER');
+VALUES ('Axl', 'ROLE_ADMIN'),
+      ('Slash', 'ROLE_LIBRARIAN'),
+      ('Duff', 'ROLE_STUDENT'),
+      ('Dizzy', 'ROLE_USER');
 
 
 --Account.....................................
 INSERT INTO accounts (id, first_name_student, last_name_student, dob, student_class, name_of_teacher)
 VALUES (1000, 'David Eric', 'Grohl', '2018-01-01', 'obb', 'Gaby'),
        (1001, 'Oliver Taylor', 'Hawkins', '2017-02-02', 'obb', 'Gaby'),
-       (1002, 'Nathnael', 'Mendel', '2016-03-04', 'mba', 'Chrystel'),
+       (1002, 'Nat', 'Mendel', '2016-03-04', 'mba', 'Chrystel'),
        (1003, 'Chris', 'Shifflet', '2016-04-04', 'mba', 'Chrystel'),
        (1004, 'Pat', 'Smear', '2015-05-05', 'mbc', 'Tina'),
        (1005, 'Michael', 'Balzary', '2015-08-08', 'mbe', 'Dennis'),
