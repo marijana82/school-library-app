@@ -3,9 +3,7 @@ package com.marijana.library1223.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,10 +18,18 @@ public class User {
     private String password;
     @Column(nullable = false)
     private boolean enabled = true;
-    @Column
-    private String apiKey;
+    //@Column
+    //private String apiKey;
     @Column
     private String email;
+    @Column
+    private String firstName;
+    @Column
+    private String lastName;
+
+    //TODO:delete role??
+    @Column
+    private String role;
 
     //create one-to-many relationship
     @OneToMany(
@@ -34,7 +40,6 @@ public class User {
             fetch = FetchType.EAGER)
             //relation
             private Set<Authority> authorities = new HashSet<>();
-
 
     public Set<Authority> getAuthorities() {
         return authorities;

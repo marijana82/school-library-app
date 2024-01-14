@@ -40,6 +40,11 @@ public class ExceptionController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = UsernameAlreadyExistsException.class)
+    public ResponseEntity<String> exception(UsernameAlreadyExistsException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 
 
 }

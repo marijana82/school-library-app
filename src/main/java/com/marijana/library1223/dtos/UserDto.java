@@ -4,8 +4,6 @@ import com.marijana.library1223.models.Authority;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -14,10 +12,14 @@ public class UserDto {
     public String username;
     public String password;
     public Boolean enabled;
-    public String apikey;
+    //public String apikey;
     public String email;
     private String firstname;
     private String lastname;
+
+    //TODO: delete role??
+    public String role;
+
     public Set<Authority> authorities;
 
     public Set<Authority> getAuthorities() {

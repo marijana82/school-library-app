@@ -60,16 +60,15 @@ public class SpringSecurityConfiguration {
 
                         auth
                                 //TODO:set this line OUT after adding precise requestMatchers
-                                .requestMatchers("/**").permitAll()
+                                //.requestMatchers("/**").permitAll()
 
-                                //TODO: here create a list of all requestMatchers
                                 //---------------
                                 //for users [x]
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()  //also non registered users can create account
-                                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/users/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole( "LIBRARIAN", "USER")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("LIBRARIAN")
 
                                 //for authentication [x]
                                 .requestMatchers("/authentication/post").permitAll()

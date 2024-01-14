@@ -1,11 +1,12 @@
 --User......................................
-INSERT INTO users (username, password)
-VALUES ('Marijana', '$2a$10$qE0oZtzS1fqthOUYebCPxucengug3Oh9Okq2eKONl8k6eIkX3AHc2' );
+INSERT INTO users (username, password, email, enabled)
+VALUES ('Admin1', '$2a$10$qE0oZtzS1fqthOUYebCPxucengug3Oh9Okq2eKONl8k6eIkX3AHc2', 'admin1@test.com', TRUE );
 
---INSERT INTO authorities (username, authority)
---VALUES ('Marijana', 'ADMIN'),
---       ('Maj', 'LIBRARIAN'),
---       ('Vid', 'STUDENT');
+INSERT INTO authorities (username, authority)
+VALUES ('Admin1', 'ROLE_ADMIN'),
+      ('Librarian1', 'ROLE_LIBRARIAN'),
+      ('Student1', 'ROLE_STUDENT'),
+      ('User1', 'ROLE_USER');
 
 
 --Account.....................................
