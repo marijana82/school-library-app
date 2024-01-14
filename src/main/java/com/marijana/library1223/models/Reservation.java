@@ -50,5 +50,4 @@ public class Reservation {
     @JoinColumn(name = "book_id")
     private Book book;
 
-
 }

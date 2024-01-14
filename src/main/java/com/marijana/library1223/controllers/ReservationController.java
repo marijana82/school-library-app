@@ -1,6 +1,7 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.ReservationDto;
+import com.marijana.library1223.exceptions.AccessDeniedException;
 import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,11 +31,20 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Object> createNewReservation(
             @Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
 
         //
         if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized librarians.");
+            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized librarians.");
+        } else {
+            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
+
+        }
+
+        if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("STUDENT"))) {
+            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized users.");
+        } else {
+            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
         }
 
         if(bindingResult.hasFieldErrors()) {
@@ -76,9 +86,9 @@ public class ReservationController {
 
     //TODO:CHECK IF THIS USAGE OF @AuthenticationPrincipal IS CORRECT
     @GetMapping("/{idReservation}")
-    public ResponseEntity<ReservationDto> getSingleReservation(
+    public ResponseEntity<ReservationDto> getSingleReservation (
             @PathVariable Long idReservation,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
 
         String username = userDetails.getUsername();
         ReservationDto reservationDto = reservationService.getSingleReservation(idReservation, username);
@@ -87,20 +97,29 @@ public class ReservationController {
             return ResponseEntity.ok(reservationDto);
 
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new AccessDeniedException("It seems you are not authorized to access this reservation");
         }
     }
 
 
     //update reservation
     @PutMapping("/{idReservation}")
-    public ResponseEntity<ReservationDto> fullUpdateReservation(@PathVariable Long idReservation, @Valid @RequestBody ReservationDto reservationDto) {
-        ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
-        return ResponseEntity.ok().body(reservationDto1);
+    public ResponseEntity<ReservationDto> fullUpdateReservation(
+            @PathVariable Long idReservation,
+            @Valid @RequestBody ReservationDto reservationDto,
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
+
+        if(userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("STUDENT"))) {
+
+            ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
+            return ResponseEntity.ok().body(reservationDto1);
+
+        } else {
+            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
+        }
     }
 
-    //TODO: CREATE PATCH MAPPING
-    //patch mapping - reservation
 
     //delete reservation
     @DeleteMapping("/{idReservation}")

@@ -43,4 +43,10 @@ public class Account {
     @JsonIgnore
     private List<Borrowal> borrowals = new ArrayList<>();
 
+
+    //OWNER
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username")
+    private User user;
+
 }

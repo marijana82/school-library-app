@@ -1,9 +1,12 @@
 package com.marijana.library1223.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -31,6 +34,7 @@ public class User {
     @Column
     private String role;
 
+
     //create one-to-many relationship
     @OneToMany(
             targetEntity = Authority.class,
@@ -38,8 +42,20 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
-            //relation
-            private Set<Authority> authorities = new HashSet<>();
+
+    //relation with authority
+    private Set<Authority> authorities = new HashSet<>();
+
+    //TARGET - relation with account
+    @OneToOne(
+            mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private Account account;
+
 
     public Set<Authority> getAuthorities() {
         return authorities;

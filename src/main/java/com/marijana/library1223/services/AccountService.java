@@ -5,8 +5,10 @@ import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.models.Account;
+import com.marijana.library1223.models.User;
 import com.marijana.library1223.repositories.AccountRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
+import com.marijana.library1223.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +18,11 @@ import java.util.Optional;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final ReservationRepository reservationRepository;
+    private final UserRepository userRepository;
 
-    public AccountService(AccountRepository accountRepository, ReservationRepository reservationRepository) {
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
-        this.reservationRepository = reservationRepository;
+        this.userRepository = userRepository;
     }
 
     //createAccount2
@@ -176,6 +178,24 @@ public class AccountService {
         account.setNameOfTeacher(accountDto.getNameOfTeacher());
         account.setId(accountDto.getId());
         return account;
+    }
+
+    //assign user to account
+    public void assignUserToAccount(Long idAccount, String username) {
+        Optional<User> optionalUser = userRepository.findById(username);
+        Optional<Account> optionalAccount = accountRepository.findById(idAccount);
+
+        if(optionalUser.isPresent() && optionalAccount.isPresent()) {
+            User userIsPresent = optionalUser.get();
+            Account accountIsPresent = optionalAccount.get();
+
+            accountIsPresent.setUser(userIsPresent);
+            accountRepository.save(accountIsPresent);
+
+        } else {
+            throw new RecordNotFoundException("Account not found.");
+        }
+
     }
 
 
