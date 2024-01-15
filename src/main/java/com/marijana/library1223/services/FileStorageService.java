@@ -26,7 +26,10 @@ public class FileStorageService {
     private Path fileStoragePath;
     private final String fileStorageLocation;
 
-    public FileStorageService(@Value("${my.upload_location}") String fileStorageLocation, FileUploadRepository fileUploadRepository) {
+    public FileStorageService(
+            @Value("${my.upload_location}") String fileStorageLocation,
+            FileUploadRepository fileUploadRepository) {
+
         fileStoragePath = Paths.get(fileStorageLocation).toAbsolutePath().normalize();
         this.fileStorageLocation = fileStorageLocation;
         this.fileUploadRepository = fileUploadRepository;
@@ -54,7 +57,6 @@ public class FileStorageService {
     }
 
 
-    //download one file
     public Resource downloadFile(String fileName) {
         Path path = Paths.get(fileStorageLocation).toAbsolutePath().resolve(fileName);
         Resource resource;
@@ -74,9 +76,9 @@ public class FileStorageService {
     }
 
 
-    //download list
+
     public List<String> downLoad() {
-        // Directory path here
+
         var list = new ArrayList<String>();
         File folder = new File(fileStorageLocation);
         File[] listOfFiles = folder.listFiles();

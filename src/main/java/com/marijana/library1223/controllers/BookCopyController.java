@@ -23,7 +23,10 @@ public class BookCopyController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createBookCopy(@Valid @RequestBody BookCopyDto bookCopyDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createBookCopy(
+            @Valid @RequestBody BookCopyDto bookCopyDto,
+            BindingResult bindingResult) {
+
        if(bindingResult.hasFieldErrors()) {
            StringBuilder stringBuilder = new StringBuilder();
            for(FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -43,7 +46,6 @@ public class BookCopyController {
     }
 
 
-    //get one
     @GetMapping("/{idCopy}")
     public ResponseEntity<BookCopyDto> getOneCopy(@PathVariable Long idCopy) {
         BookCopyDto bookCopyDto = bookCopyService.showOneCopy(idCopy);
@@ -51,7 +53,6 @@ public class BookCopyController {
     }
 
 
-    //get all
     @GetMapping
     public ResponseEntity<List<BookCopyDto>> getAllBookCopies() {
         List<BookCopyDto> bookCopyDtoList = bookCopyService.getAllBookCopies();
@@ -88,7 +89,7 @@ public class BookCopyController {
         return ResponseEntity.noContent().build();
     }
 
-    //delete
+
     @DeleteMapping("/{idCopy}")
     public ResponseEntity<Object> deleteOneCopy(@PathVariable Long idCopy) {
         bookCopyService.deleteCopyById(idCopy);

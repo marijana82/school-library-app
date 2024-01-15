@@ -18,8 +18,6 @@ import java.util.Optional;
 
 @Service
 public class BorrowalService {
-
-    //constructor injector
     private final BorrowalRepository borrowalRepository;
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
@@ -45,7 +43,7 @@ public class BorrowalService {
         this.bookCopyRepository = bookCopyRepository;
     }
 
-    //createBorrowal - post mapping
+
     public BorrowalDto createBorrowal(BorrowalDto borrowalDto) {
         Borrowal borrowal = new Borrowal();
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
@@ -57,10 +55,11 @@ public class BorrowalService {
         return borrowalDto;
     }
 
-    //getAllBorrowals - get mapping
+
     public List<BorrowalDto> getAllBorrowals() {
         List<Borrowal> borrowalList = borrowalRepository.findAll();
         List<BorrowalDto> borrowalDtoList = new ArrayList<>();
+
         for (Borrowal borrowal : borrowalList) {
             BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowal);
 

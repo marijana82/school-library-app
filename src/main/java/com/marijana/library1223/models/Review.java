@@ -22,7 +22,7 @@ public class Review {
     private String review;
 
     //Relations..............
-    //NOT OWNER - target side....................
+    //TARGET
     //nothing in the database
     @OneToMany(mappedBy = "review")
     @LazyCollection(LazyCollectionOption.FALSE)

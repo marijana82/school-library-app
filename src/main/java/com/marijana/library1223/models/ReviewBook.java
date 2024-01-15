@@ -12,17 +12,14 @@ public class ReviewBook {
     @EmbeddedId
     private ReviewBookKey id;
 
-    //this is the owner of the relation
-    //there's a foreign key in the database
-    //why sometimes Lazy and sometimes Eager?
+    //OWNER, there's a foreign key in the database
     @ManyToOne(fetch = FetchType.LAZY)
     //@MapsId makes it happen that the variables get combined to a key?
     @MapsId("reviewId")
     @JoinColumn(name = "review_id")
     private Review review;
 
-    //this is the owner of the relation
-    //there's a foreign key in the database
+    //OWNER, there's a foreign key in the database
     @ManyToOne
     @MapsId("bookId")
     @JoinColumn(name = "book_id")

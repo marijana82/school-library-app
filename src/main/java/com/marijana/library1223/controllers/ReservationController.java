@@ -4,7 +4,6 @@ import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.AccessDeniedException;
 import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,14 +33,14 @@ public class ReservationController {
 
         //
         if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
-            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized librarians.");
+
         } else {
             throw new AccessDeniedException("It seems you are not authorized to create this reservation");
 
         }
 
         if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("STUDENT"))) {
-            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized users.");
+
         } else {
             throw new AccessDeniedException("It seems you are not authorized to create this reservation");
         }
@@ -64,7 +63,7 @@ public class ReservationController {
         return ResponseEntity.created(uri).body(reservationDto);
     }
 
-    //get all
+
     @GetMapping
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
         List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
@@ -95,7 +94,7 @@ public class ReservationController {
     }
 
 
-    //update reservation
+
     @PutMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> fullUpdateReservation(
             @PathVariable Long idReservation,
@@ -113,7 +112,7 @@ public class ReservationController {
     }
 
 
-    //delete reservation
+
     @DeleteMapping("/{idReservation}")
     public ResponseEntity<Object> deleteReservation(@PathVariable Long idReservation) {
         reservationService.deleteReservation(idReservation);

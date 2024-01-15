@@ -2,7 +2,6 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.UsernameNotFoundException;
 import com.marijana.library1223.exceptions.UsernameNotProvidedException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.Book;
@@ -27,7 +26,12 @@ public class ReservationService {
     private final AccountRepository accountRepository;
 
 
-    public ReservationService(ReservationRepository reservationRepository, BookService bookService, BookRepository bookRepository, AccountService accountService, AccountRepository accountRepository) {
+    public ReservationService(ReservationRepository reservationRepository,
+                              BookService bookService,
+                              BookRepository bookRepository,
+                              AccountService accountService,
+                              AccountRepository accountRepository) {
+
         this.reservationRepository = reservationRepository;
         this.bookService = bookService;
         this.bookRepository = bookRepository;
@@ -36,7 +40,7 @@ public class ReservationService {
 
     }
 
-    //createReservation - post mapping
+
     public ReservationDto createReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
         reservation.setBookTitle(reservationDto.getBookTitle());
@@ -48,7 +52,7 @@ public class ReservationService {
     }
 
 
-    //get all reservations - get mapping
+
     public List<ReservationDto> getAllReservations() {
         List<Reservation> reservationList = reservationRepository.findAll();
         List<ReservationDto> reservationDtoList = new ArrayList<>();

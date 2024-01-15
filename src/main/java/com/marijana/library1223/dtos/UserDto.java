@@ -17,9 +17,6 @@ public class UserDto {
     private String firstname;
     private String lastname;
 
-    //TODO: delete role??
-    public String role;
-
     public Set<Authority> authorities;
 
     public Set<Authority> getAuthorities() {

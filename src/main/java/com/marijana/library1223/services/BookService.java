@@ -1,15 +1,12 @@
 package com.marijana.library1223.services;
 
-import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
-import com.marijana.library1223.dtosoutput.BookOutputDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
-import com.marijana.library1223.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,16 +18,12 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    private final BookCopyRepository bookCopyRepository;
 
-
-    public BookService(BookRepository bookRepository, BookCopyRepository bookCopyRepository) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.bookCopyRepository = bookCopyRepository;
     }
 
 
-    //createNewBook method
     public BookDto createNewBook(BookDto bookDto) {
         Book book = new Book();
         book.setIsbn(bookDto.getIsbn());
@@ -63,7 +56,7 @@ public class BookService {
         return bookDto;
     }
 
-    //showOneBook method
+
     public BookDto showOneBook(Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
         if(optionalBook.isPresent()) {
@@ -74,7 +67,7 @@ public class BookService {
         }
     }
 
-    //showAllBooks
+
     public List<BookDto> showAllBooks() {
         List<Book> bookList = bookRepository.findAll();
         List<BookDto> bookDtoList = new ArrayList<>();
@@ -85,7 +78,7 @@ public class BookService {
         return bookDtoList;
     }
 
-    //showAllBooksByNameAuthor
+
     public List<BookDto> showAllBooksByNameAuthor(String nameAuthor) {
         List<Book> bookList = bookRepository.findAllBooksByNameAuthorEqualsIgnoreCase(nameAuthor);
         List<BookDto> bookDtoList = new ArrayList<>();
@@ -96,7 +89,7 @@ public class BookService {
         return bookDtoList;
     }
 
-    //showAllBooksByNameIllustrator
+
     public List<BookDto> showAllBooksByNameIllustrator(String nameIllustrator) {
         List<Book> bookList = bookRepository.findAllBooksByNameIllustratorEqualsIgnoreCase(nameIllustrator);
         List<BookDto> bookDtoList = new ArrayList<>();
@@ -107,7 +100,7 @@ public class BookService {
         return bookDtoList;
     }
 
-    //showAllBooksByNameIllustratorAndNameAuthor
+
     public List<BookDto> showAllBooksByNameIllustratorAndNameAuthor(String nameIllustrator, String nameAuthor) {
         List<Book> bookList = bookRepository.findAllBooksByNameIllustratorAndNameAuthorEqualsIgnoreCase(nameIllustrator, nameAuthor);
         List<BookDto> bookDtoList = new ArrayList<>();
@@ -130,7 +123,7 @@ public class BookService {
     }
 
 
-    //deleteById
+
     public String deleteById(Long id) {
         if(bookRepository.existsById(id)) {
             Optional<Book> bookFound = bookRepository.findById(id);
@@ -143,7 +136,7 @@ public class BookService {
 
     }
 
-    //updateOneBook
+
     public BookDto updateOneBook(Long id, BookDto bookDto) {
         Optional<Book> optionalBook = bookRepository.findById(id);
         if(optionalBook.isEmpty()) {
@@ -201,7 +194,7 @@ public class BookService {
 
     //helper methods ...........................................
 
-    //helper method - transfer Book to BookDto
+
     public BookDto transferBookToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
@@ -216,7 +209,7 @@ public class BookService {
     }
 
 
-    //helper method - transfer BookDto to Book
+
     public Book transferBookDtoToBook(BookDto bookDto) {
         Book book = new Book();
         book.setId(bookDto.getId());
@@ -233,13 +226,6 @@ public class BookService {
 
 
 
-
-
-
-    //---------------DELETE, IF NOT NECESSARY-----------------------------------------
-
-
-    //helper method - transfer Book To InformationBookDto  ?????
     public InformationBookDto transferBookToInformationBookDto(Book book) {
         InformationBookDto informationBookDto = new InformationBookDto();
         InformationBook informationBook = book.getInformationBook();
@@ -249,6 +235,5 @@ public class BookService {
         }
         return informationBookDto;
     }
-
 
 }

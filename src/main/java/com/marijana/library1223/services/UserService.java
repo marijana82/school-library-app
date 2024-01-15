@@ -7,7 +7,6 @@ import com.marijana.library1223.exceptions.UsernameNotFoundException;
 import com.marijana.library1223.models.Authority;
 import com.marijana.library1223.models.User;
 import com.marijana.library1223.repositories.UserRepository;
-import com.marijana.library1223.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +49,7 @@ public class UserService {
              }
 
 
-    //get all users
+
     public List<UserDto> getAllUsers() {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
@@ -61,7 +60,7 @@ public class UserService {
     }
 
 
-    //get one user
+
     public UserDto getUserByUsername(String username) {
         UserDto userDto;
         Optional<User> optionalUser = userRepository.findById(username);
@@ -76,13 +75,13 @@ public class UserService {
     }
 
 
-    //delete user
+
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
 
 
-    //update user
+
     public void updateUserPassword(String username, UserDto newUser) {
         if(!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -90,7 +89,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    //----authorities
 
     //get authority
     public Set<Authority> getAuthority(String username) {
@@ -128,8 +126,6 @@ public class UserService {
         //dto.setApikey(user.getApiKey());
         dto.setEmail(user.getEmail());
         dto.setAuthorities(user.getAuthorities());
-        //TODO: DELETE ROLE
-        dto.setRole(user.getRole());
         dto.setFirstname(user.getFirstName());
         dto.setLastname(user.getLastName());
         return dto;
@@ -141,8 +137,6 @@ public class UserService {
         user.setPassword(userDto.getPassword());
         user.setEnabled(userDto.getEnabled());
         //user.setApiKey(userDto.getApikey());
-        //TODO: DELETE ROLE
-        user.setRole(userDto.getRole());
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstname());
         user.setLastName(userDto.getLastname());
@@ -150,13 +144,13 @@ public class UserService {
     }
 
 
-    //checks if user exists
+
     public boolean usernameExists(String username) {
         return userRepository.existsById(username);
     }
 
 
-    //validates password
+
     public Boolean validatePassword(String password) {
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{6,}$");
     }

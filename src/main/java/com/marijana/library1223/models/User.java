@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -30,29 +28,22 @@ public class User {
     @Column
     private String lastName;
 
-    //TODO:delete role??
-    @Column
-    private String role;
 
-
-    //create one-to-many relationship
+    //TARGET
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
-
-    //relation with authority
     private Set<Authority> authorities = new HashSet<>();
 
-    //TARGET - relation with account
+    //TARGET
     @OneToOne(
             mappedBy = "user",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+            orphanRemoval = true)
     @JsonIgnore
     private Account account;
 

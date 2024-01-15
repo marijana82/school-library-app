@@ -7,7 +7,6 @@ import com.marijana.library1223.exceptions.ResourceAlreadyExistsException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.User;
 import com.marijana.library1223.repositories.AccountRepository;
-import com.marijana.library1223.repositories.ReservationRepository;
 import com.marijana.library1223.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -25,12 +24,11 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
-    //createAccount2
     public AccountDto createAccount(AccountDto accountDto) {
 
         if(accountRepository.existsByFirstNameStudentIgnoreCaseAndLastNameStudentIgnoreCase(accountDto.getFirstNameStudent(), accountDto.getLastNameStudent())) {
-            //TODO CHECK: here i'm getting status 500 internal server error instead of "Account already exists".
             throw new ResourceAlreadyExistsException("Account already exists!");
+
         } else {
             Account account = new Account();
             account.setFirstNameStudent(accountDto.getFirstNameStudent());
@@ -45,19 +43,24 @@ public class AccountService {
     }
 
 
-    //showAllAccounts method - get mapping (all)
     public List<AccountDto> showAllAccounts() {
         List<Account> accountList = accountRepository.findAll();
         List<AccountDto> accountDtoList = new ArrayList<>();
+
         for (Account account : accountList) {
             AccountDto accountDto = transferAccountToAccountDto(account);
             accountDtoList.add(accountDto);
         }
+
+        //TODO: check if this is what I have to add here:
+        //if(account.getUser() !=null) {
+        //                accountDto.setUserDto(userService.transferUserToUserDto(account.getUser()));
+        //            }
+
         return accountDtoList;
     }
 
 
-    //showAllAccountsByStudentClass method - get mapping (only accounts with the same student class)
     public List<AccountDto> showAllAccountsByStudentClass(String studentClass) {
         List<Account> accountList = accountRepository.findAllAccountsByStudentClassEqualsIgnoreCase(studentClass);
         List<AccountDto> accountDtoList = new ArrayList<>();
@@ -65,11 +68,16 @@ public class AccountService {
             AccountDto accountDto = transferAccountToAccountDto(account);
             accountDtoList.add(accountDto);
         }
+
+        //TODO: check if this is what I have to add here:
+        //if(account.getUser() !=null) {
+        //                accountDto.setUserDto(userService.transferUserToUserDto(account.getUser()));
+        //            }
+
         return accountDtoList;
      }
 
 
-    //showOneAccount method - get mapping (one)
     public AccountDto showOneAccount(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
         if(optionalAccount.isPresent()) {
@@ -80,7 +88,7 @@ public class AccountService {
         }
     }
 
-    //deleteById method - delete mapping (one)
+
     public String deleteById(Long id) {
         if(accountRepository.existsById(id)) {
             Optional<Account> accountFound = accountRepository.findById(id);
@@ -93,7 +101,7 @@ public class AccountService {
     }
 
 
-    //updateOneAccount method - put mapping - for changing the whole account
+
     public AccountDto updateOneAccount(Long id, AccountDto accountDto) {
 
         Optional<Account> optionalAccount = accountRepository.findById(id);
@@ -113,7 +121,7 @@ public class AccountService {
     }
 
 
-    //updateAccountPartially - patch method - for partially updating an account
+
     public AccountDto updateAccountPartially(Long id, AccountDto accountDto) {
 
         Optional<Account> optionalAccount = accountRepository.findById(id);
@@ -156,7 +164,7 @@ public class AccountService {
 
     //helper methods ...............................................................
 
-    //helper method - transfer Account to AccountDto
+
     public AccountDto transferAccountToAccountDto(Account account) {
         AccountDto accountDto = new AccountDto();
         accountDto.setFirstNameStudent(account.getFirstNameStudent());
@@ -168,7 +176,7 @@ public class AccountService {
         return accountDto;
     }
 
-    //helper method - transfer AccountDto to Account
+
     public Account transferAccountDtoToAccount(AccountDto accountDto) {
         Account account = new Account();
         account.setFirstNameStudent(accountDto.getFirstNameStudent());
@@ -180,7 +188,7 @@ public class AccountService {
         return account;
     }
 
-    //assign user to account
+
     public void assignUserToAccount(Long idAccount, String username) {
         Optional<User> optionalUser = userRepository.findById(username);
         Optional<Account> optionalAccount = accountRepository.findById(idAccount);

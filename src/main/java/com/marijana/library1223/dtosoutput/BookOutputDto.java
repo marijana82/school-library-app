@@ -3,9 +3,6 @@ package com.marijana.library1223.dtosoutput;
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.models.InformationBook;
 import com.marijana.library1223.models.ReadingBook;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data

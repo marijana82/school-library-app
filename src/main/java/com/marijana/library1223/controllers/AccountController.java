@@ -50,22 +50,24 @@ public class AccountController {
         return ResponseEntity.created(uri).body(accountDto);
     }
 
-    //3.(all in general + all belonging to the same class)
-    //add authentication principal
+
     @GetMapping
-    public ResponseEntity<List<AccountDto>> getAllAccounts(@RequestParam(value="studentClass", required=false) Optional<String> studentClass) {
+    public ResponseEntity<List<AccountDto>> getAllAccounts(
+            @RequestParam(value="studentClass", required=false) Optional<String> studentClass) {
+
         List<AccountDto> accountDtos;
 
         if(studentClass.isEmpty()){
             accountDtos = accountService.showAllAccounts();
+
         } else {
             accountDtos = accountService.showAllAccountsByStudentClass(studentClass.get());
         }
+
         return ResponseEntity.ok().body(accountDtos);
     }
 
 
-    //4.get-mapping-one (specific id)
     @GetMapping("/{idAccount}")
     public ResponseEntity<AccountDto> getOneAccount(
             @PathVariable Long idAccount,
@@ -80,7 +82,6 @@ public class AccountController {
         }
     }
 
-    //5.put-mapping
     @PutMapping("/{idAccount}")
     public ResponseEntity<AccountDto> fullUpdateAccount(
             @PathVariable Long idAccount,
@@ -99,7 +100,6 @@ public class AccountController {
     }
 
 
-    //6.patch-mapping
     @PatchMapping("/{idAccount}")
     public ResponseEntity<AccountDto> partialUpdateAccount (
             @PathVariable Long idAccount,
@@ -118,14 +118,14 @@ public class AccountController {
     }
 
 
-    //7.delete-mapping
+
     @DeleteMapping("/{idAccount}")
     public ResponseEntity<Object> deleteOneAccount(@PathVariable Long idAccount) {
         accountService.deleteById(idAccount);
         return ResponseEntity.noContent().build();
     }
 
-    //8.add-user-to-account
+
     @PutMapping("/{idAccount}/users/{username}")
     public ResponseEntity<Object> assignUserToAccount(@PathVariable Long idAccount, @PathVariable String username) {
         accountService.assignUserToAccount(idAccount, username);

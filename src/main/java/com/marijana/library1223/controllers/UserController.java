@@ -2,7 +2,6 @@ package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.BadRequestException;
-import com.marijana.library1223.models.Authority;
 import com.marijana.library1223.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,7 @@ public class UserController {
 
             String newUsername = userService.createNewUser(userDto);
 
-            userService.addAuthority(newUsername, "ROLE_ADMIN"); //TODO: - DELETE! - userDto.getRole();
+            userService.addAuthority(newUsername, "ROLE_ADMIN");  //or replace with "ROLE_STUDENT" because I'll get the admin from the database?
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()

@@ -33,7 +33,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        //to use for List:
         for (Authority authority: authorities) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
         }
