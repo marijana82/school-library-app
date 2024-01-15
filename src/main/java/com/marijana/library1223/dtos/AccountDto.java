@@ -20,5 +20,7 @@ public class AccountDto {
     private String studentClass;
     @Size(min=1, max=128, message = "Name must contain at least 1 character.")
     private String nameOfTeacher;
+    //relation
+    private UserDto userDto;
 
 }

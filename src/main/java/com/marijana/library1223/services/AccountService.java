@@ -18,10 +18,16 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
+    public AccountService(
+            AccountRepository accountRepository,
+            UserRepository userRepository,
+            UserService userService) {
+
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public AccountDto createAccount(AccountDto accountDto) {
@@ -49,14 +55,12 @@ public class AccountService {
 
         for (Account account : accountList) {
             AccountDto accountDto = transferAccountToAccountDto(account);
+
+            if(account.getUser() !=null) {
+                accountDto.setUserDto(userService.transferUserToUserDto(account.getUser()));
+            }
             accountDtoList.add(accountDto);
         }
-
-        //TODO: check if this is what I have to add here:
-        //if(account.getUser() !=null) {
-        //                accountDto.setUserDto(userService.transferUserToUserDto(account.getUser()));
-        //            }
-
         return accountDtoList;
     }
 
@@ -66,23 +70,29 @@ public class AccountService {
         List<AccountDto> accountDtoList = new ArrayList<>();
         for(Account account : accountList) {
             AccountDto accountDto = transferAccountToAccountDto(account);
+
+            if(account.getUser() !=null) {
+                accountDto.setUserDto(userService.transferUserToUserDto(account.getUser()));
+            }
             accountDtoList.add(accountDto);
         }
-
-        //TODO: check if this is what I have to add here:
-        //if(account.getUser() !=null) {
-        //                accountDto.setUserDto(userService.transferUserToUserDto(account.getUser()));
-        //            }
-
         return accountDtoList;
      }
 
 
     public AccountDto showOneAccount(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
+
         if(optionalAccount.isPresent()) {
-            Account requestedAccount = optionalAccount.get();
-            return transferAccountToAccountDto(requestedAccount);
+            Account accountFound = optionalAccount.get();
+            AccountDto accountDto = transferAccountToAccountDto(accountFound);
+
+            if(accountFound.getUser() !=null) {
+                accountDto.setUserDto(userService.transferUserToUserDto(accountFound.getUser()));
+            }
+
+            return accountDto;
+
         } else {
             throw new IdNotFoundException("Account with id number " + id + " does not exist.");
         }
@@ -164,7 +174,6 @@ public class AccountService {
 
     //helper methods ...............................................................
 
-
     public AccountDto transferAccountToAccountDto(Account account) {
         AccountDto accountDto = new AccountDto();
         accountDto.setFirstNameStudent(account.getFirstNameStudent());
@@ -173,6 +182,11 @@ public class AccountService {
         accountDto.setStudentClass(account.getStudentClass());
         accountDto.setNameOfTeacher(account.getNameOfTeacher());
         accountDto.setId(account.getId());
+
+        if(account.getUser() !=null) {
+            accountDto.setUserDto(userService.transferUserToUserDto(account.getUser()));
+
+        }
         return accountDto;
     }
 
@@ -185,6 +199,8 @@ public class AccountService {
         account.setStudentClass(accountDto.getStudentClass());
         account.setNameOfTeacher(accountDto.getNameOfTeacher());
         account.setId(accountDto.getId());
+        account.setUser(userService.transferUserDtoToUser(accountDto.getUserDto()));
+
         return account;
     }
 
