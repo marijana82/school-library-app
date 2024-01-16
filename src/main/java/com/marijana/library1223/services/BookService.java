@@ -5,7 +5,6 @@ import com.marijana.library1223.dtos.InformationBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.*;
-import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +37,7 @@ public class BookService {
             informationBook.setEducationLevel(bookDto.getInformationBook().getEducationLevel());
             informationBook.setCurrentTopic(bookDto.getInformationBook().getCurrentTopic());
         }
+
         //set InformationBook in the Book entity
         book.setInformationBook(informationBook);
 
@@ -147,7 +147,6 @@ public class BookService {
             updatedBook.setId(book.getId());
             bookRepository.save(updatedBook);
             return transferBookToBookDto(updatedBook);
-
         }
     }
 
@@ -190,11 +189,7 @@ public class BookService {
 
 
 
-
-
     //helper methods ...........................................
-
-
     public BookDto transferBookToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
@@ -222,8 +217,6 @@ public class BookService {
         book.setReadingBook(bookDto.getReadingBook());
         return book;
     }
-
-
 
 
     public InformationBookDto transferBookToInformationBookDto(Book book) {

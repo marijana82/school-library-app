@@ -31,7 +31,6 @@ public class ReservationController {
             @Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult,
             @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
 
-        //
         if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
 
         } else {

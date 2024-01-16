@@ -129,8 +129,6 @@ public class BookCopyService {
 
 
     //helper methods ...........................................
-
-
     public BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
         BookCopyDto bookCopyDto = new BookCopyDto();
         bookCopyDto.setId(bookCopy.getId());

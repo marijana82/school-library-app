@@ -78,12 +78,15 @@ public class ReservationService {
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
+
             if(reservation.getAccount() !=null) {
                 reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
             }
+
             if(reservation.getBook() !=null) {
                 reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
             }
+
             reservationDtoList.add(reservationDto);
         }
         return reservationDtoList;
@@ -139,8 +142,6 @@ public class ReservationService {
 
 
     //helper methods.........................................
-
-
     public ReservationDto transferReservationToReservationDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setId(reservation.getId());
@@ -201,8 +202,6 @@ public class ReservationService {
             throw new RecordNotFoundException("Reservation not found.");
         }
     }
-
-
 
 
 }

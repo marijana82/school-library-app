@@ -25,7 +25,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    //------users
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
 
@@ -40,7 +39,7 @@ public class UserController {
 
             String newUsername = userService.createNewUser(userDto);
 
-            userService.addAuthority(newUsername, "ROLE_ADMIN");  //or replace with "ROLE_STUDENT" because I'll get the admin from the database?
+            userService.addAuthority(newUsername, "ROLE_USER");
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
