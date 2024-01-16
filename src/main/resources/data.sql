@@ -156,6 +156,9 @@ UPDATE borrowals SET book_copy_id = 1001 WHERE id = 1007;
 UPDATE borrowals SET book_copy_id = 1002 WHERE id = 1007;
 
 --TODO: 1, 2, 3, 4 + choose 20 books and set up the data in a way that it all makes sense!
+--TODO: create enums and see how they get integrated in the system
+--TODO: what to do with the file upload?
+
 --1. Add reservation to borrowal
 
 --2. Add account to borrowal
