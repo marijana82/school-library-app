@@ -1,16 +1,11 @@
 package com.marijana.library1223.dtos;
 
-import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.models.InformationBook;
 import com.marijana.library1223.models.ReadingBook;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class BookDto {

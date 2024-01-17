@@ -18,8 +18,6 @@ import java.util.Optional;
 
 @Service
 public class BorrowalService {
-
-    //constructor injector
     private final BorrowalRepository borrowalRepository;
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
@@ -45,7 +43,7 @@ public class BorrowalService {
         this.bookCopyRepository = bookCopyRepository;
     }
 
-    //createBorrowal - post mapping
+
     public BorrowalDto createBorrowal(BorrowalDto borrowalDto) {
         Borrowal borrowal = new Borrowal();
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
@@ -57,10 +55,11 @@ public class BorrowalService {
         return borrowalDto;
     }
 
-    //getAllBorrowals - get mapping
+
     public List<BorrowalDto> getAllBorrowals() {
         List<Borrowal> borrowalList = borrowalRepository.findAll();
         List<BorrowalDto> borrowalDtoList = new ArrayList<>();
+
         for (Borrowal borrowal : borrowalList) {
             BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowal);
 
@@ -161,22 +160,18 @@ public class BorrowalService {
 
     }
 
-    //TODO: CREATE NEW DELETE METHOD AS IN BOOK SERVICE CLASS
     public void deleteBorrowal(Long id) {
         borrowalRepository.deleteById(id);
     }
 
 
     //helper methods.........................................
-
-    //helper method - transfer BorrowalDto to Borrowal
     public Borrowal transferBorrowalDtoToBorrowal(BorrowalDto borrowalDto) {
         Borrowal borrowal = new Borrowal();
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
         borrowal.setDueDate(borrowalDto.getDueDate());
         borrowal.setBookTitle(borrowalDto.getBookTitle());
         borrowal.setId(borrowalDto.getId());
-        //TODO: CHECK IF THIS IS NECESSARY:
         borrowal.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
         borrowal.setBookCopy(bookCopyService.transferBookCopyDtoToBookCopy(borrowalDto.getBookCopyDto()));
         borrowal.setAccount(accountService.transferAccountDtoToAccount(borrowalDto.getAccountDto()));
@@ -184,14 +179,14 @@ public class BorrowalService {
         return borrowal;
     }
 
-    //helper method = transfer Borrowal to BorrowalDto
+
     public BorrowalDto transferBorrowalToBorrowalDto(Borrowal borrowal) {
         BorrowalDto borrowalDto = new BorrowalDto();
         borrowalDto.setDateOfBorrowal(borrowal.getDateOfBorrowal());
         borrowalDto.setDueDate(borrowal.getDueDate());
         borrowalDto.setBookTitle(borrowal.getBookTitle());
         borrowalDto.setId(borrowal.getId());
-        //null check
+
         if(borrowal.getReservation() !=null) {
             borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
         }
@@ -204,7 +199,7 @@ public class BorrowalService {
         return borrowalDto;
     }
 
-    //assign Reservation to Borrowal
+
     public void assignReservationToBorrowal(Long idBorrowal, Long idReservation) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
         Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
@@ -225,7 +220,7 @@ public class BorrowalService {
         }
     }
 
-    //assign book copy to borrowal
+
     public void assignBookCopyToBorrowal(Long idBorrowal, Long idCopy) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
         Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(idCopy);
@@ -247,7 +242,7 @@ public class BorrowalService {
         }
     }
     
-    //assign Account to Borrowal
+
     public void assignAccountToBorrowal(Long idBorrowal, Long idAccount) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
         Optional<Account> optionalAccount = accountRepository.findById(idAccount);

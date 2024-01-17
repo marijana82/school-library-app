@@ -1,9 +1,9 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.ReservationDto;
+import com.marijana.library1223.exceptions.AccessDeniedException;
 import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,15 +26,22 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    //TODO:CHECK IF THIS USAGE OF @AuthenticationPrincipal IS CORRECT
     @PostMapping
     public ResponseEntity<Object> createNewReservation(
             @Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
 
-        //
         if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Reservation can only be created by authorized users.");
+
+        } else {
+            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
+
+        }
+
+        if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("STUDENT"))) {
+
+        } else {
+            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
         }
 
         if(bindingResult.hasFieldErrors()) {
@@ -55,7 +62,7 @@ public class ReservationController {
         return ResponseEntity.created(uri).body(reservationDto);
     }
 
-    //get all
+
     @GetMapping
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
         List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
@@ -68,17 +75,11 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
     }
 
-    //get one
-   /* @GetMapping("/{idReservation}")
-    public ResponseEntity<ReservationDto> getSingleReservation(@PathVariable Long idReservation) {
-        return ResponseEntity.ok(reservationService.getSingleReservation(idReservation));
-    }*/
 
-    //TODO:CHECK IF THIS USAGE OF @AuthenticationPrincipal IS CORRECT
     @GetMapping("/{idReservation}")
-    public ResponseEntity<ReservationDto> getSingleReservation(
+    public ResponseEntity<ReservationDto> getSingleReservation (
             @PathVariable Long idReservation,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
 
         String username = userDetails.getUsername();
         ReservationDto reservationDto = reservationService.getSingleReservation(idReservation, username);
@@ -87,22 +88,30 @@ public class ReservationController {
             return ResponseEntity.ok(reservationDto);
 
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new AccessDeniedException("It seems you are not authorized to access this reservation");
         }
     }
 
 
-    //update reservation
+
     @PutMapping("/{idReservation}")
-    public ResponseEntity<ReservationDto> fullUpdateReservation(@PathVariable Long idReservation, @Valid @RequestBody ReservationDto reservationDto) {
-        ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
-        return ResponseEntity.ok().body(reservationDto1);
+    public ResponseEntity<ReservationDto> fullUpdateReservation(
+            @PathVariable Long idReservation,
+            @Valid @RequestBody ReservationDto reservationDto,
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
+
+        if(userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("STUDENT"))) {
+
+            ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
+            return ResponseEntity.ok().body(reservationDto1);
+
+        } else {
+            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
+        }
     }
 
-    //TODO: CREATE PATCH MAPPING
-    //patch mapping - reservation
 
-    //delete reservation
+
     @DeleteMapping("/{idReservation}")
     public ResponseEntity<Object> deleteReservation(@PathVariable Long idReservation) {
         reservationService.deleteReservation(idReservation);

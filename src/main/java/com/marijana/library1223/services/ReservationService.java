@@ -2,7 +2,6 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.UsernameNotFoundException;
 import com.marijana.library1223.exceptions.UsernameNotProvidedException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.Book;
@@ -27,7 +26,12 @@ public class ReservationService {
     private final AccountRepository accountRepository;
 
 
-    public ReservationService(ReservationRepository reservationRepository, BookService bookService, BookRepository bookRepository, AccountService accountService, AccountRepository accountRepository) {
+    public ReservationService(ReservationRepository reservationRepository,
+                              BookService bookService,
+                              BookRepository bookRepository,
+                              AccountService accountService,
+                              AccountRepository accountRepository) {
+
         this.reservationRepository = reservationRepository;
         this.bookService = bookService;
         this.bookRepository = bookRepository;
@@ -36,7 +40,7 @@ public class ReservationService {
 
     }
 
-    //createReservation - post mapping
+
     public ReservationDto createReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
         reservation.setBookTitle(reservationDto.getBookTitle());
@@ -48,12 +52,12 @@ public class ReservationService {
     }
 
 
-    //get all reservations - get mapping
+
     public List<ReservationDto> getAllReservations() {
         List<Reservation> reservationList = reservationRepository.findAll();
         List<ReservationDto> reservationDtoList = new ArrayList<>();
-        for(Reservation reservation : reservationList) {
 
+        for(Reservation reservation : reservationList) {
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
 
             if(reservation.getAccount() !=null) {
@@ -74,24 +78,24 @@ public class ReservationService {
         List<ReservationDto> reservationDtoList = new ArrayList<>();
         for(Reservation reservation : reservationList) {
             ReservationDto reservationDto = transferReservationToReservationDto(reservation);
+
             if(reservation.getAccount() !=null) {
                 reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservation.getAccount()));
             }
+
             if(reservation.getBook() !=null) {
                 reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
             }
+
             reservationDtoList.add(reservationDto);
         }
         return reservationDtoList;
     }
 
 
-    //TODO: CHECK IF THIS CODE IS OK (connected to @AuthenticationPrincipal in ReservationController)
-    //get single reservation - get mapping (id)
     public ReservationDto getSingleReservation(Long id, String username) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
 
-        //delete if not necessary
         if (username == null) {
             throw new UsernameNotProvidedException("Please provide a username.");
         } else {
@@ -104,7 +108,7 @@ public class ReservationService {
                 reservationDto.setBookDto(bookService.transferBookToBookDto(reservationFound.getBook()));
             }
             if(reservationFound.getAccount() !=null) {
-                reservationDto.setAccountDto((accountService.transferAccountToAccountDto(reservationFound.getAccount())));
+                reservationDto.setAccountDto(accountService.transferAccountToAccountDto(reservationFound.getAccount()));
             }
 
             return reservationDto;
@@ -112,11 +116,11 @@ public class ReservationService {
         } else {
             throw new RecordNotFoundException("Reservation has not been found.");
         }
-        //this } belongs to delete if not necessary
+
         }
     }
 
-    //put
+
     public ReservationDto fullUpdateReservation(Long id, ReservationDto reservationDto) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
         if(optionalReservation.isEmpty()) {
@@ -130,8 +134,6 @@ public class ReservationService {
         }
     }
 
-    //TODO: CREATE PATCH METHOD
-    //patch
 
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
@@ -139,19 +141,14 @@ public class ReservationService {
 
 
 
-
-
-
     //helper methods.........................................
-
-    //helper method - transferReservationToReservationDto
     public ReservationDto transferReservationToReservationDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setId(reservation.getId());
         reservationDto.setBookTitle(reservation.getBookTitle());
         reservationDto.setReservationDate(reservation.getReservationDate());
         reservationDto.setSidenote(reservation.getSidenote());
-        //null-check
+
         if(reservation.getBook() != null) {
             reservationDto.setBookDto(bookService.transferBookToBookDto(reservation.getBook()));
         }
@@ -161,21 +158,20 @@ public class ReservationService {
         return reservationDto;
     }
 
-    //helper method - transferReservationDtoToReservation
+
     public Reservation transferReservationDtoToReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
         reservation.setId(reservationDto.getId());
         reservation.setBookTitle(reservationDto.getBookTitle());
         reservation.setReservationDate(reservationDto.getReservationDate());
         reservation.setSidenote(reservationDto.getSidenote());
-        //TODO: CHECK IF THIS IS NECESSARY:
         reservation.setAccount(accountService.transferAccountDtoToAccount(reservationDto.getAccountDto()));
         reservation.setBook(bookService.transferBookDtoToBook(reservationDto.getBookDto()));
 
         return reservation;
     }
 
-    //assign book to reservation
+
     public void assignBookToReservation(Long idBook, Long idReservation) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
         Optional<Book> optionalBook = bookRepository.findById(idBook);
@@ -191,7 +187,7 @@ public class ReservationService {
         }
     }
 
-    //assign account to reservation
+
     public void assignAccountToReservation(Long idAccount, Long idReservation) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
         Optional<Account> optionalAccount = accountRepository.findById(idAccount);
@@ -206,8 +202,6 @@ public class ReservationService {
             throw new RecordNotFoundException("Reservation not found.");
         }
     }
-
-
 
 
 }

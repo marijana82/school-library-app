@@ -1,8 +1,6 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BorrowalDto;
-import com.marijana.library1223.dtos.IdInputDto;
-import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.services.BorrowalService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +23,10 @@ public class BorrowalController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createNewBorrowal(@Valid @RequestBody BorrowalDto borrowalDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createNewBorrowal(
+            @Valid @RequestBody BorrowalDto borrowalDto,
+            BindingResult bindingResult) {
+
        if(bindingResult.hasFieldErrors()) {
            StringBuilder stringBuilder = new StringBuilder();
            for(FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -59,7 +60,6 @@ public class BorrowalController {
         return ResponseEntity.ok(borrowalService.getSingleBorrowal(idBorrowal));
     }
 
-    //update one borrowal
     @PutMapping("/{idBorrowal}")
     public ResponseEntity<BorrowalDto> fullUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.fullUpdateBorrowal(idBorrowal, borrowalDto);
@@ -89,7 +89,6 @@ public class BorrowalController {
     }
 
 
-    //partial update (borrowal incl. reservation)
     @PatchMapping("/{idBorrowal}")
     public ResponseEntity<BorrowalDto> partialUpdateBorrowal(@PathVariable Long idBorrowal, @Valid @RequestBody BorrowalDto borrowalDto) {
         BorrowalDto borrowalDto1 = borrowalService.partialUpdateBorrowal(idBorrowal, borrowalDto);

@@ -27,7 +27,7 @@ public class BookCopyService {
         this.bookService = bookService;
     }
 
-    //createNewBookCopy method - post mapping
+
     public BookCopyDto createBookCopy(BookCopyDto bookCopyDto) {
         BookCopy bookCopy = new BookCopy();
         bookCopy.setBarcode(bookCopyDto.getBarcode());
@@ -43,7 +43,7 @@ public class BookCopyService {
         return bookCopyDto;
     }
 
-    //showOneCopy - get mapping(one)
+
     public BookCopyDto showOneCopy(Long id) {
         Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(id);
         if(optionalBookCopy.isPresent()) {
@@ -54,7 +54,7 @@ public class BookCopyService {
         }
     }
 
-    //show all copies - get mapping (all)
+
     public List<BookCopyDto> getAllBookCopies() {
         List<BookCopy> bookCopyList = bookCopyRepository.findAll();
         List<BookCopyDto> bookCopyDtoList = new ArrayList<>();
@@ -70,7 +70,7 @@ public class BookCopyService {
         return bookCopyDtoList;
     }
 
-    //show all copies published after
+
     public List<BookCopyDto> getAllBookCopiesPublishedAfter(LocalDate date) {
         List<BookCopy> bookCopyList = bookCopyRepository.findByYearPublishedAfter(date);
         List<BookCopyDto> bookCopyDtoList = new ArrayList<>();
@@ -103,7 +103,7 @@ public class BookCopyService {
         return bookCopyDtoList;
     }
 
-    //updateOneBookCopy
+
     public BookCopyDto updateOneBookCopy(Long id, BookCopyDto bookCopyDto) {
         Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(id);
         if(optionalBookCopy.isEmpty()) {
@@ -129,8 +129,6 @@ public class BookCopyService {
 
 
     //helper methods ...........................................
-
-    //helper method - transfer BookCopy to BookCopyDto
     public BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
         BookCopyDto bookCopyDto = new BookCopyDto();
         bookCopyDto.setId(bookCopy.getId());
@@ -150,7 +148,7 @@ public class BookCopyService {
     }
 
 
-    //helper method - transfer BookCopyDto to BookCopy
+
     public BookCopy transferBookCopyDtoToBookCopy(BookCopyDto bookCopyDto) {
         BookCopy bookCopy = new BookCopy();
         bookCopy.setId(bookCopyDto.getId());

@@ -1,6 +1,5 @@
 package com.marijana.library1223.dtos;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
@@ -21,5 +20,7 @@ public class AccountDto {
     private String studentClass;
     @Size(min=1, max=128, message = "Name must contain at least 1 character.")
     private String nameOfTeacher;
+    //relation
+    private UserDto userDto;
 
 }

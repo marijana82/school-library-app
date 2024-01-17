@@ -1,12 +1,13 @@
 package com.marijana.library1223.services;
 
+import com.marijana.library1223.configuration.PaginationConfiguration;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.PasswordNotValidException;
+import com.marijana.library1223.exceptions.UsernameAlreadyExistsException;
 import com.marijana.library1223.exceptions.UsernameNotFoundException;
 import com.marijana.library1223.models.Authority;
 import com.marijana.library1223.models.User;
 import com.marijana.library1223.repositories.UserRepository;
-import com.marijana.library1223.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,28 +28,29 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //helper method - checks if user exists - delete if not used
-    public boolean usernameExists(String username) {
-        return userRepository.existsById(username);
-    }
 
     //create user
     public String createNewUser(UserDto userDto) {
         String password = userDto.getPassword();
-        if(validatePassword(password)) {
-            String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-            userDto.setApikey(randomString);
-            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            User newUser = userRepository.save(transferUserDtoToUser(userDto));
-            return newUser.getUsername();
-        } else {
-            throw new PasswordNotValidException("Please edit your password to this minimum: 5 characters, 1 uppercase, 1 lowercase, 1 special character, no whitespaces.");
+        String username = userDto.getUsername();
+
+        if(usernameExists(username)) {
+            throw new UsernameAlreadyExistsException("This username is already taken. Please create a new one.");
         }
 
+        if(validatePassword(password)) {
+           // String randomString = RandomStringGenerator.generateAlphaNumeric(20);
+           // userDto.setApikey(randomString);
+                  userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+                  User newUser = userRepository.save(transferUserDtoToUser(userDto));
+                  return newUser.getUsername();
+             } else {
+                throw new PasswordNotValidException("Please edit your password to minimum 5 characters containing at least 1 uppercase/and 1 lowercase/and 1 special character, no whitespaces.");
+             }
+             }
 
-    }
 
-    //get all users
+
     public List<UserDto> getAllUsers() {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
@@ -59,13 +61,29 @@ public class UserService {
     }
 
 
-    //get one user
+    public List<UserDto> getAllUsersByLimitAndOffset(int limit, int offset) {
+        List<UserDto> userDtoList = new ArrayList<>();
+        List<User> userList = userRepository.findAll();
+
+        int startIndex = PaginationConfiguration.calculateStartIndex(offset, userList.size());
+        int endIndex = PaginationConfiguration.calculateEndIndex(offset, limit, userList.size());
+
+        for(int i = startIndex; i < endIndex; i++) {
+            userDtoList.add(transferUserToUserDto(userList.get(i)));
+        }
+
+        return userDtoList;
+    }
+
+
+
     public UserDto getUserByUsername(String username) {
-        UserDto userDto = new UserDto();
+        UserDto userDto;
         Optional<User> optionalUser = userRepository.findById(username);
 
         if(optionalUser.isPresent()) {
             userDto = transferUserToUserDto(optionalUser.get());
+
         } else {
             throw new UsernameNotFoundException(username);
         }
@@ -73,13 +91,13 @@ public class UserService {
     }
 
 
-    //delete user
+
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
 
 
-    //update user
+
     public void updateUserPassword(String username, UserDto newUser) {
         if(!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -87,9 +105,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    //----authorities
 
-    //get authority
     public Set<Authority> getAuthority(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -97,7 +113,7 @@ public class UserService {
         return userDto.getAuthorities();
     }
 
-    //add authority
+    //add authority to user
     public void addAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -105,7 +121,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    //delete authority
+
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User userFound = userRepository.findById(username).get();
@@ -116,13 +132,17 @@ public class UserService {
 
 
 
-    //helper methods
+    //--------------helper methods---------------------
     public static UserDto transferUserToUserDto(User user){
         UserDto dto = new UserDto();
-        dto.username = user.getUsername();
-        dto.password = user.getPassword();
-        //TODO:is this the problem???
+        dto.setUsername(user.getUsername());
+        dto.setPassword(user.getPassword());
+        dto.setEnabled(user.isEnabled());
+        //dto.setApikey(user.getApiKey());
+        dto.setEmail(user.getEmail());
         dto.setAuthorities(user.getAuthorities());
+        dto.setFirstname(user.getFirstName());
+        dto.setLastname(user.getLastName());
         return dto;
     }
 
@@ -130,19 +150,34 @@ public class UserService {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
+        user.setEnabled(userDto.getEnabled());
+        //user.setApiKey(userDto.getApikey());
+        user.setEmail(userDto.getEmail());
+        user.setFirstName(userDto.getFirstname());
+        user.setLastName(userDto.getLastname());
         return user;
     }
 
-    public Boolean validatePassword(String password) {
-        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{5,}$");
+
+
+    public boolean usernameExists(String username) {
+        return userRepository.existsById(username);
     }
+
+
+
+    public Boolean validatePassword(String password) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{6,}$");
+    }
+
+    //explanation regex:
 /*  ^                 - start-of-string
-    (?=.*[0-9])       - a digit must occur at least once
-    (?=.*[a-z])       - a lower case letter must occur at least once
-    (?=.*[A-Z])       - an upper case letter must occur at least once
-    (?=.*[@#$%^&+=])  - a special character must occur at least once
-    (?=\S+$)          - no whitespace allowed in the entire string
-    .{5,}             - minimum 5 characters
+    (?=.*[0-9])       - at least one digit
+    (?=.*[a-z])       - at least one lower case letter
+    (?=.*[A-Z])       - at least one upper case letter
+    (?=.*[@#$%^&+=])  - at least one special character
+    (?=\S+$)          - no whitespace allowed
+    .{6,}             - minimum 6 characters
     $                 # end-of-string*/
 
 

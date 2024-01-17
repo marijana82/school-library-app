@@ -18,10 +18,8 @@ public class BookCopyDto {
     @NotNull
     private boolean inWrittenForm;
     @NotNull(message = "Field cannot be null, please provide true or false value.")
-    //or @AssertTrue (null is also a valid input)
     private boolean audioBook;
     @NotNull(message = "Field cannot be null, please provide true or false value.")
-    //or @AssertTrue (null is also a valid input)
     private boolean dyslexiaFriendly;
     @Past
     private LocalDate yearPublished;

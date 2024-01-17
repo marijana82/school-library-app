@@ -1,7 +1,5 @@
 package com.marijana.library1223.controllers;
 
-//only used for the "in between class" AuthorBook
-//it only contains post-method to add review to book
 //no get method because this is only backend implementation, 
 // user is not aware of its existence
 
@@ -24,7 +22,9 @@ public class ReviewBookController {
     }
 
     @PostMapping("/{idReview}/{idBook}")
-    public ResponseEntity<ReviewBookKey> addReviewBook(@PathVariable("idReview") Long idReview, @PathVariable("idBook") Long idBook) {
+    public ResponseEntity<ReviewBookKey> addReviewBook(
+            @PathVariable("idReview") Long idReview,
+            @PathVariable("idBook") Long idBook) {
         ReviewBookKey key = reviewBookService.addReviewBook(idReview, idBook);
         return ResponseEntity.created(null).body(key);
     }

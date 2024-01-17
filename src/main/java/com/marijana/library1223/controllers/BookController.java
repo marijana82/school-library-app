@@ -28,7 +28,10 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createBook(@Valid @RequestBody BookDto bookDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> createBook(
+            @Valid @RequestBody BookDto bookDto,
+            BindingResult bindingResult) {
+
         if(bindingResult.hasFieldErrors()) {
             StringBuilder stringBuilder = new StringBuilder();
             for(FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -48,7 +51,7 @@ public class BookController {
         return ResponseEntity.created(uri).body(bookDto);
     }
 
-    //get one
+
     @GetMapping("/{idBook}")
     public ResponseEntity<BookDto> getOneBook(@PathVariable Long idBook) {
         BookDto bookDto = bookService.showOneBook(idBook);
@@ -56,7 +59,6 @@ public class BookController {
     }
 
 
-    //get all + name Author + name Illustrator
     @GetMapping
     public ResponseEntity<List<BookDto>> getAllBooks(
             @RequestParam(value="nameAuthor", required=false) Optional<String> nameAuthor,
@@ -64,40 +66,37 @@ public class BookController {
 
         List<BookDto> bookDtoList;
 
-            //no parameters
+            //---no parameters
         if(nameAuthor.isEmpty() && nameIllustrator.isEmpty() ) {
             bookDtoList = bookService.showAllBooks();
 
-            //only nameAuthor present
+            //---only nameAuthor present
         } else if(nameAuthor.isPresent()) {
             bookDtoList = bookService.showAllBooksByNameAuthor(nameAuthor.get());
 
-            //only nameIllustrator present
+            //---only nameIllustrator present
         } else if(nameIllustrator.isPresent()) {
             bookDtoList = bookService.showAllBooksByNameIllustrator(nameIllustrator.get());
 
-            //both parameters present
+            //---both parameters present
         } else {
             bookDtoList = bookService.showAllBooksByNameIllustratorAndNameAuthor(nameIllustrator.get(), nameAuthor.get());
         }
         return ResponseEntity.ok().body(bookDtoList);
     }
 
-    //get all + current topic
     @GetMapping("/topics")
     public ResponseEntity<List<InformationBookDto>> getAllBooksByTopic(@RequestParam String currentTopic) {
         return ResponseEntity.ok(bookService.showAllBooksByTopic(currentTopic));
     }
 
 
-    //delete one
     @DeleteMapping("/{idBook}")
     public ResponseEntity<Object> deleteOneBook(@PathVariable Long idBook) {
         bookService.deleteById(idBook);
         return ResponseEntity.noContent().build();
     }
 
-    //update all
     @PutMapping("/{idBook}")
     public ResponseEntity<BookDto> fullUpdateBook(@PathVariable Long idBook, @Valid @RequestBody BookDto bookDto) {
         BookDto bookDto1 = bookService.updateOneBook(idBook, bookDto);
@@ -105,7 +104,6 @@ public class BookController {
     }
 
 
-    //update partially
     @PatchMapping("/{idBook}")
     public ResponseEntity<BookDto> partialUpdateBook(@PathVariable Long idBook, @Valid @RequestBody BookDto bookDto) {
         BookDto bookDto1 = bookService.updateBookPartially(idBook, bookDto);
@@ -116,8 +114,6 @@ public class BookController {
     @GetMapping("/reviews/{idBook}")
     public ResponseEntity<Collection<ReviewDto>> getReviewsByIdBook(@PathVariable("idBook") Long idBook) {
         return ResponseEntity.ok(reviewBookService.getReviewsByIdBook(idBook));
-
-
     }
 
 

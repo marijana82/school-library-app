@@ -1,11 +1,10 @@
 package com.marijana.library1223.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,20 +19,33 @@ public class User {
     private String password;
     @Column(nullable = false)
     private boolean enabled = true;
-    @Column
-    private String apiKey;
+    //@Column
+    //private String apiKey;
     @Column
     private String email;
+    @Column
+    private String firstName;
+    @Column
+    private String lastName;
 
-    //create one-to-many relationship
+
+    //TARGET
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
-            //relation
-            private Set<Authority> authorities = new HashSet<>();
+    private Set<Authority> authorities = new HashSet<>();
+
+    //TARGET
+    @OneToOne(
+            mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonIgnore
+    private Account account;
 
 
     public Set<Authority> getAuthorities() {

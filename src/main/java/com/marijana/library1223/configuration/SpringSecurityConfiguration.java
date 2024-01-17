@@ -30,7 +30,6 @@ public class SpringSecurityConfiguration {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //TODO: CHECK WHICH OF THE TWO CODES IS BETTER TO USE?
    @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -39,19 +38,8 @@ public class SpringSecurityConfiguration {
         return new ProviderManager(authenticationProvider);
     }
 
-  /* @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder)
-                .and() //deprecated
-                .build();
-    }*/
-
-    //authorisation with jwt
     @Bean
     protected SecurityFilterChain filter (HttpSecurity httpSecurity) throws Exception {
-        //jwt token authentication
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
@@ -60,65 +48,80 @@ public class SpringSecurityConfiguration {
 
                         auth
                                 //TODO:set this line OUT after adding precise requestMatchers
-                                .requestMatchers("/**").permitAll()
+                                //.requestMatchers("/**").permitAll()
 
-                                //TODO: here create a list of all requestMatchers
-                                //---------------
-                                //for users [x]
-                                .requestMatchers(HttpMethod.POST, "/users/register").permitAll()  //also non registered users can create account
-                                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/users/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                                //users [x]
+                                .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/users/{username}/authorities/{authority}").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasAnyAuthority( "ROLE_ADMIN", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
 
-                                //for authentication [x]
-                                .requestMatchers("/authentication/post").permitAll()
-                                .requestMatchers("/authentication/get").authenticated()
+                                //authentication [x]
+                                .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/authentication/get").authenticated()
 
-                                //for accounts []
+                                //accounts [x] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated() //to create an account a user has to be authenticated
-                                .requestMatchers(HttpMethod.GET, "/accounts" ).hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("LIBRARIAN", "STUDENT")
-                                .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAnyRole( "LIBRARIAN", "STUDENT")
-                                .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAnyRole("LIBRARIAN", "STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasRole("LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyAuthority( "ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_ADMIN")
+                                    //add user to account
+                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_ADMIN")
 
-                                //for books []
-                                .requestMatchers(HttpMethod.POST, "/books").hasAnyRole("ADMIN","LIBRARIAN")
+
+                                //books [x]
+                                .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll() //anybody can read a review for a specific book
-                                .requestMatchers(HttpMethod.PUT, "/books/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.PATCH, "/books/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/books/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
 
-                                //for book copies []
-                                .requestMatchers(HttpMethod.POST, "/book-copy").hasAnyRole("ADMIN", "LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAnyRole("ADMIN", "LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.PATCH, "/book-copy/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasRole("ADMIN")
+                                //book-copies [x]
+                                .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
+                                //add book to copy
+                                .requestMatchers(HttpMethod.PUT, "/book-copy/{idCopy}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //for borrowals []
-                                .requestMatchers(HttpMethod.POST, "/borrowals").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/borrowals/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/borrowals/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.PATCH, "/borrowals/**").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.DELETE, "/borrowals/**").hasRole("LIBRARIAN")
+                                //borrowals []
+                                .requestMatchers(HttpMethod.POST, "/borrowals").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PATCH, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
+                                    //add book-copy, reservation, and account to borrowal:
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/copies/{idCopy}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/reservations/{idReservation}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/accounts/{idAccount}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //for reservations []
-                                .requestMatchers(HttpMethod.POST, "/reservations").hasAnyRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/reservations/dates").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/reservations/**").hasAnyRole("LIBRARIAN", "STUDENT")
-                                .requestMatchers(HttpMethod.GET, "/reservations").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/reservations/**").hasAnyRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyRole("LIBRARIAN")
 
-                                //for file upload []
-                                .requestMatchers(HttpMethod.POST, "/single/upload").hasRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/download/allNames").hasAnyRole("LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()  //anybody can download a book image file
+                                //reservations [x]
+                                .requestMatchers(HttpMethod.POST, "/reservations").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/reservations").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                    //add book to reservation
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                    //add account to reservation
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
 
-                                //for book reviews []
+
+                                //file upload []
+                                .requestMatchers(HttpMethod.POST, "/single/upload").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()
+
+                                //book-reviews []
                                 .requestMatchers(HttpMethod.POST, "/reviews-books/**").authenticated() //only authenticated users can post a book review
                                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll() //anybody can read a book review
 

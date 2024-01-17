@@ -17,8 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//this class contains the methods of ReviewBookController
-//this class is different than the other service classes, because this one is autowired in 3 different controllers
 
 @Service
 public class ReviewBookService {
@@ -26,13 +24,17 @@ public class ReviewBookService {
     private final BookRepository bookRepository;
     private final ReviewBookRepository reviewBookRepository;
 
-    public ReviewBookService(ReviewRepository reviewRepository, BookRepository bookRepository, ReviewBookRepository reviewBookRepository) {
+    public ReviewBookService(
+            ReviewRepository reviewRepository,
+            BookRepository bookRepository,
+            ReviewBookRepository reviewBookRepository) {
+
         this.reviewRepository = reviewRepository;
         this.bookRepository = bookRepository;
         this.reviewBookRepository = reviewBookRepository;
     }
 
-    //getReviewsByBookId
+
     public Collection<ReviewDto> getReviewsByIdBook(Long idBook) {
         Collection<ReviewDto> reviewDtos = new HashSet<>();
         Collection<ReviewBook> reviewBooks = reviewBookRepository.findAllByBookId(idBook);
@@ -47,9 +49,9 @@ public class ReviewBookService {
         return reviewDtos;
     }
 
-    //get BooksByIdReview
+
     public Collection<BookDto> getBooksByIdReview(Long idReview) {
-        //set to avoid double entries
+
         Set<BookDto> bookSetDtos = new HashSet<>();
         List<ReviewBook> reviewBookList = reviewBookRepository.findAllByReviewId(idReview);
         for(ReviewBook reviewBook : reviewBookList) {
@@ -71,7 +73,7 @@ public class ReviewBookService {
         return bookSetDtos;
     }
 
-    //addReviewBook
+
     public ReviewBookKey addReviewBook(Long idReview, Long idBook) {
         ReviewBook reviewBook = new ReviewBook();
 

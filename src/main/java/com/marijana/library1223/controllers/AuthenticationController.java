@@ -23,16 +23,19 @@ public class AuthenticationController {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtUtil jwtUtil;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JwtUtil jwtUtil) {
+    public AuthenticationController(
+            AuthenticationManager authenticationManager,
+            CustomUserDetailsService customUserDetailsService,
+            JwtUtil jwtUtil) {
+
         this.authenticationManager = authenticationManager;
         this.customUserDetailsService = customUserDetailsService;
         this.jwtUtil = jwtUtil;
-
     }
 
-    //post mapping, this method returns a jwt token when the user logs in with the right login details
     @PostMapping(value = "/post")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(
+            @RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
@@ -55,14 +58,9 @@ public class AuthenticationController {
     }
 
 
-
-    //get mapping, this method returns the basic user details from the logged in user
     @GetMapping(value = "/get")
-    //TODO: CHECK WHY IS AUTHENTICATION VARIABLE NEVER USED?
     public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
         return ResponseEntity.ok().body(principal);
     }
-
-
 
 }

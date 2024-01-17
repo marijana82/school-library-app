@@ -17,7 +17,6 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
-    //secret key, min 45 characters
     private final static String SECRET_KEY = "trebanamtakomaloskoronistajedankremenijednaiskradatamaodezauvijekizsna";
 
     private Key getSigningKey() {

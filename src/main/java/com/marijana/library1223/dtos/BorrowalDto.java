@@ -1,6 +1,5 @@
 package com.marijana.library1223.dtos;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -19,9 +18,9 @@ public class BorrowalDto {
     private String bookTitle;
     @Max(value=3)
     private Integer numberOfBooksBorrowed;
-    //relation
+    //---relation
     private ReservationDto reservationDto;
-    //relation with account and book copy
+    //---relation with account and book copy
     private AccountDto accountDto;
     private BookCopyDto bookCopyDto;
 
