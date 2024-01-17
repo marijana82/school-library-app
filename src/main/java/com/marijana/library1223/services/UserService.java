@@ -1,5 +1,7 @@
 package com.marijana.library1223.services;
 
+import com.marijana.library1223.configuration.PaginationConfiguration;
+import com.marijana.library1223.controllers.UserController;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.PasswordNotValidException;
 import com.marijana.library1223.exceptions.UsernameAlreadyExistsException;
@@ -25,6 +27,7 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+
     }
 
 
@@ -57,6 +60,24 @@ public class UserService {
             collection.add(transferUserToUserDto(user));
         }
         return collection;
+    }
+
+    public List<UserDto> getAllUsersByLimitAndOffset(int limit, int offset) {
+        List<UserDto> userDtoList = new ArrayList<>();
+        List<User> userList = userRepository.findAll();
+
+
+        //int startIndex = Math.min(offset, userList.size());
+        //int endIndex = Math.min(offset + limit, userList.size());
+
+        int startIndex = PaginationConfiguration.calculateStartIndex(offset, userList.size());
+        int endIndex = PaginationConfiguration.calculateEndIndex(offset, limit, userList.size());
+
+        for(int i = startIndex; i < endIndex; i++) {
+            userDtoList.add(transferUserToUserDto(userList.get(i)));
+        }
+
+        return userDtoList;
     }
 
 

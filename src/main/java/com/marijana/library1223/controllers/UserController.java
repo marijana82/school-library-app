@@ -1,5 +1,6 @@
 package com.marijana.library1223.controllers;
 
+import com.marijana.library1223.configuration.PaginationConfiguration;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.BadRequestException;
 import com.marijana.library1223.services.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -57,11 +59,36 @@ public class UserController {
         return ResponseEntity.ok().body(optionalUser);
     }
 
-    @GetMapping
+
+
+   /* @GetMapping
     ResponseEntity<List<UserDto>> getUsers() {
         List<UserDto> userDtos = userService.getAllUsers();
         return ResponseEntity.ok().body(userDtos);
+    }*/
+
+    @GetMapping
+    ResponseEntity<List<UserDto>> getUsers(
+            @RequestParam(value = "limit", required = false) Optional<Integer> limit,
+            @RequestParam(value = "offset", required = false) Optional<Integer> offset){
+
+        List<UserDto> userDtoList;
+
+        int limitValue = limit.orElse(PaginationConfiguration.DEFAULT_LIMIT);
+        int offsetValue = offset.orElse(PaginationConfiguration.DEFAULT_OFFSET);
+
+        if(limit.isEmpty() && offset.isEmpty()) {
+            userDtoList = userService.getAllUsers();
+
+        } else {
+            userDtoList = userService.getAllUsersByLimitAndOffset(limitValue, offsetValue);
+
+        }
+        return ResponseEntity.ok().body(userDtoList);
     }
+
+
+
 
     @PutMapping("/update/{username}")
     public ResponseEntity<UserDto> updateOneUser(@PathVariable("username") String username, @RequestBody UserDto userDto) {
