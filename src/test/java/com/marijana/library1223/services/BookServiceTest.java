@@ -37,6 +37,8 @@ class BookServiceTest {
     void tearDown() {
     }
 
+    //tests
+
     @Test
     @Disabled
     void createNewBook() {
@@ -52,9 +54,16 @@ class BookServiceTest {
     void showAllBooks() {
     }
 
+    //start with this test
     @Test
     @Disabled
     void showAllBooksByNameAuthor() {
+
+        //Arrange
+            //error: expected 0 arguments but found 6
+            // Book book = new Book(98765, "Kleine onderzoekers voertuigen","Ruth Martin", "Ruth Martin", 4, "adventure");
+        //Act
+        //Assert
     }
 
     @Test

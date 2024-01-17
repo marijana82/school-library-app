@@ -62,7 +62,5 @@ public class Book {
     @JsonIgnore
     private List<ReviewBook> reviewBooks = new ArrayList<>();
 
-
-
 }
 
