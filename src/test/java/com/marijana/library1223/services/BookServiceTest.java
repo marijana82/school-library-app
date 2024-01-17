@@ -2,6 +2,7 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
+import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.InformationBook;
 import com.marijana.library1223.models.ReadingBook;
@@ -17,6 +18,8 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import java.util.List;
+import java.util.Optional;
+
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -48,13 +51,14 @@ class BookServiceTest {
     BookDto bookDto2;
     BookDto bookDto3;
     InformationBookDto informationBookDto;
+    String RecordNotFoundException;
 
 
     //to load general test-data before the start of each test
     @BeforeEach
     void setUp() {
-        book1 = new Book(1000, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
-        book2 = new Book(1001, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
+        book1 = new Book(1000L, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
+        book2 = new Book(1001L, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
     }
 
     //defining that the database gets cleaned up
@@ -70,8 +74,22 @@ class BookServiceTest {
     }
 
     @Test
-    @Disabled
+    @DisplayName("Should show one book")
+    //@Disabled
     void showOneBook() {
+        //Arrange
+        when(bookRepository.findById(1000L)).thenReturn(Optional.of(book1));
+
+        //Act
+        BookDto bookDto = bookService.showOneBook(1000L);
+
+        //Assert
+        assertEquals(book1.getBookTitle(), bookDto.getBookTitle());
+
+        //Assert in case the book is not found
+        assertThrows(RecordNotFoundException.class, () -> {
+            bookService.showOneBook(1002L);
+        });
     }
 
     @Test
@@ -81,10 +99,12 @@ class BookServiceTest {
         //Arrange
         when(bookRepository.findAll()).thenReturn(List.of(book1, book2));
         //Act
-        List<Book> booksFound = bookRepository.findAll();
+        //List<Book> booksFound = bookRepository.findAll();
+        List<BookDto> bookDtoList = bookService.showAllBooks();
+
         //Assert
-        assertEquals(book1.getBookTitle(), booksFound.get(0).getBookTitle());
-        assertEquals(book2.getBookTitle(), booksFound.get(1).getBookTitle());
+        assertEquals(book1.getBookTitle(), bookDtoList.get(0).getBookTitle());
+        assertEquals(book2.getBookTitle(), bookDtoList.get(1).getBookTitle());
     }
 
 

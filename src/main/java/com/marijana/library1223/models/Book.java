@@ -62,7 +62,7 @@ public class Book {
     public Book() {}
 
     //TODO: CHECK WHY IT DOESN'T ACCEPT Long id
-    public Book(int id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge) {
+    public Book(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge) {
     }
 }
 
