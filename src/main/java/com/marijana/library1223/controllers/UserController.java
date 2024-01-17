@@ -41,7 +41,7 @@ public class UserController {
 
             String newUsername = userService.createNewUser(userDto);
 
-            userService.addAuthority(newUsername, "ROLE_USER");
+            userService.addAuthority(newUsername, "ROLE_STUDENT"); //"ROLE_USER"
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -52,6 +52,7 @@ public class UserController {
             return ResponseEntity.created(location).build();
         }
     }
+
 
     @GetMapping(value = "/{username}")
     ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {

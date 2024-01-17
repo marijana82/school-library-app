@@ -1,7 +1,6 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.configuration.PaginationConfiguration;
-import com.marijana.library1223.controllers.UserController;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.PasswordNotValidException;
 import com.marijana.library1223.exceptions.UsernameAlreadyExistsException;
@@ -27,7 +26,6 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-
     }
 
 
@@ -61,6 +59,7 @@ public class UserService {
         }
         return collection;
     }
+
 
     public List<UserDto> getAllUsersByLimitAndOffset(int limit, int offset) {
         List<UserDto> userDtoList = new ArrayList<>();
@@ -107,7 +106,6 @@ public class UserService {
     }
 
 
-    //get authority
     public Set<Authority> getAuthority(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -123,7 +121,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    //delete authority
+
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User userFound = userRepository.findById(username).get();
