@@ -60,13 +60,6 @@ public class UserController {
     }
 
 
-
-   /* @GetMapping
-    ResponseEntity<List<UserDto>> getUsers() {
-        List<UserDto> userDtos = userService.getAllUsers();
-        return ResponseEntity.ok().body(userDtos);
-    }*/
-
     @GetMapping
     ResponseEntity<List<UserDto>> getUsers(
             @RequestParam(value = "limit", required = false) Optional<Integer> limit,

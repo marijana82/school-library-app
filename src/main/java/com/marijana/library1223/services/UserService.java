@@ -66,10 +66,6 @@ public class UserService {
         List<UserDto> userDtoList = new ArrayList<>();
         List<User> userList = userRepository.findAll();
 
-
-        //int startIndex = Math.min(offset, userList.size());
-        //int endIndex = Math.min(offset + limit, userList.size());
-
         int startIndex = PaginationConfiguration.calculateStartIndex(offset, userList.size());
         int endIndex = PaginationConfiguration.calculateEndIndex(offset, limit, userList.size());
 
