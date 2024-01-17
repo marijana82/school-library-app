@@ -70,16 +70,14 @@ public class UserController {
         int limitValue = limit.orElse(PaginationConfiguration.DEFAULT_LIMIT);
         int offsetValue = offset.orElse(PaginationConfiguration.DEFAULT_OFFSET);
 
-        if(limit.isEmpty() && offset.isEmpty()) {
-            userDtoList = userService.getAllUsers();
-
-        } else {
+        if(limit.isPresent() && offset.isPresent()) {
             userDtoList = userService.getAllUsersByLimitAndOffset(limitValue, offsetValue);
 
+        } else {
+            userDtoList = userService.getAllUsers();
         }
         return ResponseEntity.ok().body(userDtoList);
     }
-
 
 
 

@@ -55,9 +55,9 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/{username}/authorities/{authority}").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/users/**").hasAnyAuthority( "ROLE_ADMIN", "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
 
                                 //authentication [x]
@@ -66,8 +66,8 @@ public class SpringSecurityConfiguration {
 
                                 //accounts [x] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated() //to create an account a user has to be authenticated
-                                .requestMatchers(HttpMethod.GET, "/accounts" ).hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyAuthority( "ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAnyAuthority( "ROLE_STUDENT", "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_ADMIN")
@@ -78,16 +78,16 @@ public class SpringSecurityConfiguration {
                                 //books [x]
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll() //anybody can read a review for a specific book
+                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
 
                                 //book-copies [x]
-                                .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 //add book to copy
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/{idCopy}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
 
@@ -111,15 +111,15 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                     //add book to reservation
-                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                     //add account to reservation
-                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
 
 
                                 //file upload []
-                                .requestMatchers(HttpMethod.POST, "/single/upload").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/single/upload").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()  //anybody can download a book image file
+                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()
 
                                 //book-reviews []
                                 .requestMatchers(HttpMethod.POST, "/reviews-books/**").authenticated() //only authenticated users can post a book review
