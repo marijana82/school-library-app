@@ -2,7 +2,9 @@ package com.marijana.library1223.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +32,9 @@ public class Book {
     @Embedded
     private InformationBook informationBook;
 
-    //Relations..............
-
     //FileDocument for upload
     @OneToOne
     FileDocument fileDocument;
-
 
     //TARGET
     @OneToOne(
@@ -49,18 +48,21 @@ public class Book {
     @JsonIgnore
     private Reservation reservation;
 
-
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
-
-
 
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<ReviewBook> reviewBooks = new ArrayList<>();
 
+    //constructors
+    public Book() {}
+
+    //TODO: CHECK WHY IT DOESN'T ACCEPT Long id
+    public Book(int id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge) {
+    }
 }
 

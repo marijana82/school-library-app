@@ -93,7 +93,7 @@ public class ReservationService {
         return reservationDtoList;
     }
 
-
+    //TODO: CHECK IT IN POSTMAN!
     public ReservationDto getSingleReservation(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
 

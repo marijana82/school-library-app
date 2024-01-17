@@ -65,7 +65,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET,"/authentication/get").authenticated()
 
                                 //accounts [x] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
-                                .requestMatchers(HttpMethod.POST, "/accounts").authenticated() //to create an account a user has to be authenticated
+                                .requestMatchers(HttpMethod.POST, "/accounts").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAuthority( "ROLE_STUDENT")
@@ -73,7 +73,6 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_ADMIN")
                                     //add user to account
                                 .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_LIBRARIAN")
-
 
                                 //books [x]
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
