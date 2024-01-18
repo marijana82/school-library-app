@@ -16,5 +16,7 @@ public class ReadingBook {
         this.currentGenre = currentGenre;
     }
 
+    public ReadingBook() {}
+    public ReadingBook(String language, String currentGenre, String readingLevel) {}
 
 }

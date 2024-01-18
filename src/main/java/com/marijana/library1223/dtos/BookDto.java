@@ -27,6 +27,11 @@ public class BookDto {
     //one-to-many
     //private List<BookCopyDto> bookCopyList;
 
+    //constructor
+    public BookDto() {}
+
+    public BookDto(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, InformationBook informationBook, ReadingBook readingBook) {}
+
 }
 
 

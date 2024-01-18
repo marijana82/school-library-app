@@ -9,4 +9,14 @@ public class InformationBook {
     private String educationLevel;
     private String currentTopic;
 
+    //constructors
+    public InformationBook() {}
+
+    public InformationBook(String educationLevel, String currentTopic) {}
+
+    //getters
+
+    public String getCurrentTopic() {
+        return currentTopic;
+    }
 }

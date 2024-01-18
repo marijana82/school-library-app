@@ -10,5 +10,9 @@ public class InformationBookDto {
     private String currentTopic;
     //private TopicEnum currentTopic;
 
+    //constructors
+    public InformationBookDto() {}
+    public InformationBookDto(String educationLevel, String currentTopic) {}
+
 
 }

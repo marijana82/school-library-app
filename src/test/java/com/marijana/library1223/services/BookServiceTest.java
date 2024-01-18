@@ -45,34 +45,68 @@ class BookServiceTest {
     Book book1;
     Book book2;
     Book book3;
+    Book book4;
     ReadingBook readingBook1;
     InformationBook informationBook1;
+    InformationBook informationBook2;
+    InformationBook informationBook3;
     BookDto bookDto1;
     BookDto bookDto2;
     BookDto bookDto3;
-    InformationBookDto informationBookDto;
-    String RecordNotFoundException;
+    BookDto bookDto4;
+    InformationBookDto informationBookDto1;
 
 
-    //to load general test-data before the start of each test
+
+    //load general test-data before the start of each test
     @BeforeEach
     void setUp() {
+
+        //set-up data for information book
+        informationBook1 = new InformationBook("adventure", "beginners");
+        informationBook2 = new InformationBook("humor", "beginners");
+        informationBook3 = new InformationBook("fantasy", "beginners");
+
+        //set-up data for reading book
+        readingBook1 = new ReadingBook("dutch", "adventure", "basic");
+
+
+        //set-up data for book
         book1 = new Book(1000L, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
         book2 = new Book(1001L, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
         book3 = new Book(1002L, 763987, "Barbapapa", "Annette Tilson", "Talus Taylor", 5 );
+        book4 = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook1);
+
     }
 
-    //defining that the database gets cleaned up
+    //clean up the database
     @AfterEach
     void tearDown() {
     }
 
     //tests
-
     @Test
-    @Disabled
+    @DisplayName("Should create new book")
     void createNewBook() {
+        //Arrange
+        when(bookRepository.save(book1)).thenReturn(book1);
+
+        //Act
+        bookService.createNewBook(bookDto1);
+        verify(bookRepository, times(1)).save(captor.capture());
+        Book bookSaving = captor.getValue();
+
+        //Assert for book
+        assertEquals(book1.getId(), bookSaving.getId());
+        assertEquals(book1.getIsbn(), bookSaving.getIsbn());
+        assertEquals(book1.getNameAuthor(), bookSaving.getNameAuthor());
+        assertEquals(book1.getBookTitle(), bookSaving.getBookTitle());
+        assertEquals(book1.getNameIllustrator(), bookSaving.getNameIllustrator());
+        assertEquals(book1.getSuitableAge(), bookSaving.getSuitableAge());
+
     }
+
+
 
     @Test
     @DisplayName("Should show one book")
@@ -138,19 +172,40 @@ class BookServiceTest {
 
     }
 
+    //TODO: CHECK WHY IS THIS NOT WORKING (Book object stays null)
     @Test
     @DisplayName("Should show all books by topic")
     @Disabled
     void showAllBooksByTopic() {
         //Arrange
-        //Act
-        //Assert
+        when(bookRepository.existsById(1003L)).thenReturn(true);
+        when(bookRepository.findAllBooksByCurrentTopic(informationBook1.getCurrentTopic())).thenReturn(List.of(book4));
 
+        //Act
+        List<Book> bookList = bookRepository.findAllBooksByCurrentTopic("humor");
+        List<InformationBookDto> bookDtoList = bookService.showAllBooksByTopic(bookList.get(0).getInformationBook().getCurrentTopic());
+        //Assert
+        assertEquals(book4.getInformationBook().getCurrentTopic(), bookDtoList);
+
+        /*assertNotNull(bookDtoList);
+        assertFalse(bookDtoList.isEmpty());
+
+        InformationBookDto informationBookDto = bookDtoList.get(0);
+        if (book4.getInformationBook() != null) {
+            //ERROR: Cannot invoke "com.marijana.library1223.models.InformationBook.getCurrentTopic()" because the return value of "com.marijana.library1223.models.Book.getInformationBook()" is null
+            assertEquals(book4.getInformationBook().getCurrentTopic(), informationBookDto.getCurrentTopic());
+        } else {
+            assertNull(informationBookDto.getCurrentTopic());
+        }*/
     }
 
     @Test
-    @Disabled
+    @DisplayName("Should delete by id")
     void deleteById() {
+        when(bookRepository.existsById(1000L)).thenReturn(true);
+        when(bookRepository.findById(1000L)).thenReturn(Optional.of(book1));
+        bookService.deleteById(1000L);
+        verify(bookRepository).delete(book1);
     }
 
     @Test
