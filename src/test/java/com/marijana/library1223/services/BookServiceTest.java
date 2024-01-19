@@ -2,21 +2,21 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.dtos.InformationBookDto;
+import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.InformationBook;
 import com.marijana.library1223.models.ReadingBook;
 import com.marijana.library1223.repositories.BookRepository;
+import jakarta.persistence.Id;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +42,8 @@ class BookServiceTest {
 
     @Captor
     ArgumentCaptor<Book> captor;
+
+    Book book;
     Book book1;
     Book book2;
     Book book3;
@@ -70,7 +72,6 @@ class BookServiceTest {
         //set-up data for reading book
         readingBook1 = new ReadingBook("dutch", "adventure", "basic");
 
-
         //set-up data for book
         book1 = new Book(1000L, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
         book2 = new Book(1001L, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
@@ -89,20 +90,46 @@ class BookServiceTest {
     @DisplayName("Should create new book")
     void createNewBook() {
         //Arrange
-        when(bookRepository.save(book1)).thenReturn(book1);
+        BookDto bookDto = new BookDto();
+        bookDto.setId(1L);
+        bookDto.setIsbn(12345);
+        bookDto.setBookTitle("Mathilda");
+        bookDto.setNameAuthor("Roald Dahl");
+        bookDto.setNameIllustrator("Quentin Blake");
+        bookDto.setSuitableAge(9);
+
+        Book book = new Book();
+        book.setId(bookDto.getId());
+        book.setIsbn(bookDto.getIsbn());
+        book.setBookTitle(bookDto.getBookTitle());
+        book.setNameAuthor(bookDto.getNameAuthor());
+        book.setNameIllustrator(bookDto.getNameIllustrator());
+        book.setSuitableAge(bookDto.getSuitableAge());
+
+
+        when(bookRepository.save(book)).thenReturn(book);
+        //TODO: test information book and reading book
+
+        BookDto bookDto1 = bookService.createNewBook(bookDto);
 
         //Act
-        bookService.createNewBook(bookDto1);
-        verify(bookRepository, times(1)).save(captor.capture());
-        Book bookSaving = captor.getValue();
+        assertEquals(12345, bookDto1.getIsbn());
+        assertEquals("Mathilda", bookDto1.getBookTitle());
+        assertEquals("Roald Dahl", bookDto1.getNameAuthor());
+        assertEquals("Quentin Blake", bookDto1.getNameIllustrator());
+        assertEquals(9, bookDto1.getSuitableAge());
+
+
+        /*verify(bookRepository, times(1)).save(captor.capture());
+        Book bookSaving = captor.getValue();*/
 
         //Assert for book
-        assertEquals(book1.getId(), bookSaving.getId());
+        /*assertEquals(book1.getId(), bookSaving.getId());
         assertEquals(book1.getIsbn(), bookSaving.getIsbn());
         assertEquals(book1.getNameAuthor(), bookSaving.getNameAuthor());
         assertEquals(book1.getBookTitle(), bookSaving.getBookTitle());
         assertEquals(book1.getNameIllustrator(), bookSaving.getNameIllustrator());
-        assertEquals(book1.getSuitableAge(), bookSaving.getSuitableAge());
+        assertEquals(book1.getSuitableAge(), bookSaving.getSuitableAge());*/
 
     }
 
@@ -177,40 +204,108 @@ class BookServiceTest {
     @DisplayName("Should show all books by topic")
     @Disabled
     void showAllBooksByTopic() {
+
+        //book1 = new Book(1000L, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
         //Arrange
-        when(bookRepository.existsById(1003L)).thenReturn(true);
-        when(bookRepository.findAllBooksByCurrentTopic(informationBook1.getCurrentTopic())).thenReturn(List.of(book4));
+        InformationBook informationBook1 = new InformationBook();
+        informationBook1.setEducationLevel("beginners");
+        informationBook1.setCurrentTopic("adventure");
+
+        Book book1 = new Book();
+        book1.setId(1000L);
+        book1.setIsbn(98765);
+        book1.setBookTitle("Kleine onderzoekers voertuigen");
+        book1.setNameAuthor("Ruth Martin");
+        book1.setNameIllustrator("Ruth Martin");
+        book1.setSuitableAge(4);
+        book1.setInformationBook(informationBook1);
+
+        //book2 = new Book(1001L, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
+        InformationBook informationBook2 = new InformationBook();
+        informationBook2.setEducationLevel("beginners");
+        informationBook2.setCurrentTopic("transport");
+
+        Book book2 = new Book();
+        book2.setId(1001L);
+        book2.setIsbn(8765);
+        book2.setBookTitle("Graafmachines en kiepautos");
+        book2.setNameAuthor("Angela Royston");
+        book2.setNameIllustrator("David Barrow");
+        book2.setSuitableAge(4);
+        book2.setInformationBook(informationBook2);
+
+        List<Book> bookList = new ArrayList<>();
+        bookList.add(book1);
+        bookList.add(book2);
 
         //Act
-        List<Book> bookList = bookRepository.findAllBooksByCurrentTopic("humor");
-        List<InformationBookDto> bookDtoList = bookService.showAllBooksByTopic(bookList.get(0).getInformationBook().getCurrentTopic());
+        //Mockito.when(bookRepository.findAllBooksByCurrentTopic("transport")).thenReturn(bookList);
+
+        //List<BookDto> bookDto = bookService.showAllBooksByTopic("transport");
+
+
         //Assert
-        assertEquals(book4.getInformationBook().getCurrentTopic(), bookDtoList);
 
-        /*assertNotNull(bookDtoList);
-        assertFalse(bookDtoList.isEmpty());
 
-        InformationBookDto informationBookDto = bookDtoList.get(0);
-        if (book4.getInformationBook() != null) {
-            //ERROR: Cannot invoke "com.marijana.library1223.models.InformationBook.getCurrentTopic()" because the return value of "com.marijana.library1223.models.Book.getInformationBook()" is null
-            assertEquals(book4.getInformationBook().getCurrentTopic(), informationBookDto.getCurrentTopic());
-        } else {
-            assertNull(informationBookDto.getCurrentTopic());
-        }*/
+        //Arrange
+        /*InformationBook informationBook = new InformationBook("beginners", "adventure");
+        ReadingBook readingBook = new ReadingBook("dutch", "adventure", "basic");
+        BookDto bookDto = new BookDto(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook, readingBook);
+        Book book = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook, readingBook);
+
+        when(bookRepository.existsById(1003L)).thenReturn(true);
+        when(bookRepository.findAllBooksByCurrentTopic(informationBook.getCurrentTopic())).thenReturn(List.of(book));*/
+
+        //Act
+        /*List<Book> bookList = bookRepository.findAllBooksByCurrentTopic("humor");
+        List<InformationBookDto> bookDtoList = bookService.showAllBooksByTopic(bookList.get(0).getInformationBook().getCurrentTopic());*/
+        //Assert
+        /*assertEquals(book.getInformationBook().getCurrentTopic(), bookDtoList.get(0).getCurrentTopic());*/
     }
 
     @Test
     @DisplayName("Should delete by id")
     void deleteById() {
+        //Arrange
         when(bookRepository.existsById(1000L)).thenReturn(true);
+        when(bookRepository.existsById(null)).thenReturn(false);
         when(bookRepository.findById(1000L)).thenReturn(Optional.of(book1));
+        //Act
         bookService.deleteById(1000L);
+        //Assert
         verify(bookRepository).delete(book1);
+        //Assert in case the book is not found
+        assertThrows(IdNotFoundException.class, () -> {
+            bookService.deleteById(null);
+        });
     }
 
     @Test
-    @Disabled
+    @DisplayName("Should update one book")
     void updateOneBook() {
+        //Arrange
+        BookDto bookDto = new BookDto(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook1, readingBook1);
+        Book book = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook1, readingBook1);
+        Book book5 = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook2, readingBook1);
+
+        when(bookRepository.findById(1003L)).thenReturn(Optional.of(book));
+        when(bookRepository.save(any())).thenReturn(book5);
+        //Act
+        bookService.updateOneBook(1003L, bookDto);
+
+        //Assert
+        verify(bookRepository, times(1)).save(captor.capture());
+        Book captured = captor.getValue();
+        assertEquals(book.getBookTitle(), captured.getBookTitle());
+        assertEquals(book.getNameAuthor(), captured.getNameAuthor());
+        assertEquals(book.getNameIllustrator(), captured.getNameIllustrator());
+        assertEquals(book.getId(), captured.getId());
+        assertEquals(book.getIsbn(), captured.getIsbn());
+        assertEquals(book.getSuitableAge(), captured.getSuitableAge());
+
+        assertThrows(IdNotFoundException.class, () -> {
+            bookService.updateOneBook(null, null);
+        });
     }
 
     @Test

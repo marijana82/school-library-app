@@ -112,7 +112,8 @@ public class BookService {
     }
 
 
-    public List<InformationBookDto> showAllBooksByTopic(String topic) {
+    //TODO:DELETE
+    /*public List<InformationBookDto> showAllBooksByTopic(String topic) {
         List<Book> bookList = bookRepository.findAllBooksByCurrentTopic(topic);
         List<InformationBookDto> informationBookDtoList = new ArrayList<>();
         for(Book book : bookList) {
@@ -120,7 +121,7 @@ public class BookService {
             informationBookDtoList.add(informationBookDto);
         }
         return informationBookDtoList;
-    }
+    }*/
 
 
 
@@ -218,8 +219,8 @@ public class BookService {
         return book;
     }
 
-
-    public InformationBookDto transferBookToInformationBookDto(Book book) {
+    //TODO: DELETE
+    /*public InformationBookDto transferBookToInformationBookDto(Book book) {
         InformationBookDto informationBookDto = new InformationBookDto();
         InformationBook informationBook = book.getInformationBook();
         if(informationBook != null) {
@@ -227,6 +228,6 @@ public class BookService {
             informationBookDto.setEducationLevel(informationBook.getEducationLevel());
         }
         return informationBookDto;
-    }
+    }*/
 
 }

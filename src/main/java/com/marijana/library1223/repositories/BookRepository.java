@@ -15,8 +15,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     //JPQL = java persistence query language to find all books where the 'currentTopic' field in the embedded InformationBook
     // matches the provided currentTopic:
-    @Query("SELECT b FROM Book b WHERE b.informationBook.currentTopic = :currentTopic")
-    List<Book> findAllBooksByCurrentTopic(@Param("currentTopic") String currentTopic);
+
+    //TODO: DELETE
+    /*@Query("SELECT b FROM Book b WHERE b.informationBook.currentTopic = :currentTopic")
+    List<Book> findAllBooksByCurrentTopic(@Param("currentTopic") String currentTopic);*/
 
 
 }

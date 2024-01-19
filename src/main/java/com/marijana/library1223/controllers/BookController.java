@@ -85,10 +85,11 @@ public class BookController {
         return ResponseEntity.ok().body(bookDtoList);
     }
 
-    @GetMapping("/topics")
+    //TODO: DELETE
+    /*@GetMapping("/topics")
     public ResponseEntity<List<InformationBookDto>> getAllBooksByTopic(@RequestParam String currentTopic) {
         return ResponseEntity.ok(bookService.showAllBooksByTopic(currentTopic));
-    }
+    }*/
 
 
     @DeleteMapping("/{idBook}")

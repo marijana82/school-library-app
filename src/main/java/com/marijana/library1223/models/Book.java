@@ -67,6 +67,9 @@ public class Book {
     public Book(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, InformationBook informationBook) {
     }
 
+    public Book(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, InformationBook informationBook, ReadingBook readingBook) {
+    }
+
 
 
 }
