@@ -85,12 +85,6 @@ public class BookController {
         return ResponseEntity.ok().body(bookDtoList);
     }
 
-    //TODO: DELETE
-    /*@GetMapping("/topics")
-    public ResponseEntity<List<InformationBookDto>> getAllBooksByTopic(@RequestParam String currentTopic) {
-        return ResponseEntity.ok(bookService.showAllBooksByTopic(currentTopic));
-    }*/
-
 
     @DeleteMapping("/{idBook}")
     public ResponseEntity<Object> deleteOneBook(@PathVariable Long idBook) {

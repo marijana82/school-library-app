@@ -1,14 +1,10 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
-import com.marijana.library1223.dtos.InformationBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
-import com.marijana.library1223.models.InformationBook;
-import com.marijana.library1223.models.ReadingBook;
 import com.marijana.library1223.repositories.BookRepository;
-import jakarta.persistence.Id;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -16,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,12 +26,6 @@ class BookServiceTest {
     @Mock
     BookRepository bookRepository;
 
-    @Mock
-    ReadingBook readingBook;
-
-    @Mock
-    InformationBook informationBook;
-
     @InjectMocks
     BookService bookService;
 
@@ -48,15 +37,15 @@ class BookServiceTest {
     Book book2;
     Book book3;
     Book book4;
-    ReadingBook readingBook1;
-    InformationBook informationBook1;
+    /*ReadingBook readingBook1;*/
+    /*InformationBook informationBook1;
     InformationBook informationBook2;
-    InformationBook informationBook3;
+    InformationBook informationBook3;*/
     BookDto bookDto1;
     BookDto bookDto2;
     BookDto bookDto3;
     BookDto bookDto4;
-    InformationBookDto informationBookDto1;
+    /*InformationBookDto informationBookDto1;*/
 
 
 
@@ -64,19 +53,19 @@ class BookServiceTest {
     @BeforeEach
     void setUp() {
 
-        //set-up data for information book
+       /* //set-up data for information book
         informationBook1 = new InformationBook("adventure", "beginners");
         informationBook2 = new InformationBook("humor", "beginners");
         informationBook3 = new InformationBook("fantasy", "beginners");
 
         //set-up data for reading book
         readingBook1 = new ReadingBook("dutch", "adventure", "basic");
-
+*/
         //set-up data for book
         book1 = new Book(1000L, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
         book2 = new Book(1001L, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
         book3 = new Book(1002L, 763987, "Barbapapa", "Annette Tilson", "Talus Taylor", 5 );
-        book4 = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook1);
+        book4 = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
 
     }
 
@@ -108,7 +97,6 @@ class BookServiceTest {
 
 
         when(bookRepository.save(book)).thenReturn(book);
-        //TODO: test information book and reading book
 
         BookDto bookDto1 = bookService.createNewBook(bookDto);
 
@@ -118,18 +106,6 @@ class BookServiceTest {
         assertEquals("Roald Dahl", bookDto1.getNameAuthor());
         assertEquals("Quentin Blake", bookDto1.getNameIllustrator());
         assertEquals(9, bookDto1.getSuitableAge());
-
-
-        /*verify(bookRepository, times(1)).save(captor.capture());
-        Book bookSaving = captor.getValue();*/
-
-        //Assert for book
-        /*assertEquals(book1.getId(), bookSaving.getId());
-        assertEquals(book1.getIsbn(), bookSaving.getIsbn());
-        assertEquals(book1.getNameAuthor(), bookSaving.getNameAuthor());
-        assertEquals(book1.getBookTitle(), bookSaving.getBookTitle());
-        assertEquals(book1.getNameIllustrator(), bookSaving.getNameIllustrator());
-        assertEquals(book1.getSuitableAge(), bookSaving.getSuitableAge());*/
 
     }
 
@@ -199,69 +175,6 @@ class BookServiceTest {
 
     }
 
-    //TODO: CHECK WHY IS THIS NOT WORKING (Book object stays null)
-    @Test
-    @DisplayName("Should show all books by topic")
-    @Disabled
-    void showAllBooksByTopic() {
-
-        //book1 = new Book(1000L, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
-        //Arrange
-        InformationBook informationBook1 = new InformationBook();
-        informationBook1.setEducationLevel("beginners");
-        informationBook1.setCurrentTopic("adventure");
-
-        Book book1 = new Book();
-        book1.setId(1000L);
-        book1.setIsbn(98765);
-        book1.setBookTitle("Kleine onderzoekers voertuigen");
-        book1.setNameAuthor("Ruth Martin");
-        book1.setNameIllustrator("Ruth Martin");
-        book1.setSuitableAge(4);
-        book1.setInformationBook(informationBook1);
-
-        //book2 = new Book(1001L, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
-        InformationBook informationBook2 = new InformationBook();
-        informationBook2.setEducationLevel("beginners");
-        informationBook2.setCurrentTopic("transport");
-
-        Book book2 = new Book();
-        book2.setId(1001L);
-        book2.setIsbn(8765);
-        book2.setBookTitle("Graafmachines en kiepautos");
-        book2.setNameAuthor("Angela Royston");
-        book2.setNameIllustrator("David Barrow");
-        book2.setSuitableAge(4);
-        book2.setInformationBook(informationBook2);
-
-        List<Book> bookList = new ArrayList<>();
-        bookList.add(book1);
-        bookList.add(book2);
-
-        //Act
-        //Mockito.when(bookRepository.findAllBooksByCurrentTopic("transport")).thenReturn(bookList);
-
-        //List<BookDto> bookDto = bookService.showAllBooksByTopic("transport");
-
-
-        //Assert
-
-
-        //Arrange
-        /*InformationBook informationBook = new InformationBook("beginners", "adventure");
-        ReadingBook readingBook = new ReadingBook("dutch", "adventure", "basic");
-        BookDto bookDto = new BookDto(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook, readingBook);
-        Book book = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook, readingBook);
-
-        when(bookRepository.existsById(1003L)).thenReturn(true);
-        when(bookRepository.findAllBooksByCurrentTopic(informationBook.getCurrentTopic())).thenReturn(List.of(book));*/
-
-        //Act
-        /*List<Book> bookList = bookRepository.findAllBooksByCurrentTopic("humor");
-        List<InformationBookDto> bookDtoList = bookService.showAllBooksByTopic(bookList.get(0).getInformationBook().getCurrentTopic());*/
-        //Assert
-        /*assertEquals(book.getInformationBook().getCurrentTopic(), bookDtoList.get(0).getCurrentTopic());*/
-    }
 
     @Test
     @DisplayName("Should delete by id")
@@ -284,9 +197,9 @@ class BookServiceTest {
     @DisplayName("Should update one book")
     void updateOneBook() {
         //Arrange
-        BookDto bookDto = new BookDto(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook1, readingBook1);
-        Book book = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook1, readingBook1);
-        Book book5 = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5, informationBook2, readingBook1);
+        BookDto bookDto = new BookDto(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        Book book = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        Book book5 = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
 
         when(bookRepository.findById(1003L)).thenReturn(Optional.of(book));
         when(bookRepository.save(any())).thenReturn(book5);

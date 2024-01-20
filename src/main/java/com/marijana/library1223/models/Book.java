@@ -2,9 +2,7 @@ package com.marijana.library1223.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +25,7 @@ public class Book {
     private String nameIllustrator;
     @Column(name = "suitable_age")
     private int suitableAge;
-    @Embedded
-    private ReadingBook readingBook;
-    @Embedded
-    private InformationBook informationBook;
+    //here add enum genre
 
     //FileDocument for upload
     @OneToOne
@@ -63,13 +58,6 @@ public class Book {
 
     public Book(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge) {
     }
-
-    public Book(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, InformationBook informationBook) {
-    }
-
-    public Book(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge, InformationBook informationBook, ReadingBook readingBook) {
-    }
-
 
 
 }

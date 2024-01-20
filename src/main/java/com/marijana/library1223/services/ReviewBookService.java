@@ -63,11 +63,6 @@ public class ReviewBookService {
             bookDto.setIsbn(book.getIsbn());
             bookDto.setNameIllustrator(book.getNameIllustrator());
             bookDto.setSuitableAge(book.getSuitableAge());
-            bookDto.setInformationBook(book.getInformationBook());
-            bookDto.setReadingBook(book.getReadingBook());
-            //bookDto.setReservationDto(book.getReservation());
-            //bookDto.setReservationId();
-            //bookDto.setBookCopyList(book.getBookCopyList());
             bookSetDtos.add(bookDto);
         }
         return bookSetDtos;

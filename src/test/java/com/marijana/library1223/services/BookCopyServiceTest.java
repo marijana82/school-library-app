@@ -1,12 +1,12 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookCopyDto;
+import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
+import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookCopyRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +31,9 @@ class BookCopyServiceTest {
     @Mock
     BookCopyRepository bookCopyRepository;
 
+    @Mock
+    BookService bookService;
+
     @InjectMocks
     BookCopyService bookCopyService;
 
@@ -38,7 +42,7 @@ class BookCopyServiceTest {
     @Test
     @DisplayName("Should create book copy")
     void createBookCopy() {
-        //1. DTO  MADE AND FILLED
+
         BookCopyDto bookCopyDto = new BookCopyDto();
         bookCopyDto.setId(1L);
         bookCopyDto.setAudioBook(true);
@@ -61,7 +65,7 @@ class BookCopyServiceTest {
         bookCopy.setNumberOfPages(bookCopyDto.getNumberOfPages());
         bookCopy.setTotalWordCount(bookCopyDto.getTotalWordCount());
 
-        Mockito.when(bookCopyRepository.save(Mockito.any(BookCopy.class))).thenReturn(bookCopy);
+        Mockito.when(bookCopyRepository.save(any(BookCopy.class))).thenReturn(bookCopy);
 
         BookCopyDto bookCopyDto1 = bookCopyService.createBookCopy(bookCopyDto);
 
@@ -151,6 +155,7 @@ class BookCopyServiceTest {
 
         assertEquals(2, bookCopyDtoList.size());
     }
+
 
 
 
