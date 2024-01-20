@@ -37,15 +37,12 @@ class BookServiceTest {
     Book book2;
     Book book3;
     Book book4;
-    /*ReadingBook readingBook1;*/
-    /*InformationBook informationBook1;
-    InformationBook informationBook2;
-    InformationBook informationBook3;*/
+
     BookDto bookDto1;
     BookDto bookDto2;
     BookDto bookDto3;
     BookDto bookDto4;
-    /*InformationBookDto informationBookDto1;*/
+
 
 
 
@@ -53,14 +50,6 @@ class BookServiceTest {
     @BeforeEach
     void setUp() {
 
-       /* //set-up data for information book
-        informationBook1 = new InformationBook("adventure", "beginners");
-        informationBook2 = new InformationBook("humor", "beginners");
-        informationBook3 = new InformationBook("fantasy", "beginners");
-
-        //set-up data for reading book
-        readingBook1 = new ReadingBook("dutch", "adventure", "basic");
-*/
         //set-up data for book
         book1 = new Book(1000L, 98765, "Kleine onderzoekers voertuigen", "Ruth Martin", "Ruth Martin", 4);
         book2 = new Book(1001L, 8765, "Graafmachines en kiepautos", "Angela Royston", "David Barrow", 4);
@@ -209,6 +198,7 @@ class BookServiceTest {
         //Assert
         verify(bookRepository, times(1)).save(captor.capture());
         Book captured = captor.getValue();
+
         assertEquals(book.getBookTitle(), captured.getBookTitle());
         assertEquals(book.getNameAuthor(), captured.getNameAuthor());
         assertEquals(book.getNameIllustrator(), captured.getNameIllustrator());
@@ -236,8 +226,4 @@ class BookServiceTest {
     void transferBookDtoToBook() {
     }
 
-    @Test
-    @Disabled
-    void transferBookToInformationBookDto() {
-    }
 }

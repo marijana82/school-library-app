@@ -112,6 +112,7 @@ public class BookCopyService {
             BookCopy bookCopyFound = optionalBookCopy.get();
             BookCopy bookCopyUpdate = transferBookCopyDtoToBookCopy(bookCopyDto);
             bookCopyUpdate.setId(bookCopyFound.getId());
+            bookCopyRepository.save(bookCopyUpdate);
             return transferBookCopyToBookCopyDto(bookCopyUpdate);
         }
     }
