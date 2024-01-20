@@ -3,15 +3,19 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
+import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookCopyRepository;
+import com.marijana.library1223.repositories.BookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,10 +28,14 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class BookCopyServiceTest {
 
     @Mock
     BookCopyRepository bookCopyRepository;
+
+    @Mock
+    BookRepository bookRepository;
 
     @Mock
     BookService bookService;
@@ -306,12 +314,16 @@ class BookCopyServiceTest {
 
         assertEquals(bookCopy.getId(), captured.getId());
 
+        assertThrows(RecordNotFoundException.class, () -> {
+            bookCopyService.updateOneBookCopy(null, null);
+        });
+
 
     }
 
     @Test
+    @DisplayName("Should delete copy by id")
     void deleteCopyById() {
-
         //Arrange
         BookCopy bookCopy1 = new BookCopy();
         bookCopy1.setId(1L);
@@ -347,6 +359,29 @@ class BookCopyServiceTest {
     }
 
     @Test
+    @DisplayName("Should assign book to book copy")
     void assignBookToBookCopy() {
-    }
+        //Arrange
+        BookCopy bookCopy = new BookCopy();
+        bookCopy.setId(1L);
+
+        Book book = new Book();
+        book.setId(2L);
+
+        when(bookCopyRepository.findById(1L)).thenReturn(Optional.of(bookCopy));
+        when(bookRepository.findById(2L)).thenReturn(Optional.of(book));
+
+        bookCopyService.assignBookToBookCopy(bookCopy.getId(), book.getId());
+
+        verify(bookCopyRepository, times(1)).save(bookCopy);
+
+        assertEquals(book, bookCopy.getBook());
+        assertThrows(RecordNotFoundException.class, () -> {
+            bookCopyService.assignBookToBookCopy(null, null);
+        });
+
+}
+
+
+
 }

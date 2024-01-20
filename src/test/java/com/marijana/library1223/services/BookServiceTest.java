@@ -212,8 +212,36 @@ class BookServiceTest {
     }
 
     @Test
+    @DisplayName("Should update book partially")
     @Disabled
     void updateBookPartially() {
+        //Arrange
+        Long bookId = 1L;
+        BookDto bookDto = new BookDto();
+        bookDto.setBookTitle("New title");
+        bookDto.setSuitableAge(9);
+
+        Book existingBook = new Book();
+        existingBook.setId(bookId);
+        existingBook.setBookTitle("Old title");
+        existingBook.setSuitableAge(8);
+
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
+        when(bookRepository.save(any())).thenReturn(existingBook);
+
+        BookDto updatedBookDto = bookService.updateBookPartially(bookId, bookDto);
+
+        assertNotNull(updatedBookDto);
+        assertEquals(bookId, updatedBookDto.getId());
+        assertEquals(bookDto.getBookTitle(), updatedBookDto.getBookTitle());
+        assertEquals(bookDto.getSuitableAge(), updatedBookDto.getSuitableAge());
+
+        verify(bookRepository, times(1)).save(captor.capture());
+
+        Book captured = captor.getValue();
+        assertEquals(bookId, captured.getId());
+        assertEquals(bookDto.getBookTitle(), captured.getBookTitle());
+        assertEquals(bookDto.getSuitableAge(), captured.getSuitableAge());
     }
 
     @Test
