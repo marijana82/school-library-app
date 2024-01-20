@@ -8,6 +8,7 @@ import com.marijana.library1223.repositories.BookRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.internal.verification.SingleRegisteredInvocation;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -186,23 +187,24 @@ class BookServiceTest {
     @DisplayName("Should update one book")
     void updateOneBook() {
         //Arrange
-        BookDto bookDto = new BookDto(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
-        Book book = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
-        Book book5 = new Book(1003L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        BookDto bookDto = new BookDto(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        Book book = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        Book book5 = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
 
-        when(bookRepository.findById(1003L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        when(bookRepository.existsById(1L)).thenReturn(true);
         when(bookRepository.save(any())).thenReturn(book5);
         //Act
-        bookService.updateOneBook(1003L, bookDto);
+        bookService.updateOneBook(1L, bookDto);
 
         //Assert
         verify(bookRepository, times(1)).save(captor.capture());
         Book captured = captor.getValue();
 
+        assertEquals(book.getId(), captured.getId());
         assertEquals(book.getBookTitle(), captured.getBookTitle());
         assertEquals(book.getNameAuthor(), captured.getNameAuthor());
         assertEquals(book.getNameIllustrator(), captured.getNameIllustrator());
-        assertEquals(book.getId(), captured.getId());
         assertEquals(book.getIsbn(), captured.getIsbn());
         assertEquals(book.getSuitableAge(), captured.getSuitableAge());
 
@@ -213,35 +215,29 @@ class BookServiceTest {
 
     @Test
     @DisplayName("Should update book partially")
-    @Disabled
+    //@Disabled
     void updateBookPartially() {
         //Arrange
-        Long bookId = 1L;
-        BookDto bookDto = new BookDto();
-        bookDto.setBookTitle("New title");
-        bookDto.setSuitableAge(9);
 
-        Book existingBook = new Book();
-        existingBook.setId(bookId);
-        existingBook.setBookTitle("Old title");
-        existingBook.setSuitableAge(8);
+        BookDto bookDto = new BookDto(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        Book book = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        Book book5 = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
 
-        when(bookRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
-        when(bookRepository.save(any())).thenReturn(existingBook);
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        when(bookRepository.existsById(1L)).thenReturn(true);
+        when(bookRepository.save(any())).thenReturn(book5);
 
-        BookDto updatedBookDto = bookService.updateBookPartially(bookId, bookDto);
-
-        assertNotNull(updatedBookDto);
-        assertEquals(bookId, updatedBookDto.getId());
-        assertEquals(bookDto.getBookTitle(), updatedBookDto.getBookTitle());
-        assertEquals(bookDto.getSuitableAge(), updatedBookDto.getSuitableAge());
+        bookService.updateBookPartially(1L, bookDto);
 
         verify(bookRepository, times(1)).save(captor.capture());
-
         Book captured = captor.getValue();
-        assertEquals(bookId, captured.getId());
-        assertEquals(bookDto.getBookTitle(), captured.getBookTitle());
-        assertEquals(bookDto.getSuitableAge(), captured.getSuitableAge());
+
+        assertEquals(book.getId(), captured.getId());
+        assertEquals(book.getBookTitle(), captured.getBookTitle());
+        assertEquals(book.getSuitableAge(), captured.getSuitableAge());
+        assertEquals(book.getNameAuthor(), captured.getNameAuthor());
+        assertEquals(book.getNameIllustrator(), captured.getNameIllustrator());
+
     }
 
     @Test
