@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -100,10 +101,12 @@ public class BookController {
 
 
     @PatchMapping("/{idBook}")
-    public ResponseEntity<BookDto> partialUpdateBook(@PathVariable Long idBook, @Valid @RequestBody BookDto bookDto) {
+    public ResponseEntity<BookDto> partialUpdateBook(@PathVariable Long idBook, @RequestBody BookDto bookDto) {
         BookDto bookDto1 = bookService.updateBookPartially(idBook, bookDto);
         return ResponseEntity.ok().body(bookDto1);
     }
+
+
 
     //all reviews connected to a certain book
     @GetMapping("/reviews/{idBook}")

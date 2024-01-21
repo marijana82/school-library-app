@@ -16,7 +16,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "isbn")
-    private int isbn;
+    private Integer isbn;
     @Column(name = "book_title")
     private String bookTitle;
     @Column(name = "name_author")
@@ -24,7 +24,7 @@ public class Book {
     @Column(name = "name_illustrator")
     private String nameIllustrator;
     @Column(name = "suitable_age")
-    private int suitableAge;
+    private Integer suitableAge;
     //here add enum genre
 
     //FileDocument for upload
@@ -56,7 +56,7 @@ public class Book {
     //constructors
     public Book() {}
 
-    public Book(Long id, int isbn, String bookTitle, String nameAuthor, String nameIllustrator, int suitableAge) {
+    public Book(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge) {
     }
 
 

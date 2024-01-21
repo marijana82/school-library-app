@@ -6,7 +6,6 @@ import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,73 +119,48 @@ public class BookService {
 
     //updateBookPartially
     public BookDto updateBookPartially(Long id, BookDto bookDto) {
+
         Optional<Book> bookOptional = bookRepository.findById(id);
 
-        if(bookRepository.existsById(id)) {
+            if(bookRepository.existsById(id)) {
 
-            Book bookToUpdate = bookOptional.get();
-            Book bookTransfer = transferBookDtoToBook(bookDto);
-            bookTransfer.setId(bookToUpdate.getId());
+            Book existingBook = bookOptional.get();
 
-            if(bookDto.getIsbn() != -1) {
-                bookToUpdate.setIsbn(bookDto.getIsbn());
+            Book partialUpdates = transferBookDtoToBook(bookDto);
+
+            partialUpdates.setId(existingBook.getId());
+
+            if(partialUpdates.getIsbn() != null) {
+                existingBook.setIsbn(partialUpdates.getIsbn());
             }
 
-            if(bookDto.getBookTitle() != null) {
-                bookToUpdate.setBookTitle(bookDto.getBookTitle());
+            if(partialUpdates.getBookTitle() != null) {
+                existingBook.setBookTitle(partialUpdates.getBookTitle());
             }
 
-            if(bookDto.getNameAuthor() != null) {
-                bookToUpdate.setNameIllustrator(bookDto.getNameIllustrator());
+            if(partialUpdates.getNameAuthor() != null) {
+                existingBook.setNameAuthor(partialUpdates.getNameAuthor());
             }
 
-            if(bookDto.getSuitableAge() != -1) {
-                bookToUpdate.setSuitableAge(bookDto.getSuitableAge());
+            if(partialUpdates.getNameIllustrator() != null) {
+                existingBook.setNameIllustrator(partialUpdates.getNameIllustrator());
             }
 
-            Book savedBook = bookRepository.save(bookToUpdate);
-            return transferBookToBookDto(savedBook);
+            if(partialUpdates.getSuitableAge() != null) {
+                existingBook.setSuitableAge(partialUpdates.getSuitableAge());
+            }
+
+            Book newBookSaved = bookRepository.save(existingBook);
+
+            return transferBookToBookDto(newBookSaved);
 
 
         } else {
 
             throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
         }
-
-
-        /*if(bookOptional.isEmpty()) {
-            throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
-
-        } else {
-
-            Book bookToUpdate = bookOptional.get();
-
-            Book book1 = transferBookDtoToBook(bookDto);
-            book1.setId(bookToUpdate.getId());
-
-            if(bookDto.getIsbn() !=-1) {
-                bookToUpdate.setIsbn(bookDto.getIsbn());
-            }
-            if(bookDto.getBookTitle() !=null) {
-                bookToUpdate.setBookTitle(bookDto.getBookTitle());
-            }
-            if(bookDto.getNameAuthor() !=null) {
-                bookToUpdate.setNameAuthor(bookDto.getNameAuthor());
-            }
-            if(bookDto.getNameIllustrator() !=null) {
-                bookToUpdate.setNameIllustrator(bookDto.getNameIllustrator());
-            }
-
-            if(bookDto.getSuitableAge() !=-1) {
-                bookToUpdate.setSuitableAge(bookDto.getSuitableAge());
-            }
-
-            Book savedBook = bookRepository.save(bookToUpdate);
-            return transferBookToBookDto(savedBook);
-
-        }*/
-
     }
+
 
 
 
@@ -206,7 +180,7 @@ public class BookService {
 
     public Book transferBookDtoToBook(BookDto bookDto) {
         Book book = new Book();
-        book.setId(bookDto.getId());
+        //book.setId(bookDto.getId());
         book.setIsbn(bookDto.getIsbn());
         book.setBookTitle(bookDto.getBookTitle());
         book.setNameAuthor(bookDto.getNameAuthor());

@@ -39,12 +39,11 @@ class BookServiceTest {
     Book book3;
     Book book4;
 
+    BookDto bookDto;
     BookDto bookDto1;
     BookDto bookDto2;
     BookDto bookDto3;
     BookDto bookDto4;
-
-
 
 
     //load general test-data before the start of each test
@@ -68,7 +67,7 @@ class BookServiceTest {
     @Test
     @DisplayName("Should create new book")
     void createNewBook() {
-        //Arrange
+
         BookDto bookDto = new BookDto();
         bookDto.setId(1L);
         bookDto.setIsbn(12345);
@@ -90,7 +89,6 @@ class BookServiceTest {
 
         BookDto bookDto1 = bookService.createNewBook(bookDto);
 
-        //Act
         assertEquals(12345, bookDto1.getIsbn());
         assertEquals("Mathilda", bookDto1.getBookTitle());
         assertEquals("Roald Dahl", bookDto1.getNameAuthor());
@@ -104,13 +102,13 @@ class BookServiceTest {
     @Test
     @DisplayName("Should show one book")
     void showOneBook() {
-        //Arrange
+
         when(bookRepository.findById(1000L)).thenReturn(Optional.of(book1));
-        //Act
+
         BookDto bookDto = bookService.showOneBook(1000L);
-        //Assert
+
         assertEquals(book1.getBookTitle(), bookDto.getBookTitle());
-        //Assert in case the book is not found
+
         assertThrows(RecordNotFoundException.class, () -> {
             bookService.showOneBook(null);
         });
@@ -119,11 +117,11 @@ class BookServiceTest {
     @Test
     @DisplayName("Should show all books")
     void showAllBooks() {
-        //Arrange
+
         when(bookRepository.findAll()).thenReturn(List.of(book1, book2));
-        //Act
+
         List<BookDto> bookDtoList = bookService.showAllBooks();
-        //Assert
+
         assertEquals(book1.getBookTitle(), bookDtoList.get(0).getBookTitle());
         assertEquals(book2.getBookTitle(), bookDtoList.get(1).getBookTitle());
     }
@@ -132,11 +130,11 @@ class BookServiceTest {
     @Test
     @DisplayName("Should show all books by name author")
     void showAllBooksByNameAuthor() {
-        //Arrange
+
         when(bookRepository.findAllBooksByNameAuthorEqualsIgnoreCase("Ruth Martin")).thenReturn(List.of(book1));
-        //Act
+
         List<BookDto> bookDtoList = bookService.showAllBooksByNameAuthor("Ruth Martin");
-        //Assert
+
         assertEquals(book1.getNameAuthor(), bookDtoList.get(0).getNameAuthor());
 
     }
@@ -144,22 +142,22 @@ class BookServiceTest {
     @Test
     @DisplayName("Should show all books by name illustrator")
     void showAllBooksByNameIllustrator() {
-        //Arrange
+
         when(bookRepository.findAllBooksByNameIllustratorEqualsIgnoreCase("David Barrow")).thenReturn(List.of(book2));
-        //Act
+
         List<BookDto> bookDtoList = bookService.showAllBooksByNameIllustrator("David Barrow");
-        //Assert
+
         assertEquals(book2.getNameIllustrator(), bookDtoList.get(0).getNameIllustrator());
     }
 
     @Test
     @DisplayName("Should show all books by name illustrator and name author")
     void showAllBooksByNameIllustratorAndNameAuthor() {
-        //Arrange
+
         when(bookRepository.findAllBooksByNameIllustratorAndNameAuthorEqualsIgnoreCase("Talus Taylor", "Annette Tilson")).thenReturn(List.of(book3));
-        //Act
+
         List<BookDto> bookDtoList = bookService.showAllBooksByNameIllustratorAndNameAuthor("Talus Taylor", "Annette Tilson");
-        //Assert
+
         assertEquals(book3.getNameIllustrator(), bookDtoList.get(0).getNameIllustrator());
         assertEquals(book3.getNameAuthor(), bookDtoList.get(0).getNameAuthor());
 
@@ -169,15 +167,15 @@ class BookServiceTest {
     @Test
     @DisplayName("Should delete by id")
     void deleteById() {
-        //Arrange
+
         when(bookRepository.existsById(1000L)).thenReturn(true);
         when(bookRepository.existsById(null)).thenReturn(false);
         when(bookRepository.findById(1000L)).thenReturn(Optional.of(book1));
-        //Act
+
         bookService.deleteById(1000L);
-        //Assert
+
         verify(bookRepository).delete(book1);
-        //Assert in case the book is not found
+
         assertThrows(IdNotFoundException.class, () -> {
             bookService.deleteById(null);
         });
@@ -186,18 +184,37 @@ class BookServiceTest {
     @Test
     @DisplayName("Should update one book")
     void updateOneBook() {
-        //Arrange
-        BookDto bookDto = new BookDto(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
-        Book book = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
-        Book book5 = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+
+        BookDto bookDto = new BookDto();
+        bookDto.setId(1L);
+        bookDto.setIsbn(12345);
+        bookDto.setBookTitle("Book 1");
+        bookDto.setNameAuthor("Author 1");
+        bookDto.setNameIllustrator("Illustrator 1");
+        bookDto.setSuitableAge(10);
+
+        Book book = new Book();
+        book.setId(1L);
+        book.setIsbn(12345);
+        book.setBookTitle("Book 1");
+        book.setNameAuthor("Author 1");
+        book.setNameIllustrator("Illustrator 1");
+        book.setSuitableAge(10);
+
+        Book book2 = new Book();
+        book2.setId(2L);
+        book2.setIsbn(12345);
+        book2.setBookTitle("Book 2");
+        book2.setNameAuthor("Author 2");
+        book2.setNameIllustrator("Illustrator 2");
+        book2.setSuitableAge(12);
 
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
         when(bookRepository.existsById(1L)).thenReturn(true);
-        when(bookRepository.save(any())).thenReturn(book5);
-        //Act
+        when(bookRepository.save(any())).thenReturn(book2);
+
         bookService.updateOneBook(1L, bookDto);
 
-        //Assert
         verify(bookRepository, times(1)).save(captor.capture());
         Book captured = captor.getValue();
 
@@ -215,33 +232,54 @@ class BookServiceTest {
 
     @Test
     @DisplayName("Should update book partially")
-    //@Disabled
     void updateBookPartially() {
-        //Arrange
+        Book book1 = new Book();
+        book1.setId(1L);
+        book1.setIsbn(12345);
+        book1.setBookTitle("Book 1");
+        book1.setNameAuthor("Author 1");
+        book1.setNameIllustrator("Illustrator 1");
+        book1.setSuitableAge(10);
 
-        BookDto bookDto = new BookDto(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
-        Book book = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
-        Book book5 = new Book(1L, 62983, "Woeste Willem", "Ingrid Schubert", "Dieter Schubert", 5);
+        Book book2 = new Book();
+        book1.setId(2L);
+        book1.setIsbn(12345);
+        book1.setBookTitle("Book 2");
+        book1.setNameAuthor("Author 2");
+        book1.setNameIllustrator("Illustrator 2");
+        book1.setSuitableAge(12);
 
-        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        BookDto bookDto1 = new BookDto();
+        bookDto1.setId(1L);
+        bookDto1.setIsbn(12345);
+        bookDto1.setBookTitle("Book 1");
+        bookDto1.setNameAuthor("Author 1");
+        bookDto1.setNameIllustrator("Illustrator 1");
+        bookDto1.setSuitableAge(10);
+
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book1));
         when(bookRepository.existsById(1L)).thenReturn(true);
-        when(bookRepository.save(any())).thenReturn(book5);
+        when(bookRepository.save(any(Book.class))).thenReturn(book2);
 
-        bookService.updateBookPartially(1L, bookDto);
+        bookService.updateBookPartially(1L, bookDto1);
 
         verify(bookRepository, times(1)).save(captor.capture());
         Book captured = captor.getValue();
 
-        assertEquals(book.getId(), captured.getId());
-        assertEquals(book.getBookTitle(), captured.getBookTitle());
-        assertEquals(book.getSuitableAge(), captured.getSuitableAge());
-        assertEquals(book.getNameAuthor(), captured.getNameAuthor());
-        assertEquals(book.getNameIllustrator(), captured.getNameIllustrator());
-        assertThrows(IdNotFoundException.class, () -> {
-            bookService.updateBookPartially(null, null);
-        });
-
+        assertEquals(book1.getId(), captured.getId());
+        assertEquals(book1.getBookTitle(), captured.getBookTitle());
+        assertEquals(book1.getSuitableAge(), captured.getSuitableAge());
+        assertEquals(book1.getNameAuthor(), captured.getNameAuthor());
+        assertEquals(book1.getNameIllustrator(), captured.getNameIllustrator());
     }
+
+    @Test
+    @DisplayName("Should throw Id Not Found Exception In Update Book Partially")
+    void IdNotFoundExceptionTest() {
+        assertThrows(IdNotFoundException.class, () -> bookService.updateBookPartially(1L, new BookDto(3L, 2345, "Book3", "Author3", "Illustrator3", 10)));
+    }
+
+
 
     @Test
     @Disabled
