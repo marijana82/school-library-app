@@ -5,6 +5,7 @@ import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.repositories.BookRepository;
+import com.marijana.library1223.repositories.FileUploadRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -25,6 +26,9 @@ class BookServiceTest {
 
     @Mock
     BookRepository bookRepository;
+
+    @Mock
+    FileUploadRepository fileUploadRepository;
 
     @InjectMocks
     BookService bookService;
