@@ -122,35 +122,69 @@ public class BookService {
     public BookDto updateBookPartially(Long id, BookDto bookDto) {
         Optional<Book> bookOptional = bookRepository.findById(id);
 
-        if(bookOptional.isEmpty()) {
+        if(bookRepository.existsById(id)) {
+
+            Book bookToUpdate = bookOptional.get();
+            Book bookTransfer = transferBookDtoToBook(bookDto);
+            bookTransfer.setId(bookToUpdate.getId());
+
+            if(bookDto.getIsbn() != -1) {
+                bookToUpdate.setIsbn(bookDto.getIsbn());
+            }
+
+            if(bookDto.getBookTitle() != null) {
+                bookToUpdate.setBookTitle(bookDto.getBookTitle());
+            }
+
+            if(bookDto.getNameAuthor() != null) {
+                bookToUpdate.setNameIllustrator(bookDto.getNameIllustrator());
+            }
+
+            if(bookDto.getSuitableAge() != -1) {
+                bookToUpdate.setSuitableAge(bookDto.getSuitableAge());
+            }
+
+            Book savedBook = bookRepository.save(bookToUpdate);
+            return transferBookToBookDto(savedBook);
+
+
+        } else {
+
             throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
+        }
+
+
+        /*if(bookOptional.isEmpty()) {
+            throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
+
         } else {
 
             Book bookToUpdate = bookOptional.get();
+
             Book book1 = transferBookDtoToBook(bookDto);
             book1.setId(bookToUpdate.getId());
 
             if(bookDto.getIsbn() !=-1) {
-                book1.setIsbn(bookDto.getIsbn());
+                bookToUpdate.setIsbn(bookDto.getIsbn());
             }
             if(bookDto.getBookTitle() !=null) {
-                book1.setBookTitle(bookDto.getBookTitle());
+                bookToUpdate.setBookTitle(bookDto.getBookTitle());
             }
             if(bookDto.getNameAuthor() !=null) {
-                book1.setNameAuthor(bookDto.getNameAuthor());
+                bookToUpdate.setNameAuthor(bookDto.getNameAuthor());
             }
             if(bookDto.getNameIllustrator() !=null) {
-                book1.setNameIllustrator(bookDto.getNameIllustrator());
+                bookToUpdate.setNameIllustrator(bookDto.getNameIllustrator());
             }
 
             if(bookDto.getSuitableAge() !=-1) {
-                book1.setSuitableAge(bookDto.getSuitableAge());
+                bookToUpdate.setSuitableAge(bookDto.getSuitableAge());
             }
 
-            Book returnBook = bookRepository.save(book1);
-            return transferBookToBookDto(returnBook);
+            Book savedBook = bookRepository.save(bookToUpdate);
+            return transferBookToBookDto(savedBook);
 
-        }
+        }*/
 
     }
 

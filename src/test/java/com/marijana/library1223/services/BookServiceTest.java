@@ -237,6 +237,9 @@ class BookServiceTest {
         assertEquals(book.getSuitableAge(), captured.getSuitableAge());
         assertEquals(book.getNameAuthor(), captured.getNameAuthor());
         assertEquals(book.getNameIllustrator(), captured.getNameIllustrator());
+        assertThrows(IdNotFoundException.class, () -> {
+            bookService.updateBookPartially(null, null);
+        });
 
     }
 
