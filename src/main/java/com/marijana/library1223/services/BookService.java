@@ -5,6 +5,7 @@ import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookRepository;
+import com.marijana.library1223.repositories.FileUploadRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final FileUploadRepository fileUploadRepository;
 
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository) {
         this.bookRepository = bookRepository;
+        this.fileUploadRepository = fileUploadRepository;
     }
 
 
@@ -188,5 +191,21 @@ public class BookService {
         book.setSuitableAge(bookDto.getSuitableAge());
         return book;
     }
+
+    public void assignPhotoToBook(String fileName, Long id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        Optional<FileDocument> optionalFileDocument = fileUploadRepository.findByFileName(fileName);
+
+        if(optionalBook.isPresent() && optionalFileDocument.isPresent()) {
+            FileDocument photo = optionalFileDocument.get();
+
+            Book bookWithPhoto = optionalBook.get();
+            bookWithPhoto.setFileDocument(photo);
+
+            bookRepository.save(bookWithPhoto);
+        }
+    }
+
+
 
 }

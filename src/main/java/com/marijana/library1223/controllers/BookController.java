@@ -2,19 +2,18 @@ package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.*;
 import com.marijana.library1223.services.BookService;
+import com.marijana.library1223.services.FileStorageService;
 import com.marijana.library1223.services.ReviewBookService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/books")
@@ -22,10 +21,12 @@ public class BookController {
 
     private final BookService bookService;
     private final ReviewBookService reviewBookService;
+    private final FileStorageService fileStorageService;
 
-    public BookController(BookService bookService, ReviewBookService reviewBookService) {
+    public BookController(BookService bookService, ReviewBookService reviewBookService, FileStorageService fileStorageService) {
         this.bookService = bookService;
         this.reviewBookService = reviewBookService;
+        this.fileStorageService = fileStorageService;
     }
 
     @PostMapping
@@ -108,10 +109,28 @@ public class BookController {
 
 
 
-    //all reviews connected to a certain book
+    //get all reviews connected to a certain book
     @GetMapping("/reviews/{idBook}")
     public ResponseEntity<Collection<ReviewDto>> getReviewsByIdBook(@PathVariable("idBook") Long idBook) {
         return ResponseEntity.ok(reviewBookService.getReviewsByIdBook(idBook));
+    }
+
+
+    //add photo to a book
+    @PostMapping("/{idBook}/photo")
+    public ResponseEntity<Object> assignPhotoToBook(@PathVariable("idBook") Long idBook, @RequestBody MultipartFile file) {
+        String url = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/download/")
+                .path(Objects.requireNonNull(file.getOriginalFilename()))
+                .toUriString();
+
+        String photo = fileStorageService.storeFile(file, url);
+        bookService.assignPhotoToBook(photo, idBook);
+        return ResponseEntity.noContent().build();
+
+
+
     }
 
 
