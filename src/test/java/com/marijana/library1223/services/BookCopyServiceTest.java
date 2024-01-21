@@ -118,6 +118,7 @@ class BookCopyServiceTest {
         Mockito.when(bookCopyRepository.findById(bookCopy.getId())).thenReturn(Optional.of(bookCopy));
 
         BookCopyDto bookCopyDto1 = bookCopyService.showOneCopy(bookCopy.getId());
+
         assertEquals(true, bookCopyDto1.isAudioBook());
         assertEquals(true, bookCopyDto1.isDyslexiaFriendly());
         assertEquals(false, bookCopyDto1.isInWrittenForm());
@@ -126,6 +127,7 @@ class BookCopyServiceTest {
         assertEquals(LocalDate.ofEpochDay(2023-01-01), bookCopyDto1.getYearPublished());
         assertEquals(100, bookCopyDto1.getNumberOfPages());
         assertEquals(20000, bookCopyDto1.getTotalWordCount());
+
         assertThrows(ResourceNotFoundException.class, () -> {
             bookCopyService.showOneCopy(null);
         });
@@ -134,6 +136,13 @@ class BookCopyServiceTest {
     @Test
     @DisplayName("Should get all book copies")
     void getAllBookCopies() {
+
+        BookDto bookDto = new BookDto();
+        bookDto.setBookTitle("Book");
+
+        Book book = new Book();
+        book.setBookTitle("Book");
+
         BookCopy bookCopy1 = new BookCopy();
         bookCopy1.setId(1L);
         bookCopy1.setAudioBook(true);
@@ -144,6 +153,7 @@ class BookCopyServiceTest {
         bookCopy1.setYearPublished(LocalDate.ofEpochDay(2023-01-01));
         bookCopy1.setNumberOfPages(100);
         bookCopy1.setTotalWordCount(20000);
+        bookCopy1.setBook(book);
 
         BookCopy bookCopy2 = new BookCopy();
         bookCopy2.setId(2L);
@@ -155,6 +165,18 @@ class BookCopyServiceTest {
         bookCopy2.setYearPublished(LocalDate.ofEpochDay(2023-01-01));
         bookCopy2.setNumberOfPages(100);
         bookCopy2.setTotalWordCount(20000);
+
+        BookCopyDto bookCopyDto = new BookCopyDto();
+        bookCopyDto.setId(1L);
+        bookCopyDto.setBarcode(12345);
+        bookCopyDto.setAudioBook(true);
+        bookCopyDto.setFormat("audio");
+        bookCopyDto.setDyslexiaFriendly(true);
+        bookCopyDto.setInWrittenForm(false);
+        bookCopyDto.setYearPublished(LocalDate.ofEpochDay(2023-01-01));
+        bookCopyDto.setNumberOfPages(100);
+        bookCopyDto.setTotalWordCount(20000);
+        bookCopyDto.setBookDto(bookDto);
 
         List<BookCopy> bookCopyList = new ArrayList<>();
         bookCopyList.add(bookCopy1);
