@@ -278,6 +278,12 @@ class BookServiceTest {
         assertThrows(IdNotFoundException.class, () -> bookService.updateBookPartially(1L, new BookDto(3L, 2345, "Book3", "Author3", "Illustrator3", 10)));
     }
 
+    @Test
+    @DisplayName("Should assign photo to book")
+    @Disabled
+    void assignPhotoToBook() {
+
+    }
 
 
     @Test

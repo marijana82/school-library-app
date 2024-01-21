@@ -81,6 +81,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
+                                //.requestMatchers(HttpMethod.POST, "/books/{idBook}/photo").hasAuthority("ROLE_LIBRARIAN")
 
                                 //book-copies [x]
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
