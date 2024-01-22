@@ -3,6 +3,7 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.exceptions.ResourceNotFoundException;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.FileUploadRepository;
@@ -203,6 +204,10 @@ public class BookService {
             bookWithPhoto.setFileDocument(photo);
 
             bookRepository.save(bookWithPhoto);
+        } else {
+
+            throw new RecordNotFoundException("Photo with file name " + fileName + "does not exist in the database.");
+
         }
     }
 

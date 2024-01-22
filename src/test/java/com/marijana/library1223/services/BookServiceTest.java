@@ -3,7 +3,9 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.exceptions.ResourceNotFoundException;
 import com.marijana.library1223.models.Book;
+import com.marijana.library1223.models.FileDocument;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.FileUploadRepository;
 import org.junit.jupiter.api.*;
@@ -284,8 +286,25 @@ class BookServiceTest {
 
     @Test
     @DisplayName("Should assign photo to book")
-    @Disabled
     void assignPhotoToBook() {
+        //Arrange
+        Book book = new Book();
+        book.setId(1L);
+
+        FileDocument fileDocument = new FileDocument();
+        fileDocument.setFileName("photo");
+
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        when(fileUploadRepository.findByFileName("photo")).thenReturn(Optional.of(fileDocument));
+
+        bookService.assignPhotoToBook(fileDocument.getFileName(), book.getId());
+
+        assertEquals(fileDocument, book.getFileDocument());
+
+        assertThrows(RecordNotFoundException.class, () -> {
+            bookService.assignPhotoToBook("picture", 1L);
+        });
+
 
     }
 
