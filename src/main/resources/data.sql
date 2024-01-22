@@ -9,7 +9,11 @@ VALUES ('Admin', '$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq',
        ('Student3','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student3@test.com', TRUE),
        ('Student4','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student4@test.com', TRUE),
        ('Student5','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student5@test.com', TRUE),
-       ('Student6','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student6@test.com', TRUE);
+       ('Student6','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student6@test.com', TRUE),
+       ('Student7','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student7@test.com', TRUE),
+       ('Student8','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student8@test.com', TRUE),
+       ('Student9','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student9@test.com', TRUE),
+       ('Student10','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student10@test.com', TRUE);
 
 --Authorities......................................
 INSERT INTO authorities (username, authority)
@@ -29,7 +33,8 @@ VALUES ('Student1', 'ROLE_STUDENT'),
        ('Student6', 'ROLE_STUDENT'),
        ('Student7', 'ROLE_STUDENT'),
        ('Student8', 'ROLE_STUDENT'),
-       ('Student9', 'ROLE_STUDENT');
+       ('Student9', 'ROLE_STUDENT'),
+       ('Student10', 'ROLE_STUDENT');
 
 --Accounts.....................................
 INSERT INTO accounts (id, first_name_student, last_name_student, dob, student_class, name_of_teacher)
@@ -43,35 +48,35 @@ VALUES (1000, 'David Eric', 'Grohl', '2018-01-01', 'obb', 'Gaby'),
        (1007, 'Chad', 'Smith', '2014-02-02', 'bba', 'Mirjam'),
        (1008, 'John', 'Frusciante', '2013-07-07', 'bbc', 'Ricardo'),
        (1009, 'Krist', 'Novoselic', '2012-09-09', 'bbd', 'Max'),
-       (1010, 'Marijana', 'Mikolcic', '1982-01-09', 'librarian', 'librarian'),
-       (1011, 'Ravi', 'Vid', '1980-01-01', 'librarian', 'librarian'),
-       (1012, 'Ilon', 'Maj', '1978-01-01', 'librarian', 'librarian');
+       (1010, 'Marijana', 'Mikolcic', '1982-01-09', 'bba', 'Hobbe'),
+       (1011, 'Ravi', 'Vid', '1980-01-01', 'mbe', 'Dennis'),
+       (1012, 'Ilon', 'Maj', '1978-01-01', 'obb', 'Gaby');
 
 --Add user to account
-UPDATE accounts SET username = 'Admin' WHERE id = 1000;
+UPDATE accounts SET username = 'Student10' WHERE id = 1000;
 UPDATE accounts SET username = 'Student1' WHERE id = 1001;
 UPDATE accounts SET username = 'Student2' WHERE id = 1002;
 UPDATE accounts SET username = 'Student3' WHERE id = 1003;
 UPDATE accounts SET username = 'Student4' WHERE id = 1004;
 UPDATE accounts SET username = 'Student5' WHERE id = 1005;
 UPDATE accounts SET username = 'Student6' WHERE id = 1006;
-UPDATE accounts SET username = 'Librarian1' WHERE id = 1010;
-UPDATE accounts SET username = 'Librarian2' WHERE id = 1011;
-UPDATE accounts SET username = 'Librarian3' WHERE id = 1012;
+UPDATE accounts SET username = 'Student7' WHERE id = 1010;
+UPDATE accounts SET username = 'Student8' WHERE id = 1011;
+UPDATE accounts SET username = 'Student9' WHERE id = 1012;
 
 --Book......................................
-INSERT INTO books (id, isbn, book_title, name_author, name_illustrator, suitable_age, current_topic, education_level, language, current_genre, reading_level)
-VALUES (1000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Martin', 4, 'adventure', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1001, 8765, 'Graafmachines en kiepautos', 'Angela Royston', 'David Barrow', 4, 'adventure', 'beginners','dutch', 'adventure', 'basic' ),
-       (1002, 763987, 'Barbapapa', 'Annette Tilson', 'Talus Taylor', 5, 'fantasy', 'beginners','dutch', 'adventure', 'basic'),
-       (1003, 62983, 'Woeste Willem', 'Ingrid Schubert', 'Dieter Schubert', 5, 'humor', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1004, 38928, 'Langzaam, zosnel als zij konden', 'Toon Tellegen', 'Mance Post', 7, 'love', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1005, 729387, 'Sprookjes voor alle kinderen', 'Lea Smulders', 'Gyo Fujikawa', 7, 'fantasy', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1006, 92876, 'Die dag in Hiroshima', 'Toshi Maruki', 'Toshi Maruki', 9, 'war', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1007, 6283987, 'Boom is boos', 'Marjolein Krijger', 'Marjolein Krijger', 6, 'humor', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1008, 28764, 'De man die bomen plantte', 'Jean Giono', 'Michael McCurdy', 9, 'love', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1009, 720936, 'Ufo alarm', 'Jozua Douglas', 'Elly Hees', 10, 'humor', 'beginners', 'dutch', 'adventure', 'basic'),
-       (1010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas', 11, 'family', 'beginners', 'dutch', 'adventure', 'basic');
+INSERT INTO books (id, isbn, book_title, name_author, name_illustrator, suitable_age)
+VALUES (1000, 98765, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Martin', 4),
+       (1001, 8765, 'Graafmachines en kiepautos', 'Angela Royston', 'David Barrow', 4),
+       (1002, 763987, 'Barbapapa', 'Annette Tilson', 'Talus Taylor', 5),
+       (1003, 62983, 'Woeste Willem', 'Ingrid Schubert', 'Dieter Schubert', 5),
+       (1004, 38928, 'Langzaam, zosnel als zij konden', 'Toon Tellegen', 'Mance Post', 7),
+       (1005, 729387, 'Sprookjes voor alle kinderen', 'Lea Smulders', 'Gyo Fujikawa', 7),
+       (1006, 92876, 'Die dag in Hiroshima', 'Toshi Maruki', 'Toshi Maruki', 9),
+       (1007, 6283987, 'Boom is boos', 'Marjolein Krijger', 'Marjolein Krijger', 6),
+       (1008, 28764, 'De man die bomen plantte', 'Jean Giono', 'Michael McCurdy', 9),
+       (1009, 720936, 'Ufo alarm', 'Jozua Douglas', 'Elly Hees', 10),
+       (1010, 398276, 'Gozert', 'Pieter Koolwijk', 'Linde Faas',  11);
 
 
 --Reservation ............................

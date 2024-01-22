@@ -72,6 +72,7 @@ public class ReservationService {
         return reservationDtoList;
     }
 
+
     //get all reservations per date
     public List<ReservationDto> showAllReservationsByReservationDate(LocalDate reservationDate) {
         List<Reservation> reservationList = reservationRepository.findAllReservationsByReservationDate(reservationDate);
@@ -92,13 +93,9 @@ public class ReservationService {
         return reservationDtoList;
     }
 
-
-    public ReservationDto getSingleReservation(Long id, String username) {
+    //TODO: CHECK IT IN POSTMAN!
+    public ReservationDto getSingleReservation(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
-
-        if (username == null) {
-            throw new UsernameNotProvidedException("Please provide a username.");
-        } else {
 
         if(optionalReservation.isPresent()) {
             Reservation reservationFound = optionalReservation.get();
@@ -118,7 +115,6 @@ public class ReservationService {
         }
 
         }
-    }
 
 
     public ReservationDto fullUpdateReservation(Long id, ReservationDto reservationDto) {

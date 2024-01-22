@@ -1,13 +1,14 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BookDto;
-import com.marijana.library1223.dtos.InformationBookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
+import com.marijana.library1223.exceptions.ResourceNotFoundException;
+import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookRepository;
+import com.marijana.library1223.repositories.FileUploadRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +17,12 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final FileUploadRepository fileUploadRepository;
 
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository) {
         this.bookRepository = bookRepository;
+        this.fileUploadRepository = fileUploadRepository;
     }
 
 
@@ -30,27 +33,6 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
-
-        //create and set values for InformationBook
-        InformationBook informationBook = new InformationBook();
-        if(bookDto.getInformationBook() != null) {
-            informationBook.setEducationLevel(bookDto.getInformationBook().getEducationLevel());
-            informationBook.setCurrentTopic(bookDto.getInformationBook().getCurrentTopic());
-        }
-
-        //set InformationBook in the Book entity
-        book.setInformationBook(informationBook);
-
-        //create and set values for ReadingBook
-        ReadingBook readingBook = new ReadingBook();
-        if(bookDto.getReadingBook() != null) {
-            readingBook.setCurrentGenre(bookDto.getReadingBook().getCurrentGenre());
-            readingBook.setReadingLevel(bookDto.getReadingBook().getReadingLevel());
-            readingBook.setLanguage(bookDto.getReadingBook().getLanguage());
-        }
-        //set ReadingBook in the Book entity
-        book.setReadingBook(readingBook);
-
         bookRepository.save(book);
         bookDto.setId(book.getId());
         return bookDto;
@@ -112,17 +94,6 @@ public class BookService {
     }
 
 
-    public List<InformationBookDto> showAllBooksByTopic(String topic) {
-        List<Book> bookList = bookRepository.findAllBooksByCurrentTopic(topic);
-        List<InformationBookDto> informationBookDtoList = new ArrayList<>();
-        for(Book book : bookList) {
-            InformationBookDto informationBookDto = transferBookToInformationBookDto(book);
-            informationBookDtoList.add(informationBookDto);
-        }
-        return informationBookDtoList;
-    }
-
-
 
     public String deleteById(Long id) {
         if(bookRepository.existsById(id)) {
@@ -153,39 +124,48 @@ public class BookService {
 
     //updateBookPartially
     public BookDto updateBookPartially(Long id, BookDto bookDto) {
+
         Optional<Book> bookOptional = bookRepository.findById(id);
 
-        if(bookOptional.isEmpty()) {
-            throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
+            if(bookRepository.existsById(id)) {
+
+            Book existingBook = bookOptional.get();
+
+            Book partialUpdates = transferBookDtoToBook(bookDto);
+
+            partialUpdates.setId(existingBook.getId());
+
+            if(partialUpdates.getIsbn() != null) {
+                existingBook.setIsbn(partialUpdates.getIsbn());
+            }
+
+            if(partialUpdates.getBookTitle() != null) {
+                existingBook.setBookTitle(partialUpdates.getBookTitle());
+            }
+
+            if(partialUpdates.getNameAuthor() != null) {
+                existingBook.setNameAuthor(partialUpdates.getNameAuthor());
+            }
+
+            if(partialUpdates.getNameIllustrator() != null) {
+                existingBook.setNameIllustrator(partialUpdates.getNameIllustrator());
+            }
+
+            if(partialUpdates.getSuitableAge() != null) {
+                existingBook.setSuitableAge(partialUpdates.getSuitableAge());
+            }
+
+            Book newBookSaved = bookRepository.save(existingBook);
+
+            return transferBookToBookDto(newBookSaved);
+
+
         } else {
 
-            Book bookToUpdate = bookOptional.get();
-            Book book1 = transferBookDtoToBook(bookDto);
-            book1.setId(bookToUpdate.getId());
-
-            if(bookDto.getIsbn() !=-1) {
-                book1.setIsbn(bookDto.getIsbn());
-            }
-            if(bookDto.getBookTitle() !=null) {
-                book1.setBookTitle(bookDto.getBookTitle());
-            }
-            if(bookDto.getNameAuthor() !=null) {
-                book1.setNameAuthor(bookDto.getNameAuthor());
-            }
-            if(bookDto.getNameIllustrator() !=null) {
-                book1.setNameIllustrator(bookDto.getNameIllustrator());
-            }
-
-            if(bookDto.getSuitableAge() !=-1) {
-                book1.setSuitableAge(bookDto.getSuitableAge());
-            }
-
-            Book returnBook = bookRepository.save(book1);
-            return transferBookToBookDto(returnBook);
-
+            throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
         }
-
     }
+
 
 
 
@@ -198,8 +178,6 @@ public class BookService {
         bookDto.setNameAuthor(book.getNameAuthor());
         bookDto.setNameIllustrator(book.getNameIllustrator());
         bookDto.setSuitableAge(book.getSuitableAge());
-        bookDto.setInformationBook(book.getInformationBook());
-        bookDto.setReadingBook(book.getReadingBook());
         return bookDto;
     }
 
@@ -207,26 +185,38 @@ public class BookService {
 
     public Book transferBookDtoToBook(BookDto bookDto) {
         Book book = new Book();
-        book.setId(bookDto.getId());
+        //book.setId(bookDto.getId());
         book.setIsbn(bookDto.getIsbn());
         book.setBookTitle(bookDto.getBookTitle());
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
-        book.setInformationBook(bookDto.getInformationBook());
-        book.setReadingBook(bookDto.getReadingBook());
         return book;
     }
 
+    public void assignPhotoToBook(String fileName, Long id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
 
-    public InformationBookDto transferBookToInformationBookDto(Book book) {
-        InformationBookDto informationBookDto = new InformationBookDto();
-        InformationBook informationBook = book.getInformationBook();
-        if(informationBook != null) {
-            informationBookDto.setCurrentTopic(informationBook.getCurrentTopic());
-            informationBookDto.setEducationLevel(informationBook.getEducationLevel());
+        Optional<FileDocument> optionalFileDocument = fileUploadRepository.findByFileName(fileName);
+
+        if(optionalBook.isPresent() && optionalFileDocument.isPresent()) {
+
+            Book book = optionalBook.get();
+
+            FileDocument uploadPhoto = optionalFileDocument.get();
+
+            book.setBookPhoto(uploadPhoto);
+
+
+            bookRepository.save(book);
+
+        } else {
+
+            throw new RecordNotFoundException("Photo with file name " + fileName + "does not exist in the database.");
+
         }
-        return informationBookDto;
     }
+
+
 
 }

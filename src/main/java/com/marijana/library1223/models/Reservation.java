@@ -21,7 +21,6 @@ public class Reservation {
     private String sidenote;
 
     //Relations..............
-    //TODO: CHANGE TARGET-OWNER BETWEEN RESERVATION AND BORROWAL OR TOTALLY BREAK THIS RELATIONSHIP
     //TARGET..........
     @OneToOne(
             mappedBy = "reservation",

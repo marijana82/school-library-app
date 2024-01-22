@@ -1,7 +1,5 @@
 package com.marijana.library1223.dtos;
 
-import com.marijana.library1223.models.InformationBook;
-import com.marijana.library1223.models.ReadingBook;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -12,20 +10,20 @@ public class BookDto {
 
     private Long id;
     @Min(4)
-    private int isbn;
+    private Integer isbn;
     @NotBlank(message = "Please provide a book title.")
     private String bookTitle;
     @NotBlank(message = "Please provide name of the author.")
     private String nameAuthor;
     private String nameIllustrator;
     @Positive(message = "Suitable age must be a positive number.")
-    private int suitableAge;
+    private Integer suitableAge;
 
-    private InformationBook informationBook;
-    private ReadingBook readingBook;
 
-    //one-to-many
-    //private List<BookCopyDto> bookCopyList;
+    //constructor
+    public BookDto() {}
+
+    public BookDto(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge) {}
 
 }
 

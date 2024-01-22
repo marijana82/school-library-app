@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
+
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,10 +27,12 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    //TODO: CHECK THIS!!!
     @PostMapping
     public ResponseEntity<Object> createNewReservation(
-            @Valid @RequestBody ReservationDto reservationDto, BindingResult bindingResult,
-            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
+            @Valid @RequestBody ReservationDto reservationDto,
+            @AuthenticationPrincipal UserDetails userDetails,
+            BindingResult bindingResult)  {
 
         if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
 
@@ -76,22 +79,21 @@ public class ReservationController {
     }
 
 
+
     @GetMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> getSingleReservation (
             @PathVariable Long idReservation,
             @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
 
-        String username = userDetails.getUsername();
-        ReservationDto reservationDto = reservationService.getSingleReservation(idReservation, username);
-
-        if (reservationDto != null) {
+        if(userDetails.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+            ReservationDto reservationDto = reservationService.getSingleReservation(idReservation);
             return ResponseEntity.ok(reservationDto);
-
         } else {
-            throw new AccessDeniedException("It seems you are not authorized to access this reservation");
+            throw new AccessDeniedException("It seems you are not authorized to access this reservation.");
         }
-    }
 
+    }
 
 
     @PutMapping("/{idReservation}")

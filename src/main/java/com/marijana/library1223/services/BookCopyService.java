@@ -112,6 +112,7 @@ public class BookCopyService {
             BookCopy bookCopyFound = optionalBookCopy.get();
             BookCopy bookCopyUpdate = transferBookCopyDtoToBookCopy(bookCopyDto);
             bookCopyUpdate.setId(bookCopyFound.getId());
+            bookCopyRepository.save(bookCopyUpdate);
             return transferBookCopyToBookCopyDto(bookCopyUpdate);
         }
     }
@@ -121,9 +122,9 @@ public class BookCopyService {
             Optional<BookCopy> bookCopyFound = bookCopyRepository.findById(id);
             BookCopy copyToDelete = bookCopyFound.get();
             bookCopyRepository.delete(copyToDelete);
-            return "Requested book copy has successfully been deleted.";
+            return "Requested book copy"+ id + "has successfully been deleted.";
         } else {
-            throw new IdNotFoundException("Requested book copy does not exist.");
+            throw new IdNotFoundException("Requested book copy" + id + "does not exist.");
         }
     }
 
@@ -177,7 +178,7 @@ public class BookCopyService {
             bookCopyIsPresent.setBook(bookIsPresent);
             bookCopyRepository.save(bookCopyIsPresent);
         } else {
-            throw new RecordNotFoundException("Book copy not found");
+            throw new RecordNotFoundException("Book copy" + idBookCopy + "not found");
         }
 
     }

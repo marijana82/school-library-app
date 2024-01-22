@@ -69,14 +69,17 @@ public class AccountController {
 
 
     @GetMapping("/{idAccount}")
-    public ResponseEntity<AccountDto> getOneAccount(
+    public ResponseEntity<Object> getOneAccount(
             @PathVariable Long idAccount,
             @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
 
         if(userDetails.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+
             AccountDto accountDto = accountService.showOneAccount(idAccount);
+
             return ResponseEntity.ok(accountDto);
+
         } else {
             throw new AccessDeniedException("It seems you are not authorized to access this account.");
         }

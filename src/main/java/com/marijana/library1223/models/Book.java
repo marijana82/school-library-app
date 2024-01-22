@@ -1,6 +1,7 @@
 package com.marijana.library1223.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,7 +17,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "isbn")
-    private int isbn;
+    private Integer isbn;
     @Column(name = "book_title")
     private String bookTitle;
     @Column(name = "name_author")
@@ -24,18 +25,12 @@ public class Book {
     @Column(name = "name_illustrator")
     private String nameIllustrator;
     @Column(name = "suitable_age")
-    private int suitableAge;
-    @Embedded
-    private ReadingBook readingBook;
-    @Embedded
-    private InformationBook informationBook;
-
-    //Relations..............
+    private Integer suitableAge;
+    //here add enum genre
 
     //FileDocument for upload
     @OneToOne
-    FileDocument fileDocument;
-
+    FileDocument bookPhoto;
 
     //TARGET
     @OneToOne(
@@ -49,19 +44,21 @@ public class Book {
     @JsonIgnore
     private Reservation reservation;
 
-
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
-
-
 
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<ReviewBook> reviewBooks = new ArrayList<>();
 
+    //constructors
+    public Book() {}
+
+    public Book(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge) {
+    }
 
 
 }

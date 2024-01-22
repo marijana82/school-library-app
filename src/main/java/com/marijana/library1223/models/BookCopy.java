@@ -35,6 +35,11 @@ public class BookCopy {
     @Column(name = "year_published")
     private LocalDate yearPublished;
 
+    //constructors
+    public BookCopy() {}
+
+    public BookCopy(Long id, int barcode, Integer numberOfPages, Integer totalWordCount, String format, boolean inWrittenForm, boolean audioBook, boolean dyslexiaFriendly, LocalDate yearPublished) {}
+
 
     //Relations...........
 

@@ -9,4 +9,5 @@ import java.util.Optional;
 @Transactional
 public interface FileUploadRepository extends JpaRepository<FileDocument, String> {
     Optional<FileDocument> findByFileName(String fileName);
+
 }

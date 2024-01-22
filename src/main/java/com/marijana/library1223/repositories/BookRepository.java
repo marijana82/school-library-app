@@ -13,10 +13,4 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAllBooksByNameIllustratorEqualsIgnoreCase(String nameIllustrator);
     List<Book> findAllBooksByNameIllustratorAndNameAuthorEqualsIgnoreCase(String nameIllustrator, String type);
 
-    //JPQL = java persistence query language to find all books where the 'currentTopic' field in the embedded InformationBook
-    // matches the provided currentTopic:
-    @Query("SELECT b FROM Book b WHERE b.informationBook.currentTopic = :currentTopic")
-    List<Book> findAllBooksByCurrentTopic(@Param("currentTopic") String currentTopic);
-
-
 }
