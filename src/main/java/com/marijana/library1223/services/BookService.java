@@ -4,6 +4,7 @@ import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.exceptions.ResourceNotFoundException;
+import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.FileUploadRepository;
@@ -195,15 +196,20 @@ public class BookService {
 
     public void assignPhotoToBook(String fileName, Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
+
         Optional<FileDocument> optionalFileDocument = fileUploadRepository.findByFileName(fileName);
 
         if(optionalBook.isPresent() && optionalFileDocument.isPresent()) {
-            FileDocument photo = optionalFileDocument.get();
 
-            Book bookWithPhoto = optionalBook.get();
-            bookWithPhoto.setFileDocument(photo);
+            Book book = optionalBook.get();
 
-            bookRepository.save(bookWithPhoto);
+            FileDocument uploadPhoto = optionalFileDocument.get();
+
+            book.setBookPhoto(uploadPhoto);
+
+
+            bookRepository.save(book);
+
         } else {
 
             throw new RecordNotFoundException("Photo with file name " + fileName + "does not exist in the database.");

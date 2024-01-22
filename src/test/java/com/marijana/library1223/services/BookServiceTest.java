@@ -3,7 +3,6 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.ResourceNotFoundException;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.FileDocument;
 import com.marijana.library1223.repositories.BookRepository;
@@ -287,7 +286,7 @@ class BookServiceTest {
     @Test
     @DisplayName("Should assign photo to book")
     void assignPhotoToBook() {
-        //Arrange
+
         Book book = new Book();
         book.setId(1L);
 

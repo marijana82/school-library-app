@@ -81,14 +81,15 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
-                                //.requestMatchers(HttpMethod.POST, "/books/{idBook}/photo").hasAuthority("ROLE_LIBRARIAN")
+                                    //add photo to book
+                                .requestMatchers(HttpMethod.POST, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
                                 //book-copies [x]
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
-                                //add book to copy
+                                    //add book to copy
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/{idCopy}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
 
                                 //borrowals []
@@ -117,7 +118,7 @@ public class SpringSecurityConfiguration {
 
 
                                 //file upload []
-                                .requestMatchers(HttpMethod.POST, "/single/upload").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.POST, "/single/upload").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()
 

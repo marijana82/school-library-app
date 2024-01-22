@@ -1,6 +1,7 @@
 package com.marijana.library1223.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -29,7 +30,7 @@ public class Book {
 
     //FileDocument for upload
     @OneToOne
-    FileDocument fileDocument;
+    FileDocument bookPhoto;
 
     //TARGET
     @OneToOne(

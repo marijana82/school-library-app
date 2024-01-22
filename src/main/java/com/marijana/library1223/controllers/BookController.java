@@ -1,6 +1,7 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.*;
+import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.services.BookService;
 import com.marijana.library1223.services.FileStorageService;
 import com.marijana.library1223.services.ReviewBookService;
@@ -22,11 +23,13 @@ public class BookController {
     private final BookService bookService;
     private final ReviewBookService reviewBookService;
     private final FileStorageService fileStorageService;
+    private final FileUploadController fileUploadController;
 
-    public BookController(BookService bookService, ReviewBookService reviewBookService, FileStorageService fileStorageService) {
+    public BookController(BookService bookService, ReviewBookService reviewBookService, FileStorageService fileStorageService, FileUploadController fileUploadController) {
         this.bookService = bookService;
         this.reviewBookService = reviewBookService;
         this.fileStorageService = fileStorageService;
+        this.fileUploadController = fileUploadController;
     }
 
     @PostMapping
@@ -119,15 +122,13 @@ public class BookController {
     //add photo to a book
     @PostMapping("/{idBook}/photo")
     public ResponseEntity<Object> assignPhotoToBook(@PathVariable("idBook") Long idBook, @RequestBody MultipartFile file) {
-        String url = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("/download/")
-                .path(Objects.requireNonNull(file.getOriginalFilename()))
-                .toUriString();
 
-        String photo = fileStorageService.storeFile(file, url);
-        bookService.assignPhotoToBook(photo, idBook);
-        return ResponseEntity.noContent().build();
+        FileUploadResponse photo = fileUploadController.singleFileUpload(file);
+        bookService.assignPhotoToBook(photo.getFileName(), idBook);
+
+        return ResponseEntity.ok(photo.getUrl());
+
+
 
 
 

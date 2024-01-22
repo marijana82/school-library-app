@@ -136,9 +136,8 @@ public class BorrowalService {
             if(borrowalDto.getBookTitle() !=null) {
                 borrowalToUpdate.setBookTitle(borrowalDto.getBookTitle());
             }
-            //TODO: check error "operator != cannot be applied to int null
-            // - MAYBE BECAUSE IT'S INT AND NOT INTEGER! (int cannot go through null check - thic could be a technical choice!)
-            if(borrowalDto.getNumberOfBooksBorrowed() !=-1) {
+
+            if(borrowalDto.getNumberOfBooksBorrowed() !=null) {
                 borrowalToUpdate.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
             }
 
@@ -237,7 +236,7 @@ public class BorrowalService {
             borrowalFound.setBookCopy(copyFound);
             borrowalRepository.save(borrowalFound);
         } else {
-            //TODO: ADD CUSTOM MESSAGE TO THIS EXCEPTION?
+
             throw new RecordNotFoundException();
         }
     }

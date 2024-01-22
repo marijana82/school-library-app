@@ -319,7 +319,7 @@ class BookCopyServiceTest {
     @Test
     @DisplayName("Should update one book copy")
     void updateOneBookCopy() {
-        //Arrange
+
         BookCopyDto bookCopyDto = new BookCopyDto(1L, 1234, 50, 500, "hardcover", true, false, false, LocalDate.ofEpochDay(2024-01-01));
         BookCopy bookCopy = new BookCopy(1L, 1234, 50, 500, "hardcover", true, false, false, LocalDate.ofEpochDay(2024-01-01));
         BookCopy bookCopy1 = new BookCopy(1L, 1234, 50, 500, "hardcover", true, false, false, LocalDate.ofEpochDay(2024-01-01));
