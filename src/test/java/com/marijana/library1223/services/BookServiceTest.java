@@ -298,7 +298,7 @@ class BookServiceTest {
 
         bookService.assignPhotoToBook(fileDocument.getFileName(), book.getId());
 
-        assertEquals(fileDocument, book.getFileDocument());
+        assertEquals(fileDocument, book.getBookPhoto());
 
         assertThrows(RecordNotFoundException.class, () -> {
             bookService.assignPhotoToBook("picture", 1L);

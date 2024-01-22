@@ -160,9 +160,15 @@ UPDATE borrowals SET book_copy_id = 1000 WHERE id = 1008;
 UPDATE borrowals SET book_copy_id = 1001 WHERE id = 1007;
 UPDATE borrowals SET book_copy_id = 1002 WHERE id = 1007;
 
+
+---File upload.......................
+INSERT INTO file_uploads (id, file_name, content_type, url)
+VALUES (1001, 'gozert.jpeg', 'image/jpeg', 'http://localhost:8080/download/gozert.jpeg'),
+       (1002, 'ufo.jpeg', 'image/jpeg', 'http://localhost:8080/download/ufo.jpeg');
+
 --TODO: 1, 2, 3, 4 + choose 20 books and set up the data in a way that it all makes sense!
 --TODO: create enums and see how they get integrated in the system
---TODO: what to do with the file upload?
+
 
 --1. Add reservation to borrowal
 

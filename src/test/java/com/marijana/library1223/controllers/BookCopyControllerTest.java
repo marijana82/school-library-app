@@ -1,6 +1,7 @@
 package com.marijana.library1223.controllers;
 
 import com.marijana.library1223.dtos.BookCopyDto;
+import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.repositories.BookRepository;
@@ -34,20 +35,49 @@ class BookCopyControllerTest {
     @Autowired
     private BookRepository bookRepository;
 
-    BookCopyDto bookCopyDto1;
-    BookCopyDto bookCopyDto2;
-    BookCopyDto bookCopyDto3;
-
     BookCopy bookCopy1;
     BookCopy bookCopy2;
     BookCopy bookCopy3;
-
+    BookCopyDto bookCopyDto1;
+    BookCopyDto bookCopyDto2;
+    BookCopyDto bookCopyDto3;
     Book book1;
     Book book2;
     Book book3;
+    BookDto bookDto1;
+    BookDto bookDto2;
+    BookDto bookDto3;
 
     @BeforeEach
     public void setUp() {
+
+        //book
+        book1.setId(1L);
+        book1.setIsbn(12345);
+        book1.setNameAuthor("Author 1");
+        book1.setNameIllustrator("Illustrator 1");
+        book1.setBookTitle("Book 1");
+        book1.setSuitableAge(6);
+
+        book2.setId(2L);
+        book2.setIsbn(23456);
+        book2.setNameAuthor("Author 2");
+        book2.setNameIllustrator("Illustrator 2");
+        book2.setBookTitle("Book 2");
+        book2.setSuitableAge(10);
+
+        book3.setId(3L);
+        book3.setIsbn(34567);
+        book3.setNameAuthor("Author 3");
+        book3.setNameIllustrator("Illustrator 3");
+        book3.setBookTitle("Book 3");
+        book3.setSuitableAge(5);
+
+        book1 = bookRepository.save(book1);
+        book2 = bookRepository.save(book2);
+        book3 = bookRepository.save(book3);
+
+        //book copy
         bookCopy1.setId(1L);
         bookCopy1.setBarcode(12345);
         bookCopy1.setAudioBook(false);

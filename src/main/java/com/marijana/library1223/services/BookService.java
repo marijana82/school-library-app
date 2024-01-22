@@ -18,11 +18,13 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final FileUploadRepository fileUploadRepository;
+    private final ReviewBookService reviewBookService;
 
 
-    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository) {
+    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository, ReviewBookService reviewBookService) {
         this.bookRepository = bookRepository;
         this.fileUploadRepository = fileUploadRepository;
+        this.reviewBookService = reviewBookService;
     }
 
 
@@ -42,8 +44,19 @@ public class BookService {
     public BookDto showOneBook(Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
         if(optionalBook.isPresent()) {
-            Book requestedBook = optionalBook.get();
-            return transferBookToBookDto(requestedBook);
+
+            BookDto requestedBookDto = transferBookToBookDto(optionalBook.get());
+            FileDocument bookPhoto = optionalBook.get().getBookPhoto();
+
+            if(bookPhoto != null) {
+                requestedBookDto.setBookPhoto(optionalBook.get().getBookPhoto());
+            }
+
+            //TODO: ADD REVIEW BY FOLLOWING THE SAME STEPS AS FOR BOOK PHOTO
+
+            return requestedBookDto;
+
+
         } else {
             throw new RecordNotFoundException("Book with id number " + id + " has not been found.");
         }
@@ -155,6 +168,10 @@ public class BookService {
                 existingBook.setSuitableAge(partialUpdates.getSuitableAge());
             }
 
+            if(partialUpdates.getBookPhoto() != null) {
+                existingBook.setBookPhoto(partialUpdates.getBookPhoto());
+            }
+
             Book newBookSaved = bookRepository.save(existingBook);
 
             return transferBookToBookDto(newBookSaved);
@@ -178,6 +195,7 @@ public class BookService {
         bookDto.setNameAuthor(book.getNameAuthor());
         bookDto.setNameIllustrator(book.getNameIllustrator());
         bookDto.setSuitableAge(book.getSuitableAge());
+        bookDto.setBookPhoto(book.getBookPhoto());
         return bookDto;
     }
 
@@ -191,6 +209,7 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
+        book.setBookPhoto(bookDto.getBookPhoto());
         return book;
     }
 
@@ -206,7 +225,6 @@ public class BookService {
             FileDocument uploadPhoto = optionalFileDocument.get();
 
             book.setBookPhoto(uploadPhoto);
-
 
             bookRepository.save(book);
 
