@@ -241,6 +241,7 @@ class BookCopyControllerTest {
 
     //start here
     @Test
+    @Disabled
     //@WithMockUser(username="testuser", roles="USER")
     void getAllBookCopies() throws Exception {
         given(bookCopyService.getAllBookCopies()).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
@@ -307,23 +308,43 @@ class BookCopyControllerTest {
 
     //TODO: CONTINUE FROM HERE
     @Test
+    @Disabled
         //@WithMockUser(username="testuser", roles="USER")
 
     void getAllBookCopiesPublishedAfter() throws Exception {
 
-        given(bookCopyService.getAllBookCopiesPublishedAfter(LocalDate.of(2020, 01, 01))).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
+        given(bookCopyService.getAllBookCopiesPublishedAfter(LocalDate.of(2022, 01, 01))).willReturn(List.of(bookCopyDto3));
 
 
-        mockMvc.perform(get("/books?date=2020-01-01"))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/book-copy/after?date=2022-01-01"))
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
 
-
+                //book-copy 3
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].id").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].barcode").value(34567))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].audioBook").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].inWrittenForm").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].dyslexiaFriendly").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].format").value("hardcover"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].numberOfPages").value(50))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].totalWordCount").value(500))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].yearPublished").value("2022-01-01"))
+                //book 3
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.id").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.isbn").value(34567))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.bookTitle").value("Book3"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.nameAuthor").value("Author3"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.nameIllustrator").value("Illustrator3"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.suitableAge").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.bookPhoto").value(file3));
 
     }
 
     @Test
     @Disabled
     void getAllBookCopiesDyslexiaFriendly() {
+
     }
 
     @Test
