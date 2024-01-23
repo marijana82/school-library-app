@@ -107,9 +107,21 @@ class BookServiceTest {
     @DisplayName("Should show one book")
     void showOneBook() {
 
-        when(bookRepository.findById(1000L)).thenReturn(Optional.of(book1));
+        FileDocument file1 = new FileDocument();
+        file1.setFileName("bookPhoto1");
 
-        BookDto bookDto = bookService.showOneBook(1000L);
+        Book book1 = new Book();
+        book1.setId(1L);
+        book1.setIsbn(12345);
+        book1.setBookTitle("Book1");
+        book1.setNameAuthor("Author1");
+        book1.setNameIllustrator("Illustrator1");
+        book1.setSuitableAge(8);
+        book1.setBookPhoto(file1);
+
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book1));
+
+        BookDto bookDto = bookService.showOneBook(1L);
 
         assertEquals(book1.getBookTitle(), bookDto.getBookTitle());
 
@@ -237,6 +249,13 @@ class BookServiceTest {
     @Test
     @DisplayName("Should update book partially")
     void updateBookPartially() {
+
+        FileDocument file1 = new FileDocument();
+        file1.setFileName("bookPhoto1");
+
+        FileDocument file2 = new FileDocument();
+        file2.setFileName("bookPhoto2");
+
         Book book1 = new Book();
         book1.setId(1L);
         book1.setIsbn(12345);
@@ -244,14 +263,16 @@ class BookServiceTest {
         book1.setNameAuthor("Author 1");
         book1.setNameIllustrator("Illustrator 1");
         book1.setSuitableAge(10);
+        book1.setBookPhoto(file1);
 
         Book book2 = new Book();
-        book1.setId(2L);
-        book1.setIsbn(12345);
-        book1.setBookTitle("Book 2");
-        book1.setNameAuthor("Author 2");
-        book1.setNameIllustrator("Illustrator 2");
-        book1.setSuitableAge(12);
+        book2.setId(2L);
+        book2.setIsbn(12345);
+        book2.setBookTitle("Book 2");
+        book2.setNameAuthor("Author 2");
+        book2.setNameIllustrator("Illustrator 2");
+        book2.setSuitableAge(12);
+        book2.setBookPhoto(file2);
 
         BookDto bookDto1 = new BookDto();
         bookDto1.setId(1L);
@@ -260,6 +281,7 @@ class BookServiceTest {
         bookDto1.setNameAuthor("Author 1");
         bookDto1.setNameIllustrator("Illustrator 1");
         bookDto1.setSuitableAge(10);
+        bookDto1.setBookPhoto(file1);
 
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book1));
         when(bookRepository.existsById(1L)).thenReturn(true);

@@ -3,8 +3,6 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.ResourceNotFoundException;
-import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.FileUploadRepository;
