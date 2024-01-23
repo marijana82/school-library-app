@@ -7,6 +7,7 @@ import com.marijana.library1223.models.BookCopy;
 import com.marijana.library1223.models.FileDocument;
 import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
+import com.marijana.library1223.repositories.FileUploadRepository;
 import com.marijana.library1223.services.BookCopyService;
 import com.marijana.library1223.services.BookService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class BookCopyControllerTest {
 
     @Autowired
@@ -37,6 +38,9 @@ class BookCopyControllerTest {
 
     @MockBean
     private BookCopyService bookCopyService;
+
+    @Autowired
+    FileUploadRepository fileUploadRepository;
 
     @Autowired
     private BookCopyRepository bookCopyRepository;
@@ -67,11 +71,20 @@ class BookCopyControllerTest {
     public void setUp() {
 
         //file for upload
+        file1 = new FileDocument();
+        file2 = new FileDocument();
+        file3 = new FileDocument();
+
         file1.setFileName("bookPhoto1");
         file2.setFileName("bookPhoto2");
         file3.setFileName("bookPhoto3");
 
+        file1 = fileUploadRepository.save(file1);
+        file2 = fileUploadRepository.save(file2);
+        file3 = fileUploadRepository.save(file3);
+
         //book
+        book1 = new Book();
         book1.setId(1L);
         book1.setIsbn(12345);
         book1.setNameAuthor("Author 1");
@@ -80,6 +93,7 @@ class BookCopyControllerTest {
         book1.setSuitableAge(6);
         book1.setBookPhoto(file1);
 
+        book2 = new Book();
         book2.setId(2L);
         book2.setIsbn(23456);
         book2.setNameAuthor("Author 2");
@@ -88,6 +102,7 @@ class BookCopyControllerTest {
         book2.setSuitableAge(10);
         book2.setBookPhoto(file2);
 
+        book3 = new Book();
         book3.setId(3L);
         book3.setIsbn(34567);
         book3.setNameAuthor("Author 3");
@@ -101,6 +116,8 @@ class BookCopyControllerTest {
         book2 = bookRepository.save(book2);
         book3 = bookRepository.save(book3);
 
+        //bookDto
+        bookDto1 = new BookDto();
         bookDto1.setId(1L);
         bookDto1.setIsbn(12345);
         bookDto1.setNameAuthor("Author1");
@@ -109,7 +126,27 @@ class BookCopyControllerTest {
         bookDto1.setSuitableAge(6);
         bookDto1.setBookPhoto(file1);
 
+        bookDto2 = new BookDto();
+        bookDto2.setId(2L);
+        bookDto2.setIsbn(23456);
+        bookDto2.setBookTitle("Book2");
+        bookDto2.setNameAuthor("Author2");
+        bookDto2.setNameIllustrator("Illustrator2");
+        bookDto2.setSuitableAge(10);
+        bookDto2.setBookPhoto(file2);
+
+        bookDto3 = new BookDto();
+        bookDto3.setId(3L);
+        bookDto3.setIsbn(34567);
+        bookDto3.setBookTitle("Book3");
+        bookDto3.setNameAuthor("Author3");
+        bookDto3.setNameIllustrator("Illustrator3");
+        bookDto3.setSuitableAge(5);
+        bookDto3.setBookPhoto(file3);
+
+
         //book copy
+        bookCopy1 = new BookCopy();
         bookCopy1.setId(1L);
         bookCopy1.setBarcode(12345);
         bookCopy1.setAudioBook(false);
@@ -121,55 +158,72 @@ class BookCopyControllerTest {
         bookCopy1.setYearPublished(LocalDate.of(2020, 01, 01));
         bookCopy1.setBook(book1);
 
+        bookCopy2  = new BookCopy();
         bookCopy2.setId(2L);
         bookCopy2.setBarcode(23456);
         bookCopy2.setAudioBook(false);
         bookCopy2.setInWrittenForm(true);
         bookCopy2.setDyslexiaFriendly(false);
         bookCopy2.setFormat("paperback");
-        bookCopy2.setNumberOfPages(80);
-        bookCopy2.setTotalWordCount(8000);
+        bookCopy2.setNumberOfPages(40);
+        bookCopy2.setTotalWordCount(400);
         bookCopy2.setYearPublished(LocalDate.of(2021, 01, 01));
         bookCopy2.setBook(book2);
 
+        bookCopy3 = new BookCopy();
         bookCopy3.setId(3L);
         bookCopy3.setBarcode(34567);
         bookCopy3.setAudioBook(false);
         bookCopy3.setInWrittenForm(true);
         bookCopy3.setDyslexiaFriendly(false);
         bookCopy3.setFormat("hardcover");
-        bookCopy3.setNumberOfPages(28);
-        bookCopy3.setTotalWordCount(100);
+        bookCopy3.setNumberOfPages(50);
+        bookCopy3.setTotalWordCount(500);
         bookCopy3.setYearPublished(LocalDate.of(2022, 01, 01));
         bookCopy3.setBook(book3);
 
+        //book copy saved in repository
         bookCopy1 = bookCopyRepository.save(bookCopy1);
         bookCopy2 = bookCopyRepository.save(bookCopy2);
         bookCopy3 = bookCopyRepository.save(bookCopy3);
 
-        bookDto1.setId(1L);
-        bookDto1.setIsbn(12345);
-        bookDto1.setBookTitle("Book1");
-        bookDto1.setNameAuthor("Author1");
-        bookDto1.setNameIllustrator("Illustrator1");
-        bookDto1.setSuitableAge(6);
-        bookDto1.setBookPhoto(file1);
 
-        bookDto2.setId(2L);
-        bookDto2.setIsbn(23456);
-        bookDto2.setBookTitle("Book2");
-        bookDto2.setNameAuthor("Author2");
-        bookDto2.setNameIllustrator("Illustrator2");
-        bookDto2.setSuitableAge(10);
-        bookDto2.setBookPhoto(file2);
+        //bookCopyDto
+        bookCopyDto1 = new BookCopyDto();
+        bookCopyDto1.setId(1L);
+        bookCopyDto1.setBarcode(12345);
+        bookCopyDto1.setAudioBook(false);
+        bookCopyDto1.setInWrittenForm(true);
+        bookCopyDto1.setDyslexiaFriendly(true);
+        bookCopyDto1.setFormat("hardcover");
+        bookCopyDto1.setNumberOfPages(30);
+        bookCopyDto1.setTotalWordCount(300);
+        bookCopyDto1.setYearPublished(LocalDate.of(2020, 01, 01));
+        bookCopyDto1.setBookDto(bookDto1);
 
-        bookDto3.setId(3L);
-        bookDto3.setIsbn(34567);
-        bookDto3.setBookTitle("Book3");
-        bookDto3.setNameAuthor("Author3");
-        bookDto3.setNameIllustrator("Illustrator3");
-        bookDto3.setSuitableAge(5);
-        bookDto3.setBookPhoto(file3);
+        bookCopyDto2 = new BookCopyDto();
+        bookCopyDto2.setId(2L);
+        bookCopyDto2.setBarcode(23456);
+        bookCopyDto2.setAudioBook(false);
+        bookCopyDto2.setInWrittenForm(true);
+        bookCopyDto2.setDyslexiaFriendly(false);
+        bookCopyDto2.setFormat("paperback");
+        bookCopyDto2.setNumberOfPages(40);
+        bookCopyDto2.setTotalWordCount(400);
+        bookCopyDto2.setYearPublished(LocalDate.of(2021, 01, 01));
+        bookCopyDto2.setBookDto(bookDto2);
+
+        bookCopyDto3 = new BookCopyDto();
+        bookCopyDto3.setId(3L);
+        bookCopyDto3.setBarcode(34567);
+        bookCopyDto3.setAudioBook(false);
+        bookCopyDto3.setInWrittenForm(true);
+        bookCopyDto3.setDyslexiaFriendly(false);
+        bookCopyDto3.setFormat("hardcover");
+        bookCopyDto3.setNumberOfPages(50);
+        bookCopyDto3.setTotalWordCount(500);
+        bookCopyDto3.setYearPublished(LocalDate.of(2022, 01, 01));
+        bookCopyDto3.setBookDto(bookDto3);
 
     }
 
@@ -187,6 +241,7 @@ class BookCopyControllerTest {
     @Test
     void getAllBookCopies() throws Exception {
         given(bookCopyService.getAllBookCopies()).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
+
         mockMvc.perform(get("/book-copy"))
                 .andExpect(status().isOk())
                 //book-copy 1
@@ -198,15 +253,52 @@ class BookCopyControllerTest {
                 .andExpect((ResultMatcher) jsonPath("$[0].format").value("hardcover"))
                 .andExpect((ResultMatcher) jsonPath("$[0].numberOfPages").value(30))
                 .andExpect((ResultMatcher) jsonPath("$[0].totalWordCount").value(300))
-                .andExpect((ResultMatcher) jsonPath("$[0].yearPublished").value(LocalDate.of(2020, 01, 01)))
+                .andExpect((ResultMatcher) jsonPath("$[0].yearPublished").value("2020-01-01"))
                     //book 1
-                .andExpect((ResultMatcher) jsonPath("$[0].bookDto1.id").value(1))
-                .andExpect((ResultMatcher) jsonPath("$[0].bookDto1.isbn").value(12345))
-                .andExpect((ResultMatcher) jsonPath("$[0].bookDto1.bookTitle").value("Book1"))
+                .andExpect((ResultMatcher) jsonPath("$[0].bookDto.id").value(1))
+                .andExpect((ResultMatcher) jsonPath("$[0].bookDto.isbn").value(12345))
+                .andExpect((ResultMatcher) jsonPath("$[0].bookDto.bookTitle").value("Book1"))
                 .andExpect((ResultMatcher) jsonPath("$[0].bookDto.nameAuthor").value("Author1"))
                 .andExpect((ResultMatcher) jsonPath("$[0].bookDto.nameIllustrator").value("Illustrator1"))
                 .andExpect((ResultMatcher) jsonPath("$[0].bookDto.suitableAge").value(6))
-                .andExpect((ResultMatcher) jsonPath("$[0].bookDto.bookPhoto").value(file1));
+                .andExpect((ResultMatcher) jsonPath("$[0].bookDto.bookPhoto").value(file1))
+                //book-copy 2
+                .andExpect((ResultMatcher) jsonPath("$[1].id").value(2))
+                .andExpect((ResultMatcher) jsonPath("$[1].barcode").value(23456))
+                .andExpect((ResultMatcher) jsonPath("$[1].audioBook").value(false))
+                .andExpect((ResultMatcher) jsonPath("$[1].inWrittenForm").value(true))
+                .andExpect((ResultMatcher) jsonPath("$[1].dyslexiaFriendly").value(false))
+                .andExpect((ResultMatcher) jsonPath("$[1].format").value("paperback"))
+                .andExpect((ResultMatcher) jsonPath("$[1].numberOfPages").value(40))
+                .andExpect((ResultMatcher) jsonPath("$[1].totalWordCount").value(400))
+                .andExpect((ResultMatcher) jsonPath("$[1].yearPublished").value("2021-01-01"))
+                     //book 2
+                .andExpect((ResultMatcher) jsonPath("$[1].bookDto.id").value(2))
+                .andExpect((ResultMatcher) jsonPath("$[1].bookDto.isbn").value(23456))
+                .andExpect((ResultMatcher) jsonPath("$[1].bookDto.bookTitle").value("Book2"))
+                .andExpect((ResultMatcher) jsonPath("$[1].bookDto.nameAuthor").value("Author2"))
+                .andExpect((ResultMatcher) jsonPath("$[1].bookDto.nameIllustrator").value("Illustrator2"))
+                .andExpect((ResultMatcher) jsonPath("$[1].bookDto.suitableAge").value(10))
+                .andExpect((ResultMatcher) jsonPath("$[1].bookDto.bookPhoto").value(file2))
+                //book-copy 3
+                .andExpect((ResultMatcher) jsonPath("$[2].id").value(3))
+                .andExpect((ResultMatcher) jsonPath("$[2].barcode").value(34567))
+                .andExpect((ResultMatcher) jsonPath("$[2].audioBook").value(false))
+                .andExpect((ResultMatcher) jsonPath("$[2].inWrittenForm").value(true))
+                .andExpect((ResultMatcher) jsonPath("$[2].dyslexiaFriendly").value(false))
+                .andExpect((ResultMatcher) jsonPath("$[2].format").value("hardcover"))
+                .andExpect((ResultMatcher) jsonPath("$[2].numberOfPages").value(50))
+                .andExpect((ResultMatcher) jsonPath("$[2].totalWordCount").value(500))
+                .andExpect((ResultMatcher) jsonPath("$[2].yearPublished").value("2022-01-01"))
+                //book 3
+                .andExpect((ResultMatcher) jsonPath("$[2].bookDto.id").value(3))
+                .andExpect((ResultMatcher) jsonPath("$[2].bookDto.isbn").value(34567))
+                .andExpect((ResultMatcher) jsonPath("$[2].bookDto.bookTitle").value("Book3"))
+                .andExpect((ResultMatcher) jsonPath("$[2].bookDto.nameAuthor").value("Author3"))
+                .andExpect((ResultMatcher) jsonPath("$[2].bookDto.nameIllustrator").value("Illustrator3"))
+                .andExpect((ResultMatcher) jsonPath("$[2].bookDto.suitableAge").value(5))
+                .andExpect((ResultMatcher) jsonPath("$[2].bookDto.bookPhoto").value(file3));
+
     }
 
     @Test
