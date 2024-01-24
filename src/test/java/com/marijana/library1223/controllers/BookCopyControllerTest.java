@@ -38,10 +38,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -296,6 +298,18 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("bookDto.nameIllustrator").value("Ruth Martin"))
                 .andExpect(jsonPath("bookDto.suitableAge").value(4))
                 .andExpect(jsonPath("bookDto.bookPhoto").value(file1));
+    }
+
+    @Test
+    void createBookCopyWithBindingResultErrors() throws Exception {
+        BookCopyDto errorBookCopyDto = new BookCopyDto();
+        errorBookCopyDto.setFormat("error");
+
+        mockMvc.perform(post("/book-copy")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(errorBookCopyDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("barcode : must be greater than or equal to 4")));
     }
 
 
@@ -577,8 +591,15 @@ class BookCopyControllerTest {
     }
 
     @Test
-    @Disabled
-    void assignBookToBookCopy() {
+    //@Disabled
+    void assignBookToBookCopy() throws Exception {
+
+        willDoNothing().given(bookCopyService).assignBookToBookCopy(1000L, 1000L);
+
+        mockMvc.perform(put("/book-copy/1000/books/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(bookCopyDto1)))
+                .andExpect(status().isNoContent());
     }
 
     @Test
