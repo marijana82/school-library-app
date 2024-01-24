@@ -235,8 +235,32 @@ class BookCopyControllerTest {
     }
 
     @Test
-    @Disabled
-    void getOneCopy() {
+    //@Disabled
+    void getOneCopy() throws Exception {
+
+        given(bookCopyService.showOneCopy(1000L)).willReturn(bookCopyDto1);
+
+        mockMvc.perform(get("/book-copy/1000"))
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                //book-copy 1
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("barcode").value(102345))
+                .andExpect(MockMvcResultMatchers.jsonPath("audioBook").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("inWrittenForm").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("dyslexiaFriendly").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("format").value("hardcover"))
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfPages").value(20))
+                .andExpect(MockMvcResultMatchers.jsonPath("totalWordCount").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("yearPublished").value("1991-01-01"))
+                //book 1
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.isbn").value(12345))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameAuthor").value("Ruth Martin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameIllustrator").value("Ruth Martin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.suitableAge").value(4))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookPhoto").value(file1));
     }
 
     //start here
