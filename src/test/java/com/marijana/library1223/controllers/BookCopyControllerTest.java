@@ -40,14 +40,12 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-
-//@WebMvcTest(BookCopyController.class)
-//@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
+//@ActiveProfiles("test)
 class BookCopyControllerTest {
 
     @Autowired
@@ -77,12 +75,14 @@ class BookCopyControllerTest {
     BookCopyDto bookCopyDto1;
     BookCopyDto bookCopyDto2;
     BookCopyDto bookCopyDto3;
+    BookCopyDto bookCopyDto4;
     Book book1;
     Book book2;
     Book book3;
     BookDto bookDto1;
     BookDto bookDto2;
     BookDto bookDto3;
+    BookDto bookDto4;
 
 
     @BeforeEach
@@ -162,6 +162,14 @@ class BookCopyControllerTest {
         bookDto3.setSuitableAge(8);
         bookDto3.setBookPhoto(file3);
 
+        bookDto4 = new BookDto();
+        bookDto4.setId(1015L);
+        bookDto4.setIsbn(789016);
+        bookDto4.setBookTitle("Matilda");
+        bookDto4.setNameAuthor("Roald Dahl");
+        bookDto4.setNameIllustrator("Quentin Blake");
+        bookDto4.setSuitableAge(9);
+        bookDto4.setBookPhoto(file3);
 
         //book copy
         bookCopy1 = new BookCopy();
@@ -199,6 +207,7 @@ class BookCopyControllerTest {
         bookCopy3.setTotalWordCount(50000);
         bookCopy3.setYearPublished(LocalDate.of(2015, 02, 02));
         bookCopy3.setBook(book3);
+
 
         //book copy saved in repository
         bookCopy1 = bookCopyRepository.save(bookCopy1);
@@ -243,9 +252,22 @@ class BookCopyControllerTest {
         bookCopyDto3.setYearPublished(LocalDate.of(2015, 02, 02));
         bookCopyDto3.setBookDto(bookDto3);
 
+        bookCopyDto4 = new BookCopyDto();
+        bookCopyDto4.setId(1015L);
+        bookCopyDto4.setBarcode(40276);
+        bookCopyDto4.setAudioBook(true);
+        bookCopyDto4.setInWrittenForm(true);
+        bookCopyDto4.setDyslexiaFriendly(true);
+        bookCopyDto4.setFormat("hardcover");
+        bookCopyDto4.setNumberOfPages(200);
+        bookCopyDto4.setTotalWordCount(50000);
+        bookCopyDto4.setYearPublished(LocalDate.of(2016, 02, 02));
+        bookCopyDto4.setBookDto(bookDto4);
+
     }
 
     @Test
+        //@WithMockUser(username="testuser", roles="USER")
     //@Disabled
     void createBookCopy() throws Exception {
 
@@ -254,31 +276,32 @@ class BookCopyControllerTest {
         mockMvc.perform(post("/book-copy")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(bookCopyDto1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
+                .andExpect(jsonPath("id").value(1000))
                         //.andExpect(status().isOk())
                 //book-copy 1
-                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("barcode").value(102345))
-                .andExpect(MockMvcResultMatchers.jsonPath("audioBook").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("format").value("hardcover"))
-                .andExpect(MockMvcResultMatchers.jsonPath("numberOfPages").value(20))
-                .andExpect(MockMvcResultMatchers.jsonPath("totalWordCount").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("yearPublished").value("1991-01-01"))
+                .andExpect(jsonPath("id").value(1000))
+                .andExpect(jsonPath("barcode").value(102345))
+                .andExpect(jsonPath("audioBook").value(false))
+                .andExpect(jsonPath("inWrittenForm").value(true))
+                .andExpect(jsonPath("dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("format").value("hardcover"))
+                .andExpect(jsonPath("numberOfPages").value(20))
+                .andExpect(jsonPath("totalWordCount").value(200))
+                .andExpect(jsonPath("yearPublished").value("1991-01-01"))
                 //book 1
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.isbn").value(12345))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameAuthor").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameIllustrator").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.suitableAge").value(4))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookPhoto").value(file1));
+                .andExpect(jsonPath("bookDto.id").value(1000))
+                .andExpect(jsonPath("bookDto.isbn").value(12345))
+                .andExpect(jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
+                .andExpect(jsonPath("bookDto.nameAuthor").value("Ruth Martin"))
+                .andExpect(jsonPath("bookDto.nameIllustrator").value("Ruth Martin"))
+                .andExpect(jsonPath("bookDto.suitableAge").value(4))
+                .andExpect(jsonPath("bookDto.bookPhoto").value(file1));
     }
 
 
 
     @Test
+        //@WithMockUser(username="testuser", roles="USER")
     //@Disabled
     void getOneCopy() throws Exception {
 
@@ -288,23 +311,23 @@ class BookCopyControllerTest {
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 //book-copy 1
-                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("barcode").value(102345))
-                .andExpect(MockMvcResultMatchers.jsonPath("audioBook").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("format").value("hardcover"))
-                .andExpect(MockMvcResultMatchers.jsonPath("numberOfPages").value(20))
-                .andExpect(MockMvcResultMatchers.jsonPath("totalWordCount").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("yearPublished").value("1991-01-01"))
+                .andExpect(jsonPath("id").value(1000))
+                .andExpect(jsonPath("barcode").value(102345))
+                .andExpect(jsonPath("audioBook").value(false))
+                .andExpect(jsonPath("inWrittenForm").value(true))
+                .andExpect(jsonPath("dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("format").value("hardcover"))
+                .andExpect(jsonPath("numberOfPages").value(20))
+                .andExpect(jsonPath("totalWordCount").value(200))
+                .andExpect(jsonPath("yearPublished").value("1991-01-01"))
                 //book 1
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.isbn").value(12345))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameAuthor").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameIllustrator").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.suitableAge").value(4))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookPhoto").value(file1));
+                .andExpect(jsonPath("bookDto.id").value(1000))
+                .andExpect(jsonPath("bookDto.isbn").value(12345))
+                .andExpect(jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
+                .andExpect(jsonPath("bookDto.nameAuthor").value("Ruth Martin"))
+                .andExpect(jsonPath("bookDto.nameIllustrator").value("Ruth Martin"))
+                .andExpect(jsonPath("bookDto.suitableAge").value(4))
+                .andExpect(jsonPath("bookDto.bookPhoto").value(file1));
     }
 
     //start here
@@ -318,59 +341,59 @@ class BookCopyControllerTest {
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 //book-copy 1
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].barcode").value(102345))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].audioBook").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].format").value("hardcover"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].numberOfPages").value(20))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].totalWordCount").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].yearPublished").value("1991-01-01"))
+                .andExpect(jsonPath("$[0].id").value(1000))
+                .andExpect(jsonPath("$[0].barcode").value(102345))
+                .andExpect(jsonPath("$[0].audioBook").value(false))
+                .andExpect(jsonPath("$[0].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[0].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[0].format").value("hardcover"))
+                .andExpect(jsonPath("$[0].numberOfPages").value(20))
+                .andExpect(jsonPath("$[0].totalWordCount").value(200))
+                .andExpect(jsonPath("$[0].yearPublished").value("1991-01-01"))
                     //book 1
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.isbn").value(12345))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameAuthor").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameIllustrator").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.suitableAge").value(4))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookPhoto").value(file1))
+                .andExpect(jsonPath("$[0].bookDto.id").value(1000))
+                .andExpect(jsonPath("$[0].bookDto.isbn").value(12345))
+                .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
+                .andExpect(jsonPath("$[0].bookDto.nameAuthor").value("Ruth Martin"))
+                .andExpect(jsonPath("$[0].bookDto.nameIllustrator").value("Ruth Martin"))
+                .andExpect(jsonPath("$[0].bookDto.suitableAge").value(4))
+                .andExpect(jsonPath("$[0].bookDto.bookPhoto").value(file1))
                 //book-copy 2
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(1010))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].barcode").value(80765))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].audioBook").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].format").value("paperback"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].numberOfPages").value(100))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].totalWordCount").value(20000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].yearPublished").value("2000-01-01"))
+                .andExpect(jsonPath("$[1].id").value(1010))
+                .andExpect(jsonPath("$[1].barcode").value(80765))
+                .andExpect(jsonPath("$[1].audioBook").value(true))
+                .andExpect(jsonPath("$[1].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[1].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[1].format").value("paperback"))
+                .andExpect(jsonPath("$[1].numberOfPages").value(100))
+                .andExpect(jsonPath("$[1].totalWordCount").value(20000))
+                .andExpect(jsonPath("$[1].yearPublished").value("2000-01-01"))
                      //book 2
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.id").value(1010))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.isbn").value(123456))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.nameAuthor").value("Toon Tellegen"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.nameIllustrator").value("Mance Post"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.suitableAge").value(7))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.bookPhoto").value(file2))
+                .andExpect(jsonPath("$[1].bookDto.id").value(1010))
+                .andExpect(jsonPath("$[1].bookDto.isbn").value(123456))
+                .andExpect(jsonPath("$[1].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
+                .andExpect(jsonPath("$[1].bookDto.nameAuthor").value("Toon Tellegen"))
+                .andExpect(jsonPath("$[1].bookDto.nameIllustrator").value("Mance Post"))
+                .andExpect(jsonPath("$[1].bookDto.suitableAge").value(7))
+                .andExpect(jsonPath("$[1].bookDto.bookPhoto").value(file2))
                 //book-copy 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].barcode").value(30276))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].audioBook").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].format").value("paperback"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].numberOfPages").value(176))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].totalWordCount").value(50000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].yearPublished").value("2015-02-02"))
+                .andExpect(jsonPath("$[2].id").value(1015))
+                .andExpect(jsonPath("$[2].barcode").value(30276))
+                .andExpect(jsonPath("$[2].audioBook").value(true))
+                .andExpect(jsonPath("$[2].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[2].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[2].format").value("paperback"))
+                .andExpect(jsonPath("$[2].numberOfPages").value(176))
+                .andExpect(jsonPath("$[2].totalWordCount").value(50000))
+                .andExpect(jsonPath("$[2].yearPublished").value("2015-02-02"))
                 //book 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.isbn").value(678901))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.bookTitle").value("Matilda"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.nameAuthor").value("Roald Dahl"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.nameIllustrator").value("Quentin Blake"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.suitableAge").value(8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.bookPhoto").value(file3));
+                .andExpect(jsonPath("$[2].bookDto.id").value(1015))
+                .andExpect(jsonPath("$[2].bookDto.isbn").value(678901))
+                .andExpect(jsonPath("$[2].bookDto.bookTitle").value("Matilda"))
+                .andExpect(jsonPath("$[2].bookDto.nameAuthor").value("Roald Dahl"))
+                .andExpect(jsonPath("$[2].bookDto.nameIllustrator").value("Quentin Blake"))
+                .andExpect(jsonPath("$[2].bookDto.suitableAge").value(8))
+                .andExpect(jsonPath("$[2].bookDto.bookPhoto").value(file3));
     }
 
 
@@ -388,27 +411,28 @@ class BookCopyControllerTest {
                 .andDo(MockMvcResultHandlers.print())
 
                 //book-copy 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].barcode").value(30276))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].audioBook").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].format").value("paperback"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].numberOfPages").value(176))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].totalWordCount").value(50000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].yearPublished").value("2015-02-02"))
+                .andExpect(jsonPath("$[0].id").value(1015))
+                .andExpect(jsonPath("$[0].barcode").value(30276))
+                .andExpect(jsonPath("$[0].audioBook").value(true))
+                .andExpect(jsonPath("$[0].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[0].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[0].format").value("paperback"))
+                .andExpect(jsonPath("$[0].numberOfPages").value(176))
+                .andExpect(jsonPath("$[0].totalWordCount").value(50000))
+                .andExpect(jsonPath("$[0].yearPublished").value("2015-02-02"))
                 //book 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.isbn").value(678901))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookTitle").value("Matilda"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameAuthor").value("Roald Dahl"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameIllustrator").value("Quentin Blake"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.suitableAge").value(8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookPhoto").value(file3));
+                .andExpect(jsonPath("$[0].bookDto.id").value(1015))
+                .andExpect(jsonPath("$[0].bookDto.isbn").value(678901))
+                .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Matilda"))
+                .andExpect(jsonPath("$[0].bookDto.nameAuthor").value("Roald Dahl"))
+                .andExpect(jsonPath("$[0].bookDto.nameIllustrator").value("Quentin Blake"))
+                .andExpect(jsonPath("$[0].bookDto.suitableAge").value(8))
+                .andExpect(jsonPath("$[0].bookDto.bookPhoto").value(file3));
 
     }
 
     @Test
+        //@WithMockUser(username="testuser", roles="USER")
     //@Disabled
     void getAllBookCopiesDyslexiaFriendly() throws Exception {
 
@@ -418,62 +442,63 @@ class BookCopyControllerTest {
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 //book-copy 1
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].barcode").value(102345))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].audioBook").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].format").value("hardcover"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].numberOfPages").value(20))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].totalWordCount").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].yearPublished").value("1991-01-01"))
+                .andExpect(jsonPath("$[0].id").value(1000))
+                .andExpect(jsonPath("$[0].barcode").value(102345))
+                .andExpect(jsonPath("$[0].audioBook").value(false))
+                .andExpect(jsonPath("$[0].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[0].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[0].format").value("hardcover"))
+                .andExpect(jsonPath("$[0].numberOfPages").value(20))
+                .andExpect(jsonPath("$[0].totalWordCount").value(200))
+                .andExpect(jsonPath("$[0].yearPublished").value("1991-01-01"))
                 //book 1
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.isbn").value(12345))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameAuthor").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameIllustrator").value("Ruth Martin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.suitableAge").value(4))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookPhoto").value(file1))
+                .andExpect(jsonPath("$[0].bookDto.id").value(1000))
+                .andExpect(jsonPath("$[0].bookDto.isbn").value(12345))
+                .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
+                .andExpect(jsonPath("$[0].bookDto.nameAuthor").value("Ruth Martin"))
+                .andExpect(jsonPath("$[0].bookDto.nameIllustrator").value("Ruth Martin"))
+                .andExpect(jsonPath("$[0].bookDto.suitableAge").value(4))
+                .andExpect(jsonPath("$[0].bookDto.bookPhoto").value(file1))
                 //book-copy 2
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(1010))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].barcode").value(80765))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].audioBook").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].format").value("paperback"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].numberOfPages").value(100))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].totalWordCount").value(20000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].yearPublished").value("2000-01-01"))
+                .andExpect(jsonPath("$[1].id").value(1010))
+                .andExpect(jsonPath("$[1].barcode").value(80765))
+                .andExpect(jsonPath("$[1].audioBook").value(true))
+                .andExpect(jsonPath("$[1].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[1].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[1].format").value("paperback"))
+                .andExpect(jsonPath("$[1].numberOfPages").value(100))
+                .andExpect(jsonPath("$[1].totalWordCount").value(20000))
+                .andExpect(jsonPath("$[1].yearPublished").value("2000-01-01"))
                 //book 2
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.id").value(1010))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.isbn").value(123456))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.nameAuthor").value("Toon Tellegen"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.nameIllustrator").value("Mance Post"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.suitableAge").value(7))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.bookPhoto").value(file2))
+                .andExpect(jsonPath("$[1].bookDto.id").value(1010))
+                .andExpect(jsonPath("$[1].bookDto.isbn").value(123456))
+                .andExpect(jsonPath("$[1].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
+                .andExpect(jsonPath("$[1].bookDto.nameAuthor").value("Toon Tellegen"))
+                .andExpect(jsonPath("$[1].bookDto.nameIllustrator").value("Mance Post"))
+                .andExpect(jsonPath("$[1].bookDto.suitableAge").value(7))
+                .andExpect(jsonPath("$[1].bookDto.bookPhoto").value(file2))
                 //book-copy 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].barcode").value(30276))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].audioBook").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].format").value("paperback"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].numberOfPages").value(176))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].totalWordCount").value(50000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].yearPublished").value("2015-02-02"))
+                .andExpect(jsonPath("$[2].id").value(1015))
+                .andExpect(jsonPath("$[2].barcode").value(30276))
+                .andExpect(jsonPath("$[2].audioBook").value(true))
+                .andExpect(jsonPath("$[2].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[2].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[2].format").value("paperback"))
+                .andExpect(jsonPath("$[2].numberOfPages").value(176))
+                .andExpect(jsonPath("$[2].totalWordCount").value(50000))
+                .andExpect(jsonPath("$[2].yearPublished").value("2015-02-02"))
                 //book 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.isbn").value(678901))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.bookTitle").value("Matilda"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.nameAuthor").value("Roald Dahl"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.nameIllustrator").value("Quentin Blake"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.suitableAge").value(8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].bookDto.bookPhoto").value(file3));
+                .andExpect(jsonPath("$[2].bookDto.id").value(1015))
+                .andExpect(jsonPath("$[2].bookDto.isbn").value(678901))
+                .andExpect(jsonPath("$[2].bookDto.bookTitle").value("Matilda"))
+                .andExpect(jsonPath("$[2].bookDto.nameAuthor").value("Roald Dahl"))
+                .andExpect(jsonPath("$[2].bookDto.nameIllustrator").value("Quentin Blake"))
+                .andExpect(jsonPath("$[2].bookDto.suitableAge").value(8))
+                .andExpect(jsonPath("$[2].bookDto.bookPhoto").value(file3));
     }
 
     @Test
+        //@WithMockUser(username="testuser", roles="USER")
    // @Disabled
     void getAllBookCopiesAudio() throws Exception {
 
@@ -483,46 +508,72 @@ class BookCopyControllerTest {
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 //book-copy 2
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1010))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].barcode").value(80765))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].audioBook").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].format").value("paperback"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].numberOfPages").value(100))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].totalWordCount").value(20000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].yearPublished").value("2000-01-01"))
+                .andExpect(jsonPath("$[0].id").value(1010))
+                .andExpect(jsonPath("$[0].barcode").value(80765))
+                .andExpect(jsonPath("$[0].audioBook").value(true))
+                .andExpect(jsonPath("$[0].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[0].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[0].format").value("paperback"))
+                .andExpect(jsonPath("$[0].numberOfPages").value(100))
+                .andExpect(jsonPath("$[0].totalWordCount").value(20000))
+                .andExpect(jsonPath("$[0].yearPublished").value("2000-01-01"))
                 //book 2
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.id").value(1010))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.isbn").value(123456))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameAuthor").value("Toon Tellegen"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.nameIllustrator").value("Mance Post"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.suitableAge").value(7))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookDto.bookPhoto").value(file2))
+                .andExpect(jsonPath("$[0].bookDto.id").value(1010))
+                .andExpect(jsonPath("$[0].bookDto.isbn").value(123456))
+                .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
+                .andExpect(jsonPath("$[0].bookDto.nameAuthor").value("Toon Tellegen"))
+                .andExpect(jsonPath("$[0].bookDto.nameIllustrator").value("Mance Post"))
+                .andExpect(jsonPath("$[0].bookDto.suitableAge").value(7))
+                .andExpect(jsonPath("$[0].bookDto.bookPhoto").value(file2))
                 //book-copy 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].barcode").value(30276))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].audioBook").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].inWrittenForm").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].dyslexiaFriendly").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].format").value("paperback"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].numberOfPages").value(176))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].totalWordCount").value(50000))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].yearPublished").value("2015-02-02"))
+                .andExpect(jsonPath("$[1].id").value(1015))
+                .andExpect(jsonPath("$[1].barcode").value(30276))
+                .andExpect(jsonPath("$[1].audioBook").value(true))
+                .andExpect(jsonPath("$[1].inWrittenForm").value(true))
+                .andExpect(jsonPath("$[1].dyslexiaFriendly").value(false))
+                .andExpect(jsonPath("$[1].format").value("paperback"))
+                .andExpect(jsonPath("$[1].numberOfPages").value(176))
+                .andExpect(jsonPath("$[1].totalWordCount").value(50000))
+                .andExpect(jsonPath("$[1].yearPublished").value("2015-02-02"))
                 //book 3
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.id").value(1015))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.isbn").value(678901))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.bookTitle").value("Matilda"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.nameAuthor").value("Roald Dahl"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.nameIllustrator").value("Quentin Blake"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.suitableAge").value(8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookDto.bookPhoto").value(file3));
+                .andExpect(jsonPath("$[1].bookDto.id").value(1015))
+                .andExpect(jsonPath("$[1].bookDto.isbn").value(678901))
+                .andExpect(jsonPath("$[1].bookDto.bookTitle").value("Matilda"))
+                .andExpect(jsonPath("$[1].bookDto.nameAuthor").value("Roald Dahl"))
+                .andExpect(jsonPath("$[1].bookDto.nameIllustrator").value("Quentin Blake"))
+                .andExpect(jsonPath("$[1].bookDto.suitableAge").value(8))
+                .andExpect(jsonPath("$[1].bookDto.bookPhoto").value(file3));
     }
 
     @Test
-    @Disabled
-    void fullUpdateBookCopy() {
+    //@WithMockUser(username="testuser", roles="USER")
+    //@Disabled
+    void fullUpdateBookCopy() throws Exception {
+
+        given(bookCopyService.updateOneBookCopy(1015L, bookCopyDto3)).willReturn(bookCopyDto4);
+
+        mockMvc.perform(put("/book-copy/1015")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(bookCopyDto3)))
+                .andExpect(status().isOk())
+                //book-copy 1
+                .andExpect(jsonPath("id").value(1015))
+                .andExpect(jsonPath("barcode").value(40276))
+                .andExpect(jsonPath("audioBook").value(true))
+                .andExpect(jsonPath("inWrittenForm").value(true))
+                .andExpect(jsonPath("dyslexiaFriendly").value(true))
+                .andExpect(jsonPath("format").value("hardcover"))
+                .andExpect(jsonPath("numberOfPages").value(200))
+                .andExpect(jsonPath("totalWordCount").value(50000))
+                .andExpect(jsonPath("yearPublished").value("2016-02-02"))
+                //book 1
+                .andExpect(jsonPath("bookDto.id").value(1015))
+                .andExpect(jsonPath("bookDto.isbn").value(789016))
+                .andExpect(jsonPath("bookDto.bookTitle").value("Matilda"))
+                .andExpect(jsonPath("bookDto.nameAuthor").value("Roald Dahl"))
+                .andExpect(jsonPath("bookDto.nameIllustrator").value("Quentin Blake"))
+                .andExpect(jsonPath("bookDto.suitableAge").value(9))
+                .andExpect(jsonPath("bookDto.bookPhoto").value(file3));
     }
 
     @Test
@@ -531,13 +582,14 @@ class BookCopyControllerTest {
     }
 
     @Test
+        //@WithMockUser(username="testuser", roles="USER")
     //@Disabled
     void deleteOneCopy() throws Exception {
         mockMvc.perform(delete("/book-copy/1000")).andExpect(status().isNoContent());
     }
 
 
-    //-----------
+    //(de)serialization of json.........
     public static String asJsonString(final Object obj) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
