@@ -1,5 +1,11 @@
 package com.marijana.library1223.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.models.Book;
@@ -10,27 +16,36 @@ import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.FileUploadRepository;
 import com.marijana.library1223.services.BookCopyService;
 import com.marijana.library1223.services.BookService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.http.MediaType;
+
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+
+//@WebMvcTest(BookCopyController.class)
+//@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 class BookCopyControllerTest {
@@ -68,6 +83,7 @@ class BookCopyControllerTest {
     BookDto bookDto1;
     BookDto bookDto2;
     BookDto bookDto3;
+
 
     @BeforeEach
     public void setUp() {
@@ -230,9 +246,37 @@ class BookCopyControllerTest {
     }
 
     @Test
-    @Disabled
-    void createBookCopy() {
+    //@Disabled
+    void createBookCopy() throws Exception {
+
+        given(bookCopyService.createBookCopy(bookCopyDto1)).willReturn(bookCopyDto1);
+
+        mockMvc.perform(post("/book-copy")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(bookCopyDto1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
+                        //.andExpect(status().isOk())
+                //book-copy 1
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("barcode").value(102345))
+                .andExpect(MockMvcResultMatchers.jsonPath("audioBook").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("inWrittenForm").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("dyslexiaFriendly").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("format").value("hardcover"))
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfPages").value(20))
+                .andExpect(MockMvcResultMatchers.jsonPath("totalWordCount").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("yearPublished").value("1991-01-01"))
+                //book 1
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.isbn").value(12345))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameAuthor").value("Ruth Martin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.nameIllustrator").value("Ruth Martin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.suitableAge").value(4))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookDto.bookPhoto").value(file1));
     }
+
+
 
     @Test
     //@Disabled
@@ -487,7 +531,21 @@ class BookCopyControllerTest {
     }
 
     @Test
-    @Disabled
-    void deleteOneCopy() {
+    //@Disabled
+    void deleteOneCopy() throws Exception {
+        mockMvc.perform(delete("/book-copy/1000")).andExpect(status().isNoContent());
+    }
+
+
+    //-----------
+    public static String asJsonString(final Object obj) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
