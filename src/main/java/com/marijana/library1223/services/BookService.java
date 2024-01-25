@@ -177,7 +177,7 @@ public class BookService {
 
         } else {
 
-            throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
+            throw new IdNotFoundException("Book with id " + id + " is not found and cannot be updated.");
         }
     }
 

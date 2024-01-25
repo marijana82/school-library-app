@@ -1,6 +1,8 @@
 package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.BorrowalDto;
+import com.marijana.library1223.exceptions.BadRequestException;
+import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.BookCopy;
@@ -79,7 +81,7 @@ public class BorrowalService {
         return borrowalDtoList;
     }
 
-    //getSingleBorrowal - get mapping
+
     public BorrowalDto getSingleBorrowal(Long id) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(id);
         if(optionalBorrowal.isPresent()) {
@@ -101,7 +103,7 @@ public class BorrowalService {
         }
     }
 
-    //fullUpdateBorrowal - put mapping
+
     public BorrowalDto fullUpdateBorrowal(Long id, BorrowalDto borrowalDto) {
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(id);
         if(optionalBorrowal.isEmpty()) {
@@ -115,49 +117,59 @@ public class BorrowalService {
         }
     }
 
-    //partial update Borrowal - patch mapping
+
     public BorrowalDto partialUpdateBorrowal(Long id, BorrowalDto borrowalDto) {
+
         Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(id);
 
-        if(optionalBorrowal.isEmpty()) {
-            throw new RecordNotFoundException("Borrowal with id number " + id + " not found.");
+
+        if(borrowalRepository.existsById(id)) {
+
+            Borrowal existingBorrowal = optionalBorrowal.get();
+
+            Borrowal partialUpdates = transferBorrowalDtoToBorrowal(borrowalDto);
+
+            partialUpdates.setId(existingBorrowal.getId());
+
+            if(partialUpdates.getDateOfBorrowal() !=null) {
+                existingBorrowal.setDateOfBorrowal(partialUpdates.getDateOfBorrowal());
+            }
+
+            if(partialUpdates.getDueDate() != null) {
+                existingBorrowal.setDueDate(partialUpdates.getDueDate());
+            }
+            if(partialUpdates.getBookTitle() !=null) {
+                existingBorrowal.setBookTitle(partialUpdates.getBookTitle());
+            }
+
+            if(partialUpdates.getNumberOfBooksBorrowed() !=null) {
+                existingBorrowal.setNumberOfBooksBorrowed(partialUpdates.getNumberOfBooksBorrowed());
+            }
+
+            if(partialUpdates.getReservation() !=null) {
+                existingBorrowal.setReservation(partialUpdates.getReservation());
+            }
+
+            if(partialUpdates.getAccount() !=null) {
+                existingBorrowal.setAccount(partialUpdates.getAccount());
+            }
+
+            if(partialUpdates.getBookCopy() !=null) {
+                existingBorrowal.setBookCopy(partialUpdates.getBookCopy());
+            }
+
+            Borrowal newBorrowalSaved = borrowalRepository.save(existingBorrowal);
+
+            return transferBorrowalToBorrowalDto(newBorrowalSaved);
+
         } else {
-            Borrowal borrowalToUpdate = optionalBorrowal.get();
 
-            Borrowal borrowal1 = transferBorrowalDtoToBorrowal(borrowalDto);
-            borrowal1.setId(borrowalToUpdate.getId());
+            throw new IdNotFoundException("Borrowal with id" + id + "is not found and cannot be updated");
 
-            if(borrowalDto.getDateOfBorrowal() !=null) {
-                borrowalToUpdate.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
-            }
-            if(borrowalDto.getDueDate() != null) {
-                borrowalToUpdate.setDueDate(borrowalDto.getDueDate());
-            }
-            if(borrowalDto.getBookTitle() !=null) {
-                borrowalToUpdate.setBookTitle(borrowalDto.getBookTitle());
-            }
-
-            if(borrowalDto.getNumberOfBooksBorrowed() !=null) {
-                borrowalToUpdate.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
-            }
-
-            if(borrowalDto.getReservationDto() !=null) {
-                borrowalToUpdate.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
-            }
-
-            if(borrowalDto.getAccountDto() !=null) {
-                borrowalToUpdate.setAccount(accountService.transferAccountDtoToAccount(borrowalDto.getAccountDto()));
-            }
-
-            if(borrowalDto.getBookCopyDto() !=null) {
-                borrowalToUpdate.setBookCopy(bookCopyService.transferBookCopyDtoToBookCopy(borrowalDto.getBookCopyDto()));
-            }
-
-            Borrowal returnBorrowal = borrowalRepository.save(borrowal1);
-            return transferBorrowalToBorrowalDto(returnBorrowal);
         }
 
     }
+
 
     public void deleteBorrowal(Long id) {
         borrowalRepository.deleteById(id);
@@ -208,13 +220,16 @@ public class BorrowalService {
              Reservation reservationPresent = optionalReservation.get();
 
             if(borrowalPresent.getReservation() !=null) {
-                throw new RuntimeException("Borrowal already has a reservation");
+
+                throw new BadRequestException("Borrowal already contains one reservation. No new reservations can be added.");
             }
 
             borrowalPresent.setReservation(reservationPresent);
+
             borrowalRepository.save(borrowalPresent);
 
         } else {
+
             throw new RecordNotFoundException();
         }
     }
@@ -228,13 +243,14 @@ public class BorrowalService {
             BookCopy copyFound = optionalBookCopy.get();
             Borrowal borrowalFound = optionalBorrowal.get();
 
-            //TODO: CREATE CUSTOM-MADE EXCEPTION HERE IN EXCEPTION CONTROLLER
             if(borrowalFound.getBookCopy() !=null) {
-                throw new RuntimeException("This borrowal already contains an assigned book copy");
+
+                throw new BadRequestException("This borrowal already contains one book copy. No new book copies can be added.");
             }
 
             borrowalFound.setBookCopy(copyFound);
             borrowalRepository.save(borrowalFound);
+
         } else {
 
             throw new RecordNotFoundException();
@@ -251,6 +267,8 @@ public class BorrowalService {
             Account accountPresent = optionalAccount.get();
 
             if(borrowalPresent.getAccount() !=null) {
+
+                //TODO: CHANGE THIS INTO InvalidRequestException
                 throw new RuntimeException("Borrowal is already connected to an account.");
             }
 

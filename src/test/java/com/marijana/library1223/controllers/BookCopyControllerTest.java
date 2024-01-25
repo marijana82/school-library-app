@@ -90,7 +90,6 @@ class BookCopyControllerTest {
     @BeforeEach
     public void setUp() {
 
-        //file for upload
         file1 = new FileDocument();
         file2 = new FileDocument();
         file3 = new FileDocument();
@@ -103,7 +102,6 @@ class BookCopyControllerTest {
         file2 = fileUploadRepository.save(file2);
         file3 = fileUploadRepository.save(file3);
 
-        //book
         book1 = new Book();
         book1.setId(1000L);
         book1.setIsbn(12345);
@@ -131,12 +129,10 @@ class BookCopyControllerTest {
         book3.setSuitableAge(8);
         book3.setBookPhoto(file3);
 
-        //books saved in repository
         book1 = bookRepository.save(book1);
         book2 = bookRepository.save(book2);
         book3 = bookRepository.save(book3);
 
-        //bookDto
         bookDto1 = new BookDto();
         bookDto1.setId(1000L);
         bookDto1.setIsbn(12345);
@@ -173,7 +169,6 @@ class BookCopyControllerTest {
         bookDto4.setSuitableAge(9);
         bookDto4.setBookPhoto(file3);
 
-        //book copy
         bookCopy1 = new BookCopy();
         bookCopy1.setId(1000L);
         bookCopy1.setBarcode(102345);
@@ -210,14 +205,10 @@ class BookCopyControllerTest {
         bookCopy3.setYearPublished(LocalDate.of(2015, 02, 02));
         bookCopy3.setBook(book3);
 
-
-        //book copy saved in repository
         bookCopy1 = bookCopyRepository.save(bookCopy1);
         bookCopy2 = bookCopyRepository.save(bookCopy2);
         bookCopy3 = bookCopyRepository.save(bookCopy3);
 
-
-        //bookCopyDto
         bookCopyDto1 = new BookCopyDto();
         bookCopyDto1.setId(1000L);
         bookCopyDto1.setBarcode(102345);
@@ -270,7 +261,6 @@ class BookCopyControllerTest {
 
     @Test
         //@WithMockUser(username="testuser", roles="USER")
-    //@Disabled
     void createBookCopy() throws Exception {
 
         given(bookCopyService.createBookCopy(bookCopyDto1)).willReturn(bookCopyDto1);
@@ -279,8 +269,7 @@ class BookCopyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(bookCopyDto1)))
                 .andExpect(jsonPath("id").value(1000))
-                        //.andExpect(status().isOk())
-                //book-copy 1
+
                 .andExpect(jsonPath("id").value(1000))
                 .andExpect(jsonPath("barcode").value(102345))
                 .andExpect(jsonPath("audioBook").value(false))
@@ -290,7 +279,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("numberOfPages").value(20))
                 .andExpect(jsonPath("totalWordCount").value(200))
                 .andExpect(jsonPath("yearPublished").value("1991-01-01"))
-                //book 1
+
                 .andExpect(jsonPath("bookDto.id").value(1000))
                 .andExpect(jsonPath("bookDto.isbn").value(12345))
                 .andExpect(jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
@@ -316,7 +305,6 @@ class BookCopyControllerTest {
 
     @Test
         //@WithMockUser(username="testuser", roles="USER")
-    //@Disabled
     void getOneCopy() throws Exception {
 
         given(bookCopyService.showOneCopy(1000L)).willReturn(bookCopyDto1);
@@ -324,7 +312,7 @@ class BookCopyControllerTest {
         mockMvc.perform(get("/book-copy/1000"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
-                //book-copy 1
+
                 .andExpect(jsonPath("id").value(1000))
                 .andExpect(jsonPath("barcode").value(102345))
                 .andExpect(jsonPath("audioBook").value(false))
@@ -334,7 +322,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("numberOfPages").value(20))
                 .andExpect(jsonPath("totalWordCount").value(200))
                 .andExpect(jsonPath("yearPublished").value("1991-01-01"))
-                //book 1
+
                 .andExpect(jsonPath("bookDto.id").value(1000))
                 .andExpect(jsonPath("bookDto.isbn").value(12345))
                 .andExpect(jsonPath("bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
@@ -344,9 +332,8 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("bookDto.bookPhoto").value(file1));
     }
 
-    //start here
+
     @Test
-    //@Disabled
     //@WithMockUser(username="testuser", roles="USER")
     void getAllBookCopies() throws Exception {
         given(bookCopyService.getAllBookCopies()).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
@@ -354,7 +341,7 @@ class BookCopyControllerTest {
         mockMvc.perform(get("/book-copy"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
-                //book-copy 1
+
                 .andExpect(jsonPath("$[0].id").value(1000))
                 .andExpect(jsonPath("$[0].barcode").value(102345))
                 .andExpect(jsonPath("$[0].audioBook").value(false))
@@ -364,7 +351,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[0].numberOfPages").value(20))
                 .andExpect(jsonPath("$[0].totalWordCount").value(200))
                 .andExpect(jsonPath("$[0].yearPublished").value("1991-01-01"))
-                    //book 1
+
                 .andExpect(jsonPath("$[0].bookDto.id").value(1000))
                 .andExpect(jsonPath("$[0].bookDto.isbn").value(12345))
                 .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
@@ -372,7 +359,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[0].bookDto.nameIllustrator").value("Ruth Martin"))
                 .andExpect(jsonPath("$[0].bookDto.suitableAge").value(4))
                 .andExpect(jsonPath("$[0].bookDto.bookPhoto").value(file1))
-                //book-copy 2
+
                 .andExpect(jsonPath("$[1].id").value(1010))
                 .andExpect(jsonPath("$[1].barcode").value(80765))
                 .andExpect(jsonPath("$[1].audioBook").value(true))
@@ -382,7 +369,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[1].numberOfPages").value(100))
                 .andExpect(jsonPath("$[1].totalWordCount").value(20000))
                 .andExpect(jsonPath("$[1].yearPublished").value("2000-01-01"))
-                     //book 2
+
                 .andExpect(jsonPath("$[1].bookDto.id").value(1010))
                 .andExpect(jsonPath("$[1].bookDto.isbn").value(123456))
                 .andExpect(jsonPath("$[1].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
@@ -390,7 +377,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[1].bookDto.nameIllustrator").value("Mance Post"))
                 .andExpect(jsonPath("$[1].bookDto.suitableAge").value(7))
                 .andExpect(jsonPath("$[1].bookDto.bookPhoto").value(file2))
-                //book-copy 3
+
                 .andExpect(jsonPath("$[2].id").value(1015))
                 .andExpect(jsonPath("$[2].barcode").value(30276))
                 .andExpect(jsonPath("$[2].audioBook").value(true))
@@ -400,7 +387,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[2].numberOfPages").value(176))
                 .andExpect(jsonPath("$[2].totalWordCount").value(50000))
                 .andExpect(jsonPath("$[2].yearPublished").value("2015-02-02"))
-                //book 3
+
                 .andExpect(jsonPath("$[2].bookDto.id").value(1015))
                 .andExpect(jsonPath("$[2].bookDto.isbn").value(678901))
                 .andExpect(jsonPath("$[2].bookDto.bookTitle").value("Matilda"))
@@ -412,7 +399,6 @@ class BookCopyControllerTest {
 
 
     @Test
-    //@Disabled
         //@WithMockUser(username="testuser", roles="USER")
 
     void getAllBookCopiesPublishedAfter() throws Exception {
@@ -424,7 +410,6 @@ class BookCopyControllerTest {
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
 
-                //book-copy 3
                 .andExpect(jsonPath("$[0].id").value(1015))
                 .andExpect(jsonPath("$[0].barcode").value(30276))
                 .andExpect(jsonPath("$[0].audioBook").value(true))
@@ -434,7 +419,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[0].numberOfPages").value(176))
                 .andExpect(jsonPath("$[0].totalWordCount").value(50000))
                 .andExpect(jsonPath("$[0].yearPublished").value("2015-02-02"))
-                //book 3
+
                 .andExpect(jsonPath("$[0].bookDto.id").value(1015))
                 .andExpect(jsonPath("$[0].bookDto.isbn").value(678901))
                 .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Matilda"))
@@ -447,7 +432,6 @@ class BookCopyControllerTest {
 
     @Test
         //@WithMockUser(username="testuser", roles="USER")
-    //@Disabled
     void getAllBookCopiesDyslexiaFriendly() throws Exception {
 
         given(bookCopyService.getAllBookCopiesDyslexiaFriendly(false)).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
@@ -455,7 +439,7 @@ class BookCopyControllerTest {
         mockMvc.perform(get("/book-copy/dyslexia?dyslexia=false"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
-                //book-copy 1
+
                 .andExpect(jsonPath("$[0].id").value(1000))
                 .andExpect(jsonPath("$[0].barcode").value(102345))
                 .andExpect(jsonPath("$[0].audioBook").value(false))
@@ -465,7 +449,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[0].numberOfPages").value(20))
                 .andExpect(jsonPath("$[0].totalWordCount").value(200))
                 .andExpect(jsonPath("$[0].yearPublished").value("1991-01-01"))
-                //book 1
+
                 .andExpect(jsonPath("$[0].bookDto.id").value(1000))
                 .andExpect(jsonPath("$[0].bookDto.isbn").value(12345))
                 .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Kleine onderzoekers voertuigen"))
@@ -473,7 +457,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[0].bookDto.nameIllustrator").value("Ruth Martin"))
                 .andExpect(jsonPath("$[0].bookDto.suitableAge").value(4))
                 .andExpect(jsonPath("$[0].bookDto.bookPhoto").value(file1))
-                //book-copy 2
+
                 .andExpect(jsonPath("$[1].id").value(1010))
                 .andExpect(jsonPath("$[1].barcode").value(80765))
                 .andExpect(jsonPath("$[1].audioBook").value(true))
@@ -483,7 +467,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[1].numberOfPages").value(100))
                 .andExpect(jsonPath("$[1].totalWordCount").value(20000))
                 .andExpect(jsonPath("$[1].yearPublished").value("2000-01-01"))
-                //book 2
+
                 .andExpect(jsonPath("$[1].bookDto.id").value(1010))
                 .andExpect(jsonPath("$[1].bookDto.isbn").value(123456))
                 .andExpect(jsonPath("$[1].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
@@ -491,7 +475,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[1].bookDto.nameIllustrator").value("Mance Post"))
                 .andExpect(jsonPath("$[1].bookDto.suitableAge").value(7))
                 .andExpect(jsonPath("$[1].bookDto.bookPhoto").value(file2))
-                //book-copy 3
+
                 .andExpect(jsonPath("$[2].id").value(1015))
                 .andExpect(jsonPath("$[2].barcode").value(30276))
                 .andExpect(jsonPath("$[2].audioBook").value(true))
@@ -501,7 +485,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[2].numberOfPages").value(176))
                 .andExpect(jsonPath("$[2].totalWordCount").value(50000))
                 .andExpect(jsonPath("$[2].yearPublished").value("2015-02-02"))
-                //book 3
+
                 .andExpect(jsonPath("$[2].bookDto.id").value(1015))
                 .andExpect(jsonPath("$[2].bookDto.isbn").value(678901))
                 .andExpect(jsonPath("$[2].bookDto.bookTitle").value("Matilda"))
@@ -513,7 +497,6 @@ class BookCopyControllerTest {
 
     @Test
         //@WithMockUser(username="testuser", roles="USER")
-   // @Disabled
     void getAllBookCopiesAudio() throws Exception {
 
         given(bookCopyService.getAllBookCopiesAudio(true)).willReturn(List.of(bookCopyDto2, bookCopyDto3));
@@ -521,7 +504,7 @@ class BookCopyControllerTest {
         mockMvc.perform(get("/book-copy/audio?audio=true"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
-                //book-copy 2
+
                 .andExpect(jsonPath("$[0].id").value(1010))
                 .andExpect(jsonPath("$[0].barcode").value(80765))
                 .andExpect(jsonPath("$[0].audioBook").value(true))
@@ -531,7 +514,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[0].numberOfPages").value(100))
                 .andExpect(jsonPath("$[0].totalWordCount").value(20000))
                 .andExpect(jsonPath("$[0].yearPublished").value("2000-01-01"))
-                //book 2
+
                 .andExpect(jsonPath("$[0].bookDto.id").value(1010))
                 .andExpect(jsonPath("$[0].bookDto.isbn").value(123456))
                 .andExpect(jsonPath("$[0].bookDto.bookTitle").value("Langzaam, zosnel als zij konden"))
@@ -539,7 +522,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[0].bookDto.nameIllustrator").value("Mance Post"))
                 .andExpect(jsonPath("$[0].bookDto.suitableAge").value(7))
                 .andExpect(jsonPath("$[0].bookDto.bookPhoto").value(file2))
-                //book-copy 3
+
                 .andExpect(jsonPath("$[1].id").value(1015))
                 .andExpect(jsonPath("$[1].barcode").value(30276))
                 .andExpect(jsonPath("$[1].audioBook").value(true))
@@ -549,7 +532,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("$[1].numberOfPages").value(176))
                 .andExpect(jsonPath("$[1].totalWordCount").value(50000))
                 .andExpect(jsonPath("$[1].yearPublished").value("2015-02-02"))
-                //book 3
+
                 .andExpect(jsonPath("$[1].bookDto.id").value(1015))
                 .andExpect(jsonPath("$[1].bookDto.isbn").value(678901))
                 .andExpect(jsonPath("$[1].bookDto.bookTitle").value("Matilda"))
@@ -561,7 +544,6 @@ class BookCopyControllerTest {
 
     @Test
     //@WithMockUser(username="testuser", roles="USER")
-    //@Disabled
     void fullUpdateBookCopy() throws Exception {
 
         given(bookCopyService.updateOneBookCopy(1015L, bookCopyDto3)).willReturn(bookCopyDto4);
@@ -570,7 +552,7 @@ class BookCopyControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(bookCopyDto3)))
                 .andExpect(status().isOk())
-                //book-copy 1
+
                 .andExpect(jsonPath("id").value(1015))
                 .andExpect(jsonPath("barcode").value(40276))
                 .andExpect(jsonPath("audioBook").value(true))
@@ -580,7 +562,7 @@ class BookCopyControllerTest {
                 .andExpect(jsonPath("numberOfPages").value(200))
                 .andExpect(jsonPath("totalWordCount").value(50000))
                 .andExpect(jsonPath("yearPublished").value("2016-02-02"))
-                //book 1
+
                 .andExpect(jsonPath("bookDto.id").value(1015))
                 .andExpect(jsonPath("bookDto.isbn").value(789016))
                 .andExpect(jsonPath("bookDto.bookTitle").value("Matilda"))
@@ -591,7 +573,6 @@ class BookCopyControllerTest {
     }
 
     @Test
-    //@Disabled
     void assignBookToBookCopy() throws Exception {
 
         willDoNothing().given(bookCopyService).assignBookToBookCopy(1000L, 1000L);
@@ -604,7 +585,6 @@ class BookCopyControllerTest {
 
     @Test
         //@WithMockUser(username="testuser", roles="USER")
-    //@Disabled
     void deleteOneCopy() throws Exception {
         mockMvc.perform(delete("/book-copy/1000")).andExpect(status().isNoContent());
     }
