@@ -21,10 +21,6 @@ public class User {
     private boolean enabled = true;
     @Column
     private String email;
-    /*@Column
-    private String firstName;
-    @Column
-    private String lastName;*/
 
     //TARGET
     @OneToMany(
