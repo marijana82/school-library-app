@@ -136,35 +136,36 @@ public class AccountService {
 
         Optional<Account> optionalAccount = accountRepository.findById(id);
 
-        if(optionalAccount.isEmpty()) {
-            throw new RecordNotFoundException();
+        if(accountRepository.existsById(id)) {
+
+            Account existingAccount = optionalAccount.get();
+
+            Account partialUpdates = transferAccountDtoToAccount(accountDto);
+
+            partialUpdates.setId(existingAccount.getId());
+
+            if(partialUpdates.getFirstNameStudent() !=null) {
+                existingAccount.setFirstNameStudent(partialUpdates.getFirstNameStudent());
+            }
+            if(partialUpdates.getLastNameStudent() !=null) {
+                existingAccount.setLastNameStudent(partialUpdates.getLastNameStudent());
+            }
+            if(partialUpdates.getDob() !=null) {
+                existingAccount.setDob(partialUpdates.getDob());
+            }
+            if(partialUpdates.getStudentClass() !=null) {
+                existingAccount.setStudentClass(partialUpdates.getStudentClass());
+            }
+            if(partialUpdates.getNameOfTeacher() !=null) {
+                existingAccount.setNameOfTeacher(partialUpdates.getNameOfTeacher());
+            }
+
+            Account newAccountSaved = accountRepository.save(existingAccount);
+            return transferAccountToAccountDto(newAccountSaved);
 
         } else {
 
-            Account accountToUpdate = optionalAccount.get();
-
-            Account account1 = transferAccountDtoToAccount(accountDto);
-
-            account1.setId(accountToUpdate.getId());
-
-            if(accountDto.getFirstNameStudent() !=null) {
-                accountToUpdate.setFirstNameStudent(accountDto.getFirstNameStudent());
-            }
-            if(accountDto.getLastNameStudent() !=null) {
-                accountToUpdate.setLastNameStudent(accountDto.getLastNameStudent());
-            }
-            if(accountDto.getDob() !=null) {
-                accountToUpdate.setDob(accountDto.getDob());
-            }
-            if(accountDto.getStudentClass() !=null) {
-                accountToUpdate.setStudentClass(accountDto.getStudentClass());
-            }
-            if(accountDto.getNameOfTeacher() !=null) {
-                accountToUpdate.setNameOfTeacher(accountDto.getNameOfTeacher());
-            }
-
-            Account returnAccount = accountRepository.save(account1);
-            return transferAccountToAccountDto(returnAccount);
+            throw new IdNotFoundException("Account with id " + id + " is not found and cannot be updated.");
 
         }
 

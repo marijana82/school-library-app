@@ -27,7 +27,6 @@ public class BookCopyDto {
     private BookDto bookDto;
 
     //constructors
-
     public BookCopyDto () {}
     public BookCopyDto(Long id, int barcode, Integer numberOfPages, Integer totalWordCount, String format, boolean inWrittenForm, boolean audioBook, boolean dyslexiaFriendly, LocalDate yearPublished) {}
 

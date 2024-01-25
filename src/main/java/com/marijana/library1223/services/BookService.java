@@ -3,8 +3,6 @@ package com.marijana.library1223.services;
 import com.marijana.library1223.dtos.BookDto;
 import com.marijana.library1223.exceptions.IdNotFoundException;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.ResourceNotFoundException;
-import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.models.*;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.FileUploadRepository;
@@ -18,11 +16,13 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final FileUploadRepository fileUploadRepository;
+    private final ReviewBookService reviewBookService;
 
 
-    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository) {
+    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository, ReviewBookService reviewBookService) {
         this.bookRepository = bookRepository;
         this.fileUploadRepository = fileUploadRepository;
+        this.reviewBookService = reviewBookService;
     }
 
 
@@ -42,8 +42,17 @@ public class BookService {
     public BookDto showOneBook(Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
         if(optionalBook.isPresent()) {
-            Book requestedBook = optionalBook.get();
-            return transferBookToBookDto(requestedBook);
+
+            BookDto requestedBookDto = transferBookToBookDto(optionalBook.get());
+            FileDocument bookPhoto = optionalBook.get().getBookPhoto();
+
+            if(bookPhoto != null) {
+                requestedBookDto.setBookPhoto(optionalBook.get().getBookPhoto());
+            }
+
+            return requestedBookDto;
+
+
         } else {
             throw new RecordNotFoundException("Book with id number " + id + " has not been found.");
         }
@@ -122,7 +131,6 @@ public class BookService {
     }
 
 
-    //updateBookPartially
     public BookDto updateBookPartially(Long id, BookDto bookDto) {
 
         Optional<Book> bookOptional = bookRepository.findById(id);
@@ -155,6 +163,10 @@ public class BookService {
                 existingBook.setSuitableAge(partialUpdates.getSuitableAge());
             }
 
+            if(partialUpdates.getBookPhoto() != null) {
+                existingBook.setBookPhoto(partialUpdates.getBookPhoto());
+            }
+
             Book newBookSaved = bookRepository.save(existingBook);
 
             return transferBookToBookDto(newBookSaved);
@@ -162,7 +174,7 @@ public class BookService {
 
         } else {
 
-            throw new IdNotFoundException("Book with id " + id + " cannot be updated.");
+            throw new IdNotFoundException("Book with id " + id + " is not found and cannot be updated.");
         }
     }
 
@@ -178,6 +190,7 @@ public class BookService {
         bookDto.setNameAuthor(book.getNameAuthor());
         bookDto.setNameIllustrator(book.getNameIllustrator());
         bookDto.setSuitableAge(book.getSuitableAge());
+        bookDto.setBookPhoto(book.getBookPhoto());
         return bookDto;
     }
 
@@ -191,6 +204,7 @@ public class BookService {
         book.setNameAuthor(bookDto.getNameAuthor());
         book.setNameIllustrator(bookDto.getNameIllustrator());
         book.setSuitableAge(bookDto.getSuitableAge());
+        book.setBookPhoto(bookDto.getBookPhoto());
         return book;
     }
 
@@ -206,7 +220,6 @@ public class BookService {
             FileDocument uploadPhoto = optionalFileDocument.get();
 
             book.setBookPhoto(uploadPhoto);
-
 
             bookRepository.save(book);
 

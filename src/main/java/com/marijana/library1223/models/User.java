@@ -19,15 +19,8 @@ public class User {
     private String password;
     @Column(nullable = false)
     private boolean enabled = true;
-    //@Column
-    //private String apiKey;
     @Column
     private String email;
-    @Column
-    private String firstName;
-    @Column
-    private String lastName;
-
 
     //TARGET
     @OneToMany(

@@ -15,12 +15,9 @@ public class BorrowalDto {
     @FutureOrPresent
     private LocalDate dueDate;
     @NotBlank(message="Please provide book title.")
-    private String bookTitle;
-    @Max(value=3)
     private Integer numberOfBooksBorrowed;
-    //---relation
+    //---relations
     private ReservationDto reservationDto;
-    //---relation with account and book copy
     private AccountDto accountDto;
     private BookCopyDto bookCopyDto;
 

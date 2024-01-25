@@ -29,7 +29,6 @@ public class UserService {
     }
 
 
-    //create user
     public String createNewUser(UserDto userDto) {
         String password = userDto.getPassword();
         String username = userDto.getUsername();
@@ -39,8 +38,6 @@ public class UserService {
         }
 
         if(validatePassword(password)) {
-           // String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-           // userDto.setApikey(randomString);
                   userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
                   User newUser = userRepository.save(transferUserDtoToUser(userDto));
                   return newUser.getUsername();
@@ -138,11 +135,10 @@ public class UserService {
         dto.setUsername(user.getUsername());
         dto.setPassword(user.getPassword());
         dto.setEnabled(user.isEnabled());
-        //dto.setApikey(user.getApiKey());
         dto.setEmail(user.getEmail());
         dto.setAuthorities(user.getAuthorities());
-        dto.setFirstname(user.getFirstName());
-        dto.setLastname(user.getLastName());
+        //dto.setFirstname(user.getFirstName());
+        //dto.setLastname(user.getLastName());
         return dto;
     }
 
@@ -151,10 +147,9 @@ public class UserService {
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
         user.setEnabled(userDto.getEnabled());
-        //user.setApiKey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstname());
-        user.setLastName(userDto.getLastname());
+        //user.setFirstName(userDto.getFirstname());
+        //user.setLastName(userDto.getLastname());
         return user;
     }
 

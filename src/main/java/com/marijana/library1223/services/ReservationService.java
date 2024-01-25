@@ -43,7 +43,6 @@ public class ReservationService {
 
     public ReservationDto createReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
-        reservation.setBookTitle(reservationDto.getBookTitle());
         reservation.setReservationDate(reservationDto.getReservationDate());
         reservation.setSidenote(reservationDto.getSidenote());
         reservationRepository.save(reservation);
@@ -73,7 +72,6 @@ public class ReservationService {
     }
 
 
-    //get all reservations per date
     public List<ReservationDto> showAllReservationsByReservationDate(LocalDate reservationDate) {
         List<Reservation> reservationList = reservationRepository.findAllReservationsByReservationDate(reservationDate);
         List<ReservationDto> reservationDtoList = new ArrayList<>();
@@ -93,7 +91,7 @@ public class ReservationService {
         return reservationDtoList;
     }
 
-    //TODO: CHECK IT IN POSTMAN!
+
     public ReservationDto getSingleReservation(Long id) {
         Optional<Reservation> optionalReservation = reservationRepository.findById(id);
 
@@ -141,7 +139,6 @@ public class ReservationService {
     public ReservationDto transferReservationToReservationDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setId(reservation.getId());
-        reservationDto.setBookTitle(reservation.getBookTitle());
         reservationDto.setReservationDate(reservation.getReservationDate());
         reservationDto.setSidenote(reservation.getSidenote());
 
@@ -158,7 +155,6 @@ public class ReservationService {
     public Reservation transferReservationDtoToReservation(ReservationDto reservationDto) {
         Reservation reservation = new Reservation();
         reservation.setId(reservationDto.getId());
-        reservation.setBookTitle(reservationDto.getBookTitle());
         reservation.setReservationDate(reservationDto.getReservationDate());
         reservation.setSidenote(reservationDto.getSidenote());
         reservation.setAccount(accountService.transferAccountDtoToAccount(reservationDto.getAccountDto()));

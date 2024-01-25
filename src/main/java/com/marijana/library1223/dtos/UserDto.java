@@ -12,11 +12,7 @@ public class UserDto {
     public String username;
     public String password;
     public Boolean enabled;
-    //public String apikey;
     public String email;
-    private String firstname;
-    private String lastname;
-
     public Set<Authority> authorities;
 
     public Set<Authority> getAuthorities() {
