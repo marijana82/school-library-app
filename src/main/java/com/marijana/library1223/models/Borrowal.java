@@ -15,8 +15,8 @@ public class Borrowal {
     private LocalDate dateOfBorrowal;
     @Column(name = "due_date")
     private LocalDate dueDate;
-    @Column(name = "book_title")
-    private String bookTitle;
+    /*@Column(name = "book_title")
+    private String bookTitle;*/
     @Column(name = "number_of_books_borrowed")
     private Integer numberOfBooksBorrowed;
 

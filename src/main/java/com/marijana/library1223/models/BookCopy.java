@@ -22,37 +22,34 @@ public class BookCopy {
     private Integer totalWordCount;
     @Column(name = "format")
     private String format;
-
     @Column(name = "in_written_form")
     private boolean inWrittenForm;
-
     @Column(name = "audio_book")
     private boolean audioBook;
-
     @Column(name = "dyslexia_friendly")
     private boolean dyslexiaFriendly;
-
     @Column(name = "year_published")
     private LocalDate yearPublished;
-
-    //constructors
-    public BookCopy() {}
-
-    public BookCopy(Long id, int barcode, Integer numberOfPages, Integer totalWordCount, String format, boolean inWrittenForm, boolean audioBook, boolean dyslexiaFriendly, LocalDate yearPublished) {}
 
 
     //Relations...........
 
-    //OWNER - relation with Book
+    //OWNER
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
 
 
-    //TARGET - relation with Borrowal
+    //TARGET
     @OneToOne(mappedBy = "bookCopy")
     @JsonIgnore
     private Borrowal borrowal;
+
+
+    //constructors
+    public BookCopy() {}
+
+    public BookCopy(Long id, int barcode, Integer numberOfPages, Integer totalWordCount, String format, boolean inWrittenForm, boolean audioBook, boolean dyslexiaFriendly, LocalDate yearPublished) {}
 
 }
 

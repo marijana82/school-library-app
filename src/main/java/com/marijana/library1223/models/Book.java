@@ -28,7 +28,7 @@ public class Book {
     private Integer suitableAge;
     //here add enum genre
 
-    //FileDocument for upload
+
     @OneToOne
     FileDocument bookPhoto;
 
@@ -44,15 +44,18 @@ public class Book {
     @JsonIgnore
     private Reservation reservation;
 
+
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 
+
     //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<ReviewBook> reviewBooks = new ArrayList<>();
+
 
     //constructors
     public Book() {}
