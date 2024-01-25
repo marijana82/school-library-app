@@ -15,8 +15,6 @@ public class Reservation {
     private Long id;
     @Column(name="reservation_date")
     private LocalDate reservationDate;
-    @Column(name="book_title")
-    private String bookTitle;
     @Column(name="sidenote")
     private String sidenote;
 

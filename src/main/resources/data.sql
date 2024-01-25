@@ -104,17 +104,17 @@ VALUES (1000, 12345, 'Kleine onderzoekers voertuigen', 'Ruth Martin', 'Ruth Mart
 
 
 --Reservation ............................
-INSERT INTO reservations(id, reservation_date, book_title, sidenote)
-VALUES(1000, '2023-12-12', 'Book', 'Book reserved'),
-      (1001, '2023-12-12', 'Book2', 'Book will be picked up by a friend'),
-      (1002, '2023-12-12', 'Book3', 'Can come after the second lesson.'),
-      (1003, '2023-12-12', 'Book3', 'Is there a dyslexia friendly version?'),
-      (1004, '2023-12-12', 'Book4', 'I do not know if I will like this book.'),
-      (1005, '2023-12-12', 'Book5', 'I am reading this book for the second time'),
-      (1006, '2023-12-12', 'Book6', 'No message.'),
-      (1007, '2023-12-12', 'Book7', 'Can you recommend a similar book?'),
-      (1008, '2023-12-12', 'Book8', 'Book reserved'),
-      (1009, '2023-12-12', 'Book9', 'Book will be picked up by a friend');
+INSERT INTO reservations(id, reservation_date, sidenote)
+VALUES(1000, '2023-12-12', 'Book reserved'),
+      (1001, '2023-12-12', 'Book will be picked up by a friend'),
+      (1002, '2023-12-12', 'Can come after the second lesson.'),
+      (1003, '2023-12-12', 'Is there a dyslexia friendly version?'),
+      (1004, '2023-12-12', 'I do not know if I will like this book.'),
+      (1005, '2023-12-12', 'I am reading this book for the second time'),
+      (1006, '2023-12-12', 'No message.'),
+      (1007, '2023-12-12', 'Can you recommend a similar book?'),
+      (1008, '2023-12-12', 'Book reserved'),
+      (1009, '2023-12-12', 'Book will be picked up by a friend');
 
 
 --Add account to reservation

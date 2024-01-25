@@ -50,7 +50,6 @@ public class BorrowalService {
         Borrowal borrowal = new Borrowal();
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
         borrowal.setDueDate(borrowalDto.getDueDate());
-        //borrowal.setBookTitle(borrowalDto.getBookTitle());
         borrowal.setNumberOfBooksBorrowed(borrowalDto.getNumberOfBooksBorrowed());
         borrowalRepository.save(borrowal);
         borrowalDto.setId(borrowal.getId());
@@ -138,9 +137,6 @@ public class BorrowalService {
             if(partialUpdates.getDueDate() != null) {
                 existingBorrowal.setDueDate(partialUpdates.getDueDate());
             }
-            /*if(partialUpdates.getBookTitle() !=null) {
-                existingBorrowal.setBookTitle(partialUpdates.getBookTitle());
-            }*/
 
             if(partialUpdates.getNumberOfBooksBorrowed() !=null) {
                 existingBorrowal.setNumberOfBooksBorrowed(partialUpdates.getNumberOfBooksBorrowed());
@@ -181,7 +177,6 @@ public class BorrowalService {
         Borrowal borrowal = new Borrowal();
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
         borrowal.setDueDate(borrowalDto.getDueDate());
-        //borrowal.setBookTitle(borrowalDto.getBookTitle());
         borrowal.setId(borrowalDto.getId());
         borrowal.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
         borrowal.setBookCopy(bookCopyService.transferBookCopyDtoToBookCopy(borrowalDto.getBookCopyDto()));
@@ -195,7 +190,6 @@ public class BorrowalService {
         BorrowalDto borrowalDto = new BorrowalDto();
         borrowalDto.setDateOfBorrowal(borrowal.getDateOfBorrowal());
         borrowalDto.setDueDate(borrowal.getDueDate());
-        //borrowalDto.setBookTitle(borrowal.getBookTitle());
         borrowalDto.setId(borrowal.getId());
 
         if(borrowal.getReservation() !=null) {
