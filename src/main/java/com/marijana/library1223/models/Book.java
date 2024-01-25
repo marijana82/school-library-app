@@ -1,7 +1,6 @@
 package com.marijana.library1223.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,8 +25,6 @@ public class Book {
     private String nameIllustrator;
     @Column(name = "suitable_age")
     private Integer suitableAge;
-    //here add enum genre
-
 
     @OneToOne
     FileDocument bookPhoto;
@@ -57,7 +54,7 @@ public class Book {
     private List<ReviewBook> reviewBooks = new ArrayList<>();
 
 
-    //constructors
+    //constructors - because @Data did not create them!
     public Book() {}
 
     public Book(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge) {

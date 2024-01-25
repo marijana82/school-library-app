@@ -50,8 +50,6 @@ public class BookService {
                 requestedBookDto.setBookPhoto(optionalBook.get().getBookPhoto());
             }
 
-            //TODO: ADD REVIEW BY FOLLOWING THE SAME STEPS AS FOR BOOK PHOTO
-
             return requestedBookDto;
 
 
@@ -133,7 +131,6 @@ public class BookService {
     }
 
 
-    //updateBookPartially
     public BookDto updateBookPartially(Long id, BookDto bookDto) {
 
         Optional<Book> bookOptional = bookRepository.findById(id);

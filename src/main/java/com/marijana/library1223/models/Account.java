@@ -26,7 +26,7 @@ public class Account {
     @Column(name = "name_of_teacher")
     private String nameOfTeacher;
 
-    //Relations.............
+
     //TARGET
     @OneToOne(
             fetch = FetchType.LAZY,

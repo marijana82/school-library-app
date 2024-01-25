@@ -11,10 +11,8 @@ public class ReservationDto {
     private Long id;
     @FutureOrPresent
     private LocalDate reservationDate;
-    @NotBlank(message="Please provide book title.")
-    private String bookTitle;
     private String sidenote;
-    //relation
+    //relations
     private AccountDto accountDto;
     private BookDto bookDto;
 

@@ -233,7 +233,7 @@ VALUES(1000, '2024-03-03', '2024-04-04', 1),
 
 --Add book-copy to borrowal
 UPDATE borrowals SET book_copy_id = 1000 WHERE id = 1000;
-UPDATE borrowals SET book_copy_id = 1001 WHERE id = 1001;
+UPDATE borrowals SET book_copy_id = 1016 WHERE id = 1001;
 UPDATE borrowals SET book_copy_id = 1002 WHERE id = 1002;
 UPDATE borrowals SET book_copy_id = 1021 WHERE id = 1003;
 UPDATE borrowals SET book_copy_id = 1018 WHERE id = 1004;
@@ -244,6 +244,22 @@ UPDATE borrowals SET book_copy_id = 1003 WHERE id = 1008;
 UPDATE borrowals SET book_copy_id = 1031 WHERE id = 1009;
 UPDATE borrowals SET book_copy_id = 1028 WHERE id = 1010;
 UPDATE borrowals SET book_copy_id = 1015 WHERE id = 1011;
+
+--Add reservation to borrowal
+UPDATE borrowals SET reservation_id = 1000 WHERE id = 1000;
+UPDATE borrowals SET reservation_id = 1001 WHERE id = 1001;
+UPDATE borrowals SET reservation_id = 1009 WHERE id = 1002;
+UPDATE borrowals SET reservation_id = 1007 WHERE id = 1003;
+UPDATE borrowals SET reservation_id = 1003 WHERE id = 1004;
+UPDATE borrowals SET reservation_id = 1005 WHERE id = 1005;
+
+--Add account to borrowal
+UPDATE borrowals SET account_id = 1000 WHERE id = 1000;
+UPDATE borrowals SET account_id = 1001 WHERE id = 1001;
+UPDATE borrowals SET account_id = 1003 WHERE id = 1002;
+UPDATE borrowals SET account_id = 1005 WHERE id = 1003;
+UPDATE borrowals SET account_id = 1007 WHERE id = 1004;
+UPDATE borrowals SET account_id = 1009 WHERE id = 1005;
 
 
 ---File upload.......................
@@ -275,21 +291,44 @@ VALUES (1000, 'onderzoekers.jpeg', 'image/jpeg','http://localhost:8080/download/
        (1024, 'nicolaas.jpeg', 'image/jpeg', 'http://localhost:8080/download/nicolaas.jpeg'),
        (1025, 'boomhut.jpeg', 'image/jpeg', 'http://localhost:8080/download/boomhut.jpeg');
 
+--Add file upload to book
+UPDATE books SET book_photo_id = 1000 WHERE id = 1000;
+UPDATE books SET book_photo_id = 1001 WHERE id = 1001;
+UPDATE books SET book_photo_id = 1002 WHERE id = 1002;
+UPDATE books SET book_photo_id = 1003 WHERE id = 1003;
+UPDATE books SET book_photo_id = 1004 WHERE id = 1004;
+UPDATE books SET book_photo_id = 1005 WHERE id = 1005;
+UPDATE books SET book_photo_id = 1006 WHERE id = 1006;
+UPDATE books SET book_photo_id = 1007 WHERE id = 1007;
+UPDATE books SET book_photo_id = 1008 WHERE id = 1008;
+UPDATE books SET book_photo_id = 1009 WHERE id = 1009;
+UPDATE books SET book_photo_id = 1010 WHERE id = 1010;
+UPDATE books SET book_photo_id = 1011 WHERE id = 1011;
+UPDATE books SET book_photo_id = 1012 WHERE id = 1012;
+UPDATE books SET book_photo_id = 1013 WHERE id = 1013;
+UPDATE books SET book_photo_id = 1014 WHERE id = 1014;
+UPDATE books SET book_photo_id = 1015 WHERE id = 1015;
+UPDATE books SET book_photo_id = 1016 WHERE id = 1016;
+UPDATE books SET book_photo_id = 1017 WHERE id = 1017;
+UPDATE books SET book_photo_id = 1018 WHERE id = 1018;
+UPDATE books SET book_photo_id = 1019 WHERE id = 1019;
+UPDATE books SET book_photo_id = 1020 WHERE id = 1020;
 
 --TODO: create enums and see how they get integrated in the system
 
 
---1. Add reservation to borrowal
 
---2. Add account to borrowal
+
+
 
 
 
 --4. Review....................................
 INSERT INTO reviews (id, name, review)
-VALUES(1000, 'Toon Tellegen', 'This is the best book ever'),
-      (1001, 'Roald Dahl', 'A bit boring but ok'),
-      (1002, 'Dick Bruna', 'Funny.');
+VALUES(1000, 'Marijana', 'De waanzinnige boomhut is the best book ever'),
+      (1001, 'Koen', 'Roald Dahls books are a bit boring but they are ok.'),
+      (1002, 'Matthijs', 'Funny.'),
+      (1003, 'Lucia', 'I would never read this stupid book ever again.');
 
 
 

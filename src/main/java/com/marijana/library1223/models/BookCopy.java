@@ -13,7 +13,6 @@ public class BookCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "barcode")
     private int barcode;
     @Column(name = "number_of_pages")
@@ -31,9 +30,6 @@ public class BookCopy {
     @Column(name = "year_published")
     private LocalDate yearPublished;
 
-
-    //Relations...........
-
     //OWNER
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
@@ -46,7 +42,7 @@ public class BookCopy {
     private Borrowal borrowal;
 
 
-    //constructors
+    //constructors - because @Data did not create them!
     public BookCopy() {}
 
     public BookCopy(Long id, int barcode, Integer numberOfPages, Integer totalWordCount, String format, boolean inWrittenForm, boolean audioBook, boolean dyslexiaFriendly, LocalDate yearPublished) {}

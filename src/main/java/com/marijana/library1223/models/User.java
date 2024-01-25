@@ -21,10 +21,10 @@ public class User {
     private boolean enabled = true;
     @Column
     private String email;
-    @Column
+    /*@Column
     private String firstName;
     @Column
-    private String lastName;
+    private String lastName;*/
 
     //TARGET
     @OneToMany(

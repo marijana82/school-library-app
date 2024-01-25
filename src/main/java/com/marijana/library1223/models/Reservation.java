@@ -18,7 +18,6 @@ public class Reservation {
     @Column(name="sidenote")
     private String sidenote;
 
-    //Relations..............
     //TARGET..........
     @OneToOne(
             mappedBy = "reservation",
