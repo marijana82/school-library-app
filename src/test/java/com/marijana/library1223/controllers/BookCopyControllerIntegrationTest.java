@@ -3,7 +3,6 @@ package com.marijana.library1223.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.marijana.library1223.dtos.BookCopyDto;
@@ -18,14 +17,11 @@ import com.marijana.library1223.services.BookCopyService;
 import com.marijana.library1223.services.BookService;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -33,13 +29,11 @@ import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -47,14 +41,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-//@ActiveProfiles("test)
-class BookCopyControllerTest {
+@ActiveProfiles("test")
+class BookCopyControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private BookCopyService bookCopyService;
 
     @Autowired
     private BookCopyRepository bookCopyRepository;
@@ -67,6 +58,9 @@ class BookCopyControllerTest {
 
     @Autowired
     FileUploadRepository fileUploadRepository;
+
+    @MockBean
+    private BookCopyService bookCopyService;
 
     FileDocument file1;
     FileDocument file2;
@@ -260,7 +254,6 @@ class BookCopyControllerTest {
     }
 
     @Test
-        //@WithMockUser(username="testuser", roles="USER")
     void createBookCopy() throws Exception {
 
         given(bookCopyService.createBookCopy(bookCopyDto1)).willReturn(bookCopyDto1);
@@ -268,7 +261,6 @@ class BookCopyControllerTest {
         mockMvc.perform(post("/book-copy")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(bookCopyDto1)))
-                .andExpect(jsonPath("id").value(1000))
 
                 .andExpect(jsonPath("id").value(1000))
                 .andExpect(jsonPath("barcode").value(102345))
@@ -304,7 +296,6 @@ class BookCopyControllerTest {
 
 
     @Test
-        //@WithMockUser(username="testuser", roles="USER")
     void getOneCopy() throws Exception {
 
         given(bookCopyService.showOneCopy(1000L)).willReturn(bookCopyDto1);
@@ -334,7 +325,6 @@ class BookCopyControllerTest {
 
 
     @Test
-    //@WithMockUser(username="testuser", roles="USER")
     void getAllBookCopies() throws Exception {
         given(bookCopyService.getAllBookCopies()).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
 
@@ -399,8 +389,6 @@ class BookCopyControllerTest {
 
 
     @Test
-        //@WithMockUser(username="testuser", roles="USER")
-
     void getAllBookCopiesPublishedAfter() throws Exception {
 
         given(bookCopyService.getAllBookCopiesPublishedAfter(LocalDate.of(2015, 01, 01))).willReturn(List.of(bookCopyDto3));
@@ -431,7 +419,6 @@ class BookCopyControllerTest {
     }
 
     @Test
-        //@WithMockUser(username="testuser", roles="USER")
     void getAllBookCopiesDyslexiaFriendly() throws Exception {
 
         given(bookCopyService.getAllBookCopiesDyslexiaFriendly(false)).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
@@ -496,7 +483,6 @@ class BookCopyControllerTest {
     }
 
     @Test
-        //@WithMockUser(username="testuser", roles="USER")
     void getAllBookCopiesAudio() throws Exception {
 
         given(bookCopyService.getAllBookCopiesAudio(true)).willReturn(List.of(bookCopyDto2, bookCopyDto3));
@@ -543,7 +529,6 @@ class BookCopyControllerTest {
     }
 
     @Test
-    //@WithMockUser(username="testuser", roles="USER")
     void fullUpdateBookCopy() throws Exception {
 
         given(bookCopyService.updateOneBookCopy(1015L, bookCopyDto3)).willReturn(bookCopyDto4);
@@ -584,7 +569,6 @@ class BookCopyControllerTest {
     }
 
     @Test
-        //@WithMockUser(username="testuser", roles="USER")
     void deleteOneCopy() throws Exception {
         mockMvc.perform(delete("/book-copy/1000")).andExpect(status().isNoContent());
     }
