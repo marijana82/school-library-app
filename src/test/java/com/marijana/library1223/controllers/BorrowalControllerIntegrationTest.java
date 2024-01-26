@@ -312,7 +312,10 @@ class BorrowalControllerIntegrationTest {
 
     @Test
     @DisplayName("Should delete borrowal")
-    void deleteBorrowal() {
+    void deleteBorrowal() throws Exception {
+        mockMvc.perform(delete("/borrowals/1000"))
+                .andExpect(status().isNoContent());
+
     }
 
 
@@ -330,6 +333,8 @@ class BorrowalControllerIntegrationTest {
     @DisplayName("Should assign account to borrowal")
     void assignAccountToBorrowal() {
     }
+
+
 
     //(de)serialization of json.........
     public static String asJsonString(final BorrowalDto obj) {
