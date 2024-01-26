@@ -38,8 +38,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,7 +46,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -88,9 +89,9 @@ class BorrowalControllerIntegrationTest {
     BookCopyDto bookCopyDto2;
     ReservationDto reservationDto1;
     ReservationDto reservationDto2;
-    BorrowalDto borrowalDto;
     BorrowalDto borrowalDto1;
     BorrowalDto borrowalDto2;
+    BorrowalDto borrowalUpdate;
 
 
     @BeforeEach
@@ -178,16 +179,9 @@ class BorrowalControllerIntegrationTest {
 
 
         //borrowal dto
-        borrowalDto = new BorrowalDto();
         borrowalDto1 = new BorrowalDto();
         borrowalDto2 = new BorrowalDto();
-
-        borrowalDto.setDateOfBorrowal(LocalDate.of(2024, 02, 02));
-        borrowalDto.setDueDate(LocalDate.of(2024, 03, 02));
-        borrowalDto.setNumberOfBooksBorrowed(1);
-        borrowalDto.setAccountDto(accountDto1);
-        borrowalDto.setBookCopyDto(bookCopyDto1);
-        borrowalDto.setReservationDto(reservationDto1);
+        borrowalUpdate = new BorrowalDto();
 
         borrowalDto1.setId(1000L);
         borrowalDto1.setDateOfBorrowal(LocalDate.of(2024, 03, 03));
@@ -204,6 +198,14 @@ class BorrowalControllerIntegrationTest {
         borrowalDto2.setAccountDto(accountDto2);
         borrowalDto2.setBookCopyDto(bookCopyDto2);
         borrowalDto2.setReservationDto(reservationDto2);
+
+        borrowalUpdate.setId(1000L);
+        borrowalUpdate.setDateOfBorrowal(LocalDate.of(2025, 03, 03));
+        borrowalUpdate.setDueDate(LocalDate.of(2025, 04, 03));
+        borrowalUpdate.setNumberOfBooksBorrowed(1);
+        borrowalUpdate.setAccountDto(accountDto1);
+        borrowalUpdate.setBookCopyDto(bookCopyDto1);
+        borrowalUpdate.setReservationDto(reservationDto1);
 
     }
 
@@ -272,7 +274,6 @@ class BorrowalControllerIntegrationTest {
         mockMvc.perform(get("/borrowals/1000"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
-
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
                 .andExpect(MockMvcResultMatchers.jsonPath("dateOfBorrowal").value("2024-03-03"))
                 .andExpect(MockMvcResultMatchers.jsonPath("dueDate").value("2024-04-03"))
@@ -285,8 +286,35 @@ class BorrowalControllerIntegrationTest {
 
     @Test
     @DisplayName("Should do full update borrowal")
-    void fullUpdateBorrowal() {
+    void fullUpdateBorrowal() throws Exception {
+
+        given(borrowalService.fullUpdateBorrowal(1000L, borrowalDto1)).willReturn(borrowalUpdate);
+
+        mockMvc.perform(put("/borrowals/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(borrowalDto1)))
+                .andExpect(status().isOk())
+
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("dateOfBorrowal").value("2025-03-03"))
+                .andExpect(MockMvcResultMatchers.jsonPath("dueDate").value("2025-04-03"))
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("accountDto.id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookCopyDto.id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("reservationDto.id").value(1000));
     }
+
+
+    @Test
+    @DisplayName("Should do partial update borrowal")
+    void partialUpdateBorrowal() {
+    }
+
+    @Test
+    @DisplayName("Should delete borrowal")
+    void deleteBorrowal() {
+    }
+
 
     @Test
     @DisplayName("Should assign book copy to borrowal")
@@ -301,16 +329,6 @@ class BorrowalControllerIntegrationTest {
     @Test
     @DisplayName("Should assign account to borrowal")
     void assignAccountToBorrowal() {
-    }
-
-    @Test
-    @DisplayName("Should do partial update borrowal")
-    void partialUpdateBorrowal() {
-    }
-
-    @Test
-    @DisplayName("Should delete borrowal")
-    void deleteBorrowal() {
     }
 
     //(de)serialization of json.........

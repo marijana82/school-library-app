@@ -68,7 +68,7 @@ class BookCopyControllerIntegrationTest {
     BookCopyDto bookCopyDto1;
     BookCopyDto bookCopyDto2;
     BookCopyDto bookCopyDto3;
-    BookCopyDto bookCopyDto4;
+    BookCopyDto bookCopyUpdate;
     Book book1;
     Book book2;
     Book book3;
@@ -236,17 +236,17 @@ class BookCopyControllerIntegrationTest {
         bookCopyDto3.setYearPublished(LocalDate.of(2015, 02, 02));
         bookCopyDto3.setBookDto(bookDto3);
 
-        bookCopyDto4 = new BookCopyDto();
-        bookCopyDto4.setId(1015L);
-        bookCopyDto4.setBarcode(40276);
-        bookCopyDto4.setAudioBook(true);
-        bookCopyDto4.setInWrittenForm(true);
-        bookCopyDto4.setDyslexiaFriendly(true);
-        bookCopyDto4.setFormat("hardcover");
-        bookCopyDto4.setNumberOfPages(200);
-        bookCopyDto4.setTotalWordCount(50000);
-        bookCopyDto4.setYearPublished(LocalDate.of(2016, 02, 02));
-        bookCopyDto4.setBookDto(bookDto4);
+        bookCopyUpdate = new BookCopyDto();
+        bookCopyUpdate.setId(1015L);
+        bookCopyUpdate.setBarcode(40276);
+        bookCopyUpdate.setAudioBook(true);
+        bookCopyUpdate.setInWrittenForm(true);
+        bookCopyUpdate.setDyslexiaFriendly(true);
+        bookCopyUpdate.setFormat("hardcover");
+        bookCopyUpdate.setNumberOfPages(200);
+        bookCopyUpdate.setTotalWordCount(50000);
+        bookCopyUpdate.setYearPublished(LocalDate.of(2016, 02, 02));
+        bookCopyUpdate.setBookDto(bookDto4);
 
     }
 
@@ -536,7 +536,7 @@ class BookCopyControllerIntegrationTest {
     @DisplayName("Should do full update book copy")
     void fullUpdateBookCopy() throws Exception {
 
-        given(bookCopyService.updateOneBookCopy(1015L, bookCopyDto3)).willReturn(bookCopyDto4);
+        given(bookCopyService.updateOneBookCopy(1015L, bookCopyDto3)).willReturn(bookCopyUpdate);
 
         mockMvc.perform(put("/book-copy/1015")
                 .contentType(MediaType.APPLICATION_JSON)
