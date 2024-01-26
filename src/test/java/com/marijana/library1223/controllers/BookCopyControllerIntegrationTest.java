@@ -14,9 +14,9 @@ import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BookRepository;
 import com.marijana.library1223.repositories.FileUploadRepository;
 import com.marijana.library1223.services.BookCopyService;
-import com.marijana.library1223.services.BookService;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -49,9 +49,6 @@ class BookCopyControllerIntegrationTest {
 
     @Autowired
     private BookCopyRepository bookCopyRepository;
-
-    @Autowired
-    private BookService bookService;
 
     @Autowired
     private BookRepository bookRepository;
@@ -254,6 +251,7 @@ class BookCopyControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should create book copy")
     void createBookCopy() throws Exception {
 
         given(bookCopyService.createBookCopy(bookCopyDto1)).willReturn(bookCopyDto1);
@@ -282,6 +280,7 @@ class BookCopyControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should create book copy with binding result errors")
     void createBookCopyWithBindingResultErrors() throws Exception {
         BookCopyDto errorBookCopyDto = new BookCopyDto();
         errorBookCopyDto.setFormat("error");
@@ -296,6 +295,7 @@ class BookCopyControllerIntegrationTest {
 
 
     @Test
+    @DisplayName("Should get one copy")
     void getOneCopy() throws Exception {
 
         given(bookCopyService.showOneCopy(1000L)).willReturn(bookCopyDto1);
@@ -325,6 +325,7 @@ class BookCopyControllerIntegrationTest {
 
 
     @Test
+    @DisplayName("Should get all book copies")
     void getAllBookCopies() throws Exception {
         given(bookCopyService.getAllBookCopies()).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
 
@@ -389,6 +390,7 @@ class BookCopyControllerIntegrationTest {
 
 
     @Test
+    @DisplayName("Should get all book copies publish after")
     void getAllBookCopiesPublishedAfter() throws Exception {
 
         given(bookCopyService.getAllBookCopiesPublishedAfter(LocalDate.of(2015, 01, 01))).willReturn(List.of(bookCopyDto3));
@@ -419,6 +421,7 @@ class BookCopyControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should get all book copies dyslexia friendly")
     void getAllBookCopiesDyslexiaFriendly() throws Exception {
 
         given(bookCopyService.getAllBookCopiesDyslexiaFriendly(false)).willReturn(List.of(bookCopyDto1, bookCopyDto2, bookCopyDto3));
@@ -483,6 +486,7 @@ class BookCopyControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should get all book copies audio")
     void getAllBookCopiesAudio() throws Exception {
 
         given(bookCopyService.getAllBookCopiesAudio(true)).willReturn(List.of(bookCopyDto2, bookCopyDto3));
@@ -529,6 +533,7 @@ class BookCopyControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should do full update book copy")
     void fullUpdateBookCopy() throws Exception {
 
         given(bookCopyService.updateOneBookCopy(1015L, bookCopyDto3)).willReturn(bookCopyDto4);
@@ -558,6 +563,7 @@ class BookCopyControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should assign book to book copy")
     void assignBookToBookCopy() throws Exception {
 
         willDoNothing().given(bookCopyService).assignBookToBookCopy(1000L, 1000L);
@@ -569,6 +575,7 @@ class BookCopyControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Should delete one copy")
     void deleteOneCopy() throws Exception {
         mockMvc.perform(delete("/book-copy/1000")).andExpect(status().isNoContent());
     }
