@@ -3,6 +3,7 @@ package com.marijana.library1223.dtos;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ public class BorrowalDto {
     private LocalDate dateOfBorrowal;
     @FutureOrPresent
     private LocalDate dueDate;
-    @NotBlank(message="Please provide book title.")
+    @Max(value = 1, message = "Only 1 book can be added to this borrowal.")
     private Integer numberOfBooksBorrowed;
     //---relations
     private ReservationDto reservationDto;

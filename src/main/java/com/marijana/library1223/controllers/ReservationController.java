@@ -27,7 +27,6 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    //TODO: CHECK THIS!!!
     @PostMapping
     public ResponseEntity<Object> createNewReservation(
             @Valid @RequestBody ReservationDto reservationDto,
