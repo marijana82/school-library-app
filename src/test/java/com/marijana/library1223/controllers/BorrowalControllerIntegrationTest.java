@@ -37,6 +37,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 
 import java.time.LocalDate;
@@ -97,9 +98,21 @@ class BorrowalControllerIntegrationTest {
     @BeforeEach
     void setUp() {
 
+      /*  if(accountRepository.count() > 0) {
+            accountRepository.deleteAll();
+        }
+
+        if(bookCopyRepository.count() > 0) {
+            bookCopyRepository.deleteAll();
+        }
+
+        if(reservationRepository.count() > 0) {
+            reservationRepository.deleteAll();
+        }
+
         if(borrowalRepository.count() > 0) {
             borrowalRepository.deleteAll();
-        }
+        }*/
 
         //account
         account1 = new Account();
@@ -307,7 +320,22 @@ class BorrowalControllerIntegrationTest {
 
     @Test
     @DisplayName("Should do partial update borrowal")
-    void partialUpdateBorrowal() {
+    void partialUpdateBorrowal() throws Exception {
+
+        given(borrowalService.partialUpdateBorrowal(1000L, borrowalDto1)).willReturn(borrowalUpdate);
+
+        mockMvc.perform(patch("/borrowals/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(borrowalDto1)))
+                .andExpect(status().isOk())
+
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("dateOfBorrowal").value("2025-03-03"))
+                .andExpect(MockMvcResultMatchers.jsonPath("dueDate").value("2025-04-03"))
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("accountDto.id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("bookCopyDto.id").value(1000))
+                .andExpect(MockMvcResultMatchers.jsonPath("reservationDto.id").value(1000));
     }
 
     @Test
@@ -321,17 +349,38 @@ class BorrowalControllerIntegrationTest {
 
     @Test
     @DisplayName("Should assign book copy to borrowal")
-    void assignBookCopyToBorrowal() {
+    void assignBookCopyToBorrowal() throws Exception {
+
+        willDoNothing().given(borrowalService).assignBookCopyToBorrowal(1000L, 1000L);
+
+        mockMvc.perform(put("/borrowals/1000/copies/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(borrowalDto1)))
+                .andExpect(status().isNoContent());
     }
 
     @Test
     @DisplayName("Should assign reservation to borrowal")
-    void assignReservationToBorrowal() {
+    void assignReservationToBorrowal() throws Exception {
+
+        willDoNothing().given(borrowalService).assignReservationToBorrowal(1000L, 1000L);
+
+        mockMvc.perform(put("/borrowals/1000/reservations/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(borrowalDto1)))
+                .andExpect(status().isNoContent());
     }
 
     @Test
     @DisplayName("Should assign account to borrowal")
-    void assignAccountToBorrowal() {
+    void assignAccountToBorrowal() throws Exception {
+
+        willDoNothing().given(borrowalService).assignAccountToBorrowal(1000L, 1000L);
+        mockMvc.perform(put("/borrowals/1000/accounts/1000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(borrowalDto1)))
+                        .andExpect(status().isNoContent());
+
     }
 
 
