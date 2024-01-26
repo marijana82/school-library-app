@@ -15,7 +15,7 @@ public class BookCopyDto {
     @Positive(message = "Word count must be a positive number.")
     private Integer totalWordCount;
     private String format;
-    @NotNull
+    @NotNull(message = "Field cannot be null, please provide true or false value.")
     private boolean inWrittenForm;
     @NotNull(message = "Field cannot be null, please provide true or false value.")
     private boolean audioBook;
