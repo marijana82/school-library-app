@@ -211,7 +211,7 @@ class BorrowalControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/borrowals")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(borrowalDto1)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000));
     }
 

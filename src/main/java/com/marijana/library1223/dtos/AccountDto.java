@@ -18,7 +18,6 @@ public class AccountDto {
     private LocalDate dob;
     @NotBlank(message = "Please provide student's class name.")
     private String studentClass;
-
     private String nameOfTeacher;
     //relation
     private UserDto userDto;
