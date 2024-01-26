@@ -14,7 +14,6 @@ public class BorrowalDto {
     private LocalDate dateOfBorrowal;
     @FutureOrPresent
     private LocalDate dueDate;
-    @NotBlank(message="Please provide book title.")
     private Integer numberOfBooksBorrowed;
     //---relations
     private ReservationDto reservationDto;

@@ -1,5 +1,10 @@
 package com.marijana.library1223.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.marijana.library1223.dtos.AccountDto;
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.dtos.BorrowalDto;
@@ -13,6 +18,7 @@ import com.marijana.library1223.repositories.BookCopyRepository;
 import com.marijana.library1223.repositories.BorrowalRepository;
 import com.marijana.library1223.repositories.ReservationRepository;
 import com.marijana.library1223.services.BorrowalService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,12 +26,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.http.MediaType;
+import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -35,7 +53,7 @@ class BorrowalControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+    @MockBean
     private BorrowalService borrowalService;
 
     @Autowired
@@ -65,6 +83,7 @@ class BorrowalControllerIntegrationTest {
     BookCopyDto bookCopyDto2;
     ReservationDto reservationDto1;
     ReservationDto reservationDto2;
+    BorrowalDto borrowalDto;
     BorrowalDto borrowalDto1;
     BorrowalDto borrowalDto2;
 
@@ -145,25 +164,33 @@ class BorrowalControllerIntegrationTest {
         borrowal2.setDateOfBorrowal(LocalDate.of(2024, 04, 04));
         borrowal2.setDueDate(LocalDate.of(2024, 05, 04));
         borrowal2.setNumberOfBooksBorrowed(1);
-        borrowal2.setAccount(account2);
-        borrowal2.setBookCopy(bookCopy2);
-        borrowal2.setReservation(reservation2);
+        //borrowal2.setAccount(account2);
+        //borrowal2.setBookCopy(bookCopy2);
+        //borrowal2.setReservation(reservation2);
 
         borrowal1 = borrowalRepository.save(borrowal1);
         borrowal2 = borrowalRepository.save(borrowal2);
 
 
         //borrowal dto
+        borrowalDto = new BorrowalDto();
         borrowalDto1 = new BorrowalDto();
         borrowalDto2 = new BorrowalDto();
+
+        borrowalDto.setDateOfBorrowal(LocalDate.of(2024, 02, 02));
+        borrowalDto.setDueDate(LocalDate.of(2024, 03, 02));
+        borrowalDto.setNumberOfBooksBorrowed(1);
+        //borrowalDto.setAccountDto(accountDto1);
+        //borrowalDto.setBookCopyDto(bookCopyDto1);
+        //borrowalDto.setReservationDto(reservationDto1);
 
         borrowalDto1.setId(1000L);
         borrowalDto1.setDateOfBorrowal(LocalDate.of(2024, 03, 03));
         borrowalDto1.setDueDate(LocalDate.of(2024, 04, 03));
         borrowalDto1.setNumberOfBooksBorrowed(1);
-        borrowalDto1.setAccountDto(accountDto1);
-        borrowalDto1.setBookCopyDto(bookCopyDto1);
-        borrowalDto1.setReservationDto(reservationDto1);
+        //borrowalDto1.setAccountDto(accountDto1);
+        //borrowalDto1.setBookCopyDto(bookCopyDto1);
+        //borrowalDto1.setReservationDto(reservationDto1);
 
         borrowalDto2.setId(1001L);
         borrowalDto2.setDateOfBorrowal(LocalDate.of(2024, 04, 04));
@@ -177,8 +204,19 @@ class BorrowalControllerIntegrationTest {
 
     @Test
     @DisplayName("Should create new borrowal")
-    void createNewBorrowal() {
+    void createNewBorrowal() throws Exception {
+
+        given(borrowalService.createBorrowal(borrowalDto1)).willReturn(borrowalDto1);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/borrowals")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(borrowalDto1)))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000));
     }
+
+
+
 
     @Test
     @DisplayName("Should get all borrowals")
@@ -219,4 +257,17 @@ class BorrowalControllerIntegrationTest {
     @DisplayName("Should delete borrowal")
     void deleteBorrowal() {
     }
+
+    //(de)serialization of json.........
+    public static String asJsonString(final BorrowalDto obj) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
+            return objectMapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+}
+
 }
