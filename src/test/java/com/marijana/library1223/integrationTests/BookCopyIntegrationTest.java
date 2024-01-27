@@ -1,4 +1,4 @@
-package com.marijana.library1223.controllers;
+package com.marijana.library1223.integrationTests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,6 @@ import com.marijana.library1223.repositories.FileUploadRepository;
 import com.marijana.library1223.services.BookCopyService;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -45,11 +44,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
-class BookCopyControllerIntegrationTest {
+class BookCopyIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    //@Autowired
     @MockBean
     private BookCopyService bookCopyService;
 
@@ -86,18 +86,10 @@ class BookCopyControllerIntegrationTest {
     @BeforeEach
     public void setUp() {
 
-       /* if(fileUploadRepository.count() > 0) {
-            fileUploadRepository.deleteAll();
-        }
-
-        if(bookRepository.count() > 0) {
-            bookRepository.deleteAll();
-        }
-
 
         if(bookCopyRepository.count() > 0 ) {
             bookCopyRepository.deleteAll();
-        }*/
+        }
 
         file1 = new FileDocument();
         file2 = new FileDocument();
