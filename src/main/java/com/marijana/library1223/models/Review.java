@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,6 +29,7 @@ public class Review {
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     Collection<ReviewBook> reviewBooks;
+    //List<ReviewBook> reviewBooks;
 
 
 }

@@ -21,7 +21,7 @@ public class ReviewController {
     }
 
     //get all books connected to a certain review
-    @GetMapping("/book-review/{idReview}")
+    @GetMapping("/books/{idReview}")
     public ResponseEntity<Collection<BookDto>> getBooksByIdReview(@PathVariable("idReview") Long idReview) {
         return ResponseEntity.ok(reviewBookService.getBooksByIdReview(idReview));
     }

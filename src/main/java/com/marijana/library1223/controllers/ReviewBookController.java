@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/reviews-books")
+@RequestMapping("/add-book-to-review")
 public class ReviewBookController {
 
     private final ReviewBookService reviewBookService;
