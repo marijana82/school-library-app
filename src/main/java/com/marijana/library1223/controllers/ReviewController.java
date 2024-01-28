@@ -20,8 +20,8 @@ public class ReviewController {
         this.reviewBookService = reviewBookService;
     }
 
-    //get all books connected to a certain review
-    @GetMapping("/book-review/{idReview}")
+    //TODO: implement post method addReviewToBook in order to make this one work
+    @GetMapping("/books/{idReview}")
     public ResponseEntity<Collection<BookDto>> getBooksByIdReview(@PathVariable("idReview") Long idReview) {
         return ResponseEntity.ok(reviewBookService.getBooksByIdReview(idReview));
     }

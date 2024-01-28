@@ -71,19 +71,15 @@ public class BookController {
 
         List<BookDto> bookDtoList;
 
-            //---no parameters
         if(nameAuthor.isEmpty() && nameIllustrator.isEmpty() ) {
             bookDtoList = bookService.showAllBooks();
 
-            //---only nameAuthor present
         } else if(nameAuthor.isPresent()) {
             bookDtoList = bookService.showAllBooksByNameAuthor(nameAuthor.get());
 
-            //---only nameIllustrator present
         } else if(nameIllustrator.isPresent()) {
             bookDtoList = bookService.showAllBooksByNameIllustrator(nameIllustrator.get());
 
-            //---both parameters present
         } else {
             bookDtoList = bookService.showAllBooksByNameIllustratorAndNameAuthor(nameIllustrator.get(), nameAuthor.get());
         }
@@ -111,15 +107,12 @@ public class BookController {
     }
 
 
-
-    //get all reviews connected to a certain book
     @GetMapping("/reviews/{idBook}")
     public ResponseEntity<Collection<ReviewDto>> getReviewsByIdBook(@PathVariable("idBook") Long idBook) {
         return ResponseEntity.ok(reviewBookService.getReviewsByIdBook(idBook));
     }
 
 
-    //add photo to a book
     @PostMapping("/{idBook}/photo")
     public ResponseEntity<Object> assignPhotoToBook(@PathVariable("idBook") Long idBook, @RequestBody MultipartFile file) {
 
@@ -127,8 +120,6 @@ public class BookController {
         bookService.assignPhotoToBook(photo.getFileName(), idBook);
 
         return ResponseEntity.ok(photo.getUrl());
-
-
 
 
 

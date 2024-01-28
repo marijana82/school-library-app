@@ -7,6 +7,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -28,6 +30,20 @@ public class Review {
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     Collection<ReviewBook> reviewBooks;
+    //List<ReviewBook> reviewBooks;
+
+    //equals and hashcode
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Review review1)) return false;
+        return Objects.equals(getId(), review1.getId()) && Objects.equals(getName(), review1.getName()) && Objects.equals(getReview(), review1.getReview()) && Objects.equals(getReviewBooks(), review1.getReviewBooks());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getReview(), getReviewBooks());
+    }
 }
