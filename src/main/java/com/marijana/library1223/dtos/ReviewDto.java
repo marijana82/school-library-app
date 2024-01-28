@@ -13,6 +13,7 @@ public class ReviewDto {
 
     private String review;
 
+    //equals and hashcode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -25,7 +26,7 @@ public class ReviewDto {
         return Objects.hash(getId(), getName(), getReview());
     }
 
-    //equals and hashcode
+
 
 
 }

@@ -50,6 +50,7 @@ public class ReviewBookService {
     }
 
 
+    //TODO: CHECK no static resource reviews/books
     public Collection<BookDto> getBooksByIdReview(Long idReview) {
 
         Set<BookDto> bookSetDtos = new HashSet<>();
@@ -94,8 +95,6 @@ public class ReviewBookService {
         reviewBookRepository.save(reviewBook);
 
         return id;
-
-
     }
 
 
