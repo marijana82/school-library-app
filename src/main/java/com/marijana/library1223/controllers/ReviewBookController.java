@@ -1,8 +1,5 @@
 package com.marijana.library1223.controllers;
 
-//no get method because this is only backend implementation, 
-// user is not aware of its existence
-
 import com.marijana.library1223.models.ReviewBookKey;
 import com.marijana.library1223.services.ReviewBookService;
 import org.springframework.http.ResponseEntity;
