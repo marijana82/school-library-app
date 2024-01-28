@@ -124,7 +124,7 @@ public class SpringSecurityConfiguration {
 
                                 //book-reviews []
                                 .requestMatchers(HttpMethod.POST, "/add-book-to-review/**").authenticated() //only authenticated users can post a book review
-                                .requestMatchers(HttpMethod.GET, "/reviews/books/{idReview}").permitAll() //anybody can read a book review
+                                .requestMatchers(HttpMethod.GET, "/reviews/books/**").permitAll() //anybody can read a book review
 
                                 //all other requests not defined above
                                 .anyRequest().permitAll() //TODO:later change this to denyAll()
