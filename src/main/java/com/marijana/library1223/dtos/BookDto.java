@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 public class BookDto {
 
@@ -28,6 +30,21 @@ public class BookDto {
     public BookDto(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge) {}
 
     public BookDto(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge, FileDocument bookPhoto) {}
+
+    //equals and hashcode
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BookDto bookDto)) return false;
+        return Objects.equals(getId(), bookDto.getId()) && Objects.equals(getIsbn(), bookDto.getIsbn()) && Objects.equals(getBookTitle(), bookDto.getBookTitle()) && Objects.equals(getNameAuthor(), bookDto.getNameAuthor()) && Objects.equals(getNameIllustrator(), bookDto.getNameIllustrator()) && Objects.equals(getSuitableAge(), bookDto.getSuitableAge()) && Objects.equals(getBookPhoto(), bookDto.getBookPhoto());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getIsbn(), getBookTitle(), getNameAuthor(), getNameIllustrator(), getSuitableAge(), getBookPhoto());
+    }
 }
 
 

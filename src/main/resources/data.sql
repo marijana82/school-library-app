@@ -318,7 +318,9 @@ UPDATE books SET book_photo_id = 1019 WHERE id = 1019;
 UPDATE books SET book_photo_id = 1020 WHERE id = 1020;
 
 
----Review....................................
+
+--Review....................................
+
 INSERT INTO reviews (id, name, review)
 VALUES(1000, 'Marijana', 'This is the best book ever'),
       (1001, 'Koen', 'I find this book a bit boring but ok.'),
@@ -333,6 +335,7 @@ INSERT INTO review_book VALUES (1002, 1002);
 INSERT INTO review_book VALUES (1003, 1003);
 INSERT INTO review_book VALUES (1004, 1004);
 INSERT INTO review_book VALUES (1005, 1005);
+ 
 
 
 

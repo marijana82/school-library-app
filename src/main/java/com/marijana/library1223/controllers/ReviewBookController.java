@@ -1,8 +1,5 @@
 package com.marijana.library1223.controllers;
 
-//no get method because this is only backend implementation, 
-// user is not aware of its existence
-
 import com.marijana.library1223.models.ReviewBookKey;
 import com.marijana.library1223.services.ReviewBookService;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/reviews-books")
+@RequestMapping("/add-book-to-review")
 public class ReviewBookController {
 
     private final ReviewBookService reviewBookService;
