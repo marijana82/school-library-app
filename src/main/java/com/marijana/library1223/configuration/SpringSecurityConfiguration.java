@@ -47,9 +47,6 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth ->
 
                         auth
-                                //TODO:set this line OUT after adding precise requestMatchers
-                                //.requestMatchers("/**").permitAll()
-
                                 //users [x]
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")

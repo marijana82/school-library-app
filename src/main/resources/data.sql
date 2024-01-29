@@ -15,6 +15,8 @@ VALUES ('Admin', '$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq',
        ('Student9','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student9@test.com', TRUE),
        ('Student10','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student10@test.com', TRUE);
 
+
+
 --Authorities......................................
 INSERT INTO authorities (username, authority)
 VALUES ('Admin', 'ROLE_ADMIN');
