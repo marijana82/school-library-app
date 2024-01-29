@@ -1,4 +1,4 @@
-package com.marijana.library1223.controllers;
+package com.marijana.library1223.integrationTests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,24 +28,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.MediaType;
-import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,12 +50,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
-class BorrowalControllerIntegrationTest {
+class BorrowalIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
+    //@Autowired
     private BorrowalService borrowalService;
 
     @Autowired
@@ -98,21 +94,10 @@ class BorrowalControllerIntegrationTest {
     @BeforeEach
     void setUp() {
 
-      /*  if(accountRepository.count() > 0) {
-            accountRepository.deleteAll();
-        }
-
-        if(bookCopyRepository.count() > 0) {
-            bookCopyRepository.deleteAll();
-        }
-
-        if(reservationRepository.count() > 0) {
-            reservationRepository.deleteAll();
-        }
 
         if(borrowalRepository.count() > 0) {
             borrowalRepository.deleteAll();
-        }*/
+        }
 
         //account
         account1 = new Account();

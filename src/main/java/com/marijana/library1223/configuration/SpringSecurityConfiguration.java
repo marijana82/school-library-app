@@ -47,7 +47,11 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth ->
 
                         auth
+ 
+                                //users [xxx]
+
                                 //users [x]
+ 
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
@@ -57,11 +61,15 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
 
-                                //authentication [x]
+                                //authentication [xxx]
                                 .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/authentication/get").authenticated()
 
+ 
+                                //accounts [xxx] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
+
                                 //accounts [x] -  @AuthenticationPrincipal for get, put & patch
+
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
@@ -71,7 +79,7 @@ public class SpringSecurityConfiguration {
                                     //add user to account
                                 .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //books [x]
+                                //books [xxx]
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
@@ -81,7 +89,7 @@ public class SpringSecurityConfiguration {
                                     //add photo to book
                                 .requestMatchers(HttpMethod.POST, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
-                                //book-copies [x]
+                                //book-copies [xxx]
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
@@ -113,11 +121,14 @@ public class SpringSecurityConfiguration {
                                     //add account to reservation
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
 
+ 
+                                //file upload [xxx]
 
                                 //file upload [x]
                                 .requestMatchers(HttpMethod.POST, "/single/upload").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/download").permitAll()
+
 
                                 //book-reviews [x]
                                 .requestMatchers(HttpMethod.POST, "/add-book-to-review/**").authenticated() //only authenticated users can post a book review

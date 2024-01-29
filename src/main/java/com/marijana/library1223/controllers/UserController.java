@@ -41,7 +41,7 @@ public class UserController {
 
             String newUsername = userService.createNewUser(userDto);
 
-            userService.addAuthority(newUsername, "ROLE_STUDENT"); //"ROLE_USER"
+            userService.addAuthority(newUsername, "ROLE_STUDENT");
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -96,7 +96,6 @@ public class UserController {
 
     //-----authorities
 
-    //add authority to user
     @PostMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
         try {
@@ -109,13 +108,13 @@ public class UserController {
         }
     }
 
-    //get all user authorities(roles)
+
     @GetMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> getUserAuthority(@PathVariable("username") String username) {
         return ResponseEntity.ok().body(userService.getAuthority(username));
     }
 
-    //delete user authorities
+
     @DeleteMapping(value = "/{username}/authorities/{authority}")
     public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         userService.removeAuthority(username, authority);

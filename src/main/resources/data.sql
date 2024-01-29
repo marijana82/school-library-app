@@ -15,6 +15,8 @@ VALUES ('Admin', '$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq',
        ('Student9','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student9@test.com', TRUE),
        ('Student10','$2a$10$hvWJkmZmWsRN/HYKWoqSNOzM0BwW.NqPkw8swa6lRGrYIE6t7BoZq','student10@test.com', TRUE);
 
+
+
 --Authorities......................................
 INSERT INTO authorities (username, authority)
 VALUES ('Admin', 'ROLE_ADMIN');
@@ -285,11 +287,12 @@ VALUES (1000, 'onderzoekers.jpeg', 'image/jpeg','http://localhost:8080/download/
        (1018, 'generaal.jpeg', 'image/jpeg', 'http://localhost:8080/download/generaal.jpeg'),
        (1019, 'hiroshima.jpeg', 'image/jpeg', 'http://localhost:8080/download/hiroshima.jpeg'),
        (1020, 'man.jpeg', 'image/jpeg', 'http://localhost:8080/download/man.jpeg'),
-       (1021, 'gozert.jpeg', 'image/jpeg', 'http://localhost:8080/download/gozert.jpeg'),
+       (1021, 'gozert1.jpeg', 'image/jpeg', 'http://localhost:8080/download/gozert.jpeg'),
        (1022, 'jurk.jpeg', 'image/jpeg', 'http://localhost:8080/download/jurk.jpeg'),
        (1023, 'nicolaas.jpeg', 'image/jpeg', 'http://localhost:8080/download/nicolaas.jpeg'),
        (1024, 'nicolaas.jpeg', 'image/jpeg', 'http://localhost:8080/download/nicolaas.jpeg'),
-       (1025, 'boomhut.jpeg', 'image/jpeg', 'http://localhost:8080/download/boomhut.jpeg');
+       (1025, 'boomhut.jpeg', 'image/jpeg', 'http://localhost:8080/download/boomhut.jpeg'),
+       (1026, 'bowie.jpeg', 'image/jpeg', 'http://localhost:8080/download/bowie.jpeg');
 
 --Add file upload to book
 UPDATE books SET book_photo_id = 1000 WHERE id = 1000;
@@ -317,6 +320,7 @@ UPDATE books SET book_photo_id = 1020 WHERE id = 1020;
 
 
 --Review....................................
+
 INSERT INTO reviews (id, name, review)
 VALUES(1000, 'Marijana', 'This is the best book ever'),
       (1001, 'Koen', 'I find this book a bit boring but ok.'),
@@ -331,8 +335,7 @@ INSERT INTO review_book VALUES (1002, 1002);
 INSERT INTO review_book VALUES (1003, 1003);
 INSERT INTO review_book VALUES (1004, 1004);
 INSERT INTO review_book VALUES (1005, 1005);
-
-
+ 
 
 
 

@@ -41,8 +41,9 @@ public class UserService {
                   userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
                   User newUser = userRepository.save(transferUserDtoToUser(userDto));
                   return newUser.getUsername();
+
              } else {
-                throw new PasswordNotValidException("Please edit your password to minimum 5 characters containing at least 1 uppercase/and 1 lowercase/and 1 special character, no whitespaces.");
+                throw new PasswordNotValidException("Passwords must have a minimum 6 characters with at least 1 digit/and 1 uppercase/and 1 lowercase/and 1 special character, no whitespaces.");
              }
              }
 

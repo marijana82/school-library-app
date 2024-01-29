@@ -208,7 +208,8 @@ public class BookService {
         return book;
     }
 
-    public void assignPhotoToBook(String fileName, Long id) {
+    public void assignPhotoToBook(Long id, String fileName) {
+
         Optional<Book> optionalBook = bookRepository.findById(id);
 
         Optional<FileDocument> optionalFileDocument = fileUploadRepository.findByFileName(fileName);
@@ -225,7 +226,7 @@ public class BookService {
 
         } else {
 
-            throw new RecordNotFoundException("Photo with file name " + fileName + "does not exist in the database.");
+            throw new RecordNotFoundException("Photo with file name " + fileName + " does not exist in the database.");
 
         }
     }
