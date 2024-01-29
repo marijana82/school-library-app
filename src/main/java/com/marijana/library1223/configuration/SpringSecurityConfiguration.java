@@ -81,7 +81,7 @@ public class SpringSecurityConfiguration {
                                     //add photo to book
                                 .requestMatchers(HttpMethod.POST, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
-                                //book-copies [x]
+                                //book-copies [xxx]
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
@@ -114,10 +114,11 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
 
 
-                                //file upload []
+                                //file upload [xxx]
                                 .requestMatchers(HttpMethod.POST, "/single/upload").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download").permitAll()
+
 
                                 //book-reviews []
                                 .requestMatchers(HttpMethod.POST, "/reviews-books/**").authenticated() //only authenticated users can post a book review

@@ -318,12 +318,12 @@ class BookServiceTest {
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
         when(fileUploadRepository.findByFileName("photo")).thenReturn(Optional.of(fileDocument));
 
-        bookService.assignPhotoToBook(fileDocument.getFileName(), book.getId());
+        bookService.assignPhotoToBook(book.getId(), fileDocument.getFileName());
 
         assertEquals(fileDocument, book.getBookPhoto());
 
         assertThrows(RecordNotFoundException.class, () -> {
-            bookService.assignPhotoToBook("picture", 1L);
+            bookService.assignPhotoToBook(1L, "picture");
         });
 
 

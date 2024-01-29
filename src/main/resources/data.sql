@@ -291,7 +291,8 @@ VALUES (1000, 'onderzoekers.jpeg', 'image/jpeg','http://localhost:8080/download/
        (1022, 'jurk.jpeg', 'image/jpeg', 'http://localhost:8080/download/jurk.jpeg'),
        (1023, 'nicolaas.jpeg', 'image/jpeg', 'http://localhost:8080/download/nicolaas.jpeg'),
        (1024, 'nicolaas.jpeg', 'image/jpeg', 'http://localhost:8080/download/nicolaas.jpeg'),
-       (1025, 'boomhut.jpeg', 'image/jpeg', 'http://localhost:8080/download/boomhut.jpeg');
+       (1025, 'boomhut.jpeg', 'image/jpeg', 'http://localhost:8080/download/boomhut.jpeg'),
+       (1026, 'bowie.jpeg', 'image/jpeg', 'http://localhost:8080/download/bowie.jpeg');
 
 --Add file upload to book
 UPDATE books SET book_photo_id = 1000 WHERE id = 1000;

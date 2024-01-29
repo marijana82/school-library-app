@@ -124,12 +124,9 @@ public class BookController {
     public ResponseEntity<Object> assignPhotoToBook(@PathVariable("idBook") Long idBook, @RequestBody MultipartFile file) {
 
         FileUploadResponse photo = fileUploadController.singleFileUpload(file);
-        bookService.assignPhotoToBook(photo.getFileName(), idBook);
+        bookService.assignPhotoToBook(idBook, photo.getFileName());
 
         return ResponseEntity.ok(photo.getUrl());
-
-
-
 
 
     }
