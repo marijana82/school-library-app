@@ -41,7 +41,7 @@ public class UserController {
 
             String newUsername = userService.createNewUser(userDto);
 
-            userService.addAuthority(newUsername, "ROLE_STUDENT"); //"ROLE_USER"
+            userService.addAuthority(newUsername, "ROLE_STUDENT");
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()

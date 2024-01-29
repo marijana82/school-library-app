@@ -314,23 +314,22 @@ UPDATE books SET book_photo_id = 1018 WHERE id = 1018;
 UPDATE books SET book_photo_id = 1019 WHERE id = 1019;
 UPDATE books SET book_photo_id = 1020 WHERE id = 1020;
 
---TODO: create enums and see how they get integrated in the system
 
-
-
-
-
-
-
-
---4. Review....................................
+---Review....................................
 INSERT INTO reviews (id, name, review)
-VALUES(1000, 'Marijana', 'De waanzinnige boomhut is the best book ever'),
-      (1001, 'Koen', 'Roald Dahls books are a bit boring but they are ok.'),
+VALUES(1000, 'Marijana', 'This is the best book ever'),
+      (1001, 'Koen', 'I find this book a bit boring but ok.'),
       (1002, 'Matthijs', 'Funny.'),
-      (1003, 'Lucia', 'I would never read this stupid book ever again.');
+      (1003, 'Lucia', 'I would never read this stupid book ever again.'),
+      (1004, 'Anonimous', 'We need more books like this one!'),
+      (1005, 'Tex', 'I like the main character the most.');
 
-
+INSERT INTO review_book VALUES (1000, 1000);
+INSERT INTO review_book VALUES (1001, 1001);
+INSERT INTO review_book VALUES (1002, 1002);
+INSERT INTO review_book VALUES (1003, 1003);
+INSERT INTO review_book VALUES (1004, 1004);
+INSERT INTO review_book VALUES (1005, 1005);
 
 
 
