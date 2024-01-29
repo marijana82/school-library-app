@@ -57,11 +57,11 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
 
-                                //authentication [x]
+                                //authentication [xxx]
                                 .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/authentication/get").authenticated()
 
-                                //accounts [x] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
+                                //accounts [xxx] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
@@ -71,7 +71,7 @@ public class SpringSecurityConfiguration {
                                     //add user to account
                                 .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //books [x]
+                                //books [xxx]
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
@@ -117,14 +117,14 @@ public class SpringSecurityConfiguration {
                                 //file upload []
                                 .requestMatchers(HttpMethod.POST, "/single/upload").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/download/one/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/download").permitAll()
 
                                 //book-reviews []
                                 .requestMatchers(HttpMethod.POST, "/reviews-books/**").authenticated() //only authenticated users can post a book review
                                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll() //anybody can read a book review
 
                                 //all other requests not defined above
-                                .anyRequest().permitAll() //TODO:later change this to denyAll()
+                                .anyRequest().denyAll()
 
                 )
 
