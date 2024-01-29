@@ -47,7 +47,7 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth ->
 
                         auth
-                                //users [x]
+                                //users [xxx]
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
