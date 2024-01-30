@@ -113,7 +113,8 @@ public class BookController {
     }
 
 
-    @PostMapping("/{idBook}/photo")
+   //add photo to book
+    @PutMapping("/{idBook}/photo")
     public ResponseEntity<Object> assignPhotoToBook(@PathVariable("idBook") Long idBook, @RequestBody MultipartFile file) {
 
         FileUploadResponse photo = fileUploadController.singleFileUpload(file);

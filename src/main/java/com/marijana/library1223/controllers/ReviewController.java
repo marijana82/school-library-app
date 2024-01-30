@@ -20,7 +20,7 @@ public class ReviewController {
         this.reviewBookService = reviewBookService;
     }
 
-    //TODO: implement post method addReviewToBook in order to make this one work
+    //TODO: implement post method addReviewToBook in order to make this one work?
     @GetMapping("/book/{idReview}")
     public ResponseEntity<Collection<BookDto>> getBooksByIdReview(@PathVariable("idReview") Long idReview) {
         return ResponseEntity.ok(reviewBookService.getBooksByIdReview(idReview));

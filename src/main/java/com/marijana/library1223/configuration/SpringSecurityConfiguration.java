@@ -47,7 +47,6 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth ->
 
                         auth
- 
                                 //users [xxx]
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
@@ -81,7 +80,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
                                     //add photo to book
-                                .requestMatchers(HttpMethod.POST, "/books/{idBook}/photo").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
                                 //book-copies [xxx]
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
@@ -91,7 +90,7 @@ public class SpringSecurityConfiguration {
                                     //add book to copy
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/{idCopy}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //borrowals [x]
+                                //borrowals [xxx]
                                 .requestMatchers(HttpMethod.POST, "/borrowals").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
@@ -124,7 +123,6 @@ public class SpringSecurityConfiguration {
 
                                 //book-reviews [x]
                                 .requestMatchers(HttpMethod.POST, "/add-book-to-review/**").authenticated() //only authenticated users can post a book review
-
 
                                 //all other requests not defined above
                                 .anyRequest().permitAll()

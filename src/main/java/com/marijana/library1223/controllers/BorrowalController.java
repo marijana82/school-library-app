@@ -47,14 +47,13 @@ public class BorrowalController {
     }
 
 
-    //get all borrowals incl. reservations
     @GetMapping
     public ResponseEntity<List<BorrowalDto>> getAllBorrowals() {
         List<BorrowalDto> borrowalDtoList = borrowalService.getAllBorrowals();
         return ResponseEntity.ok(borrowalDtoList);
     }
 
-    //get one incl. reservation
+
     @GetMapping("/{idBorrowal}")
     public ResponseEntity<Object> getSingleBorrowal(@PathVariable Long idBorrowal) {
         return ResponseEntity.ok(borrowalService.getSingleBorrowal(idBorrowal));
@@ -66,7 +65,7 @@ public class BorrowalController {
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //add book copy to borrowal
+    //add book copy
     @PutMapping("/{idBorrowal}/copies/{idCopy}")
     public ResponseEntity<Object> assignBookCopyToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idCopy") Long idCopy) {
         borrowalService.assignBookCopyToBorrowal(idBorrowal, idCopy);
@@ -74,14 +73,14 @@ public class BorrowalController {
     }
 
 
-    //add reservation to borrowal
+    //add reservation
     @PutMapping("/{idBorrowal}/reservations/{idReservation}")
     public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
         borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
         return ResponseEntity.noContent().build();
     }
 
-    //add account to borrowal
+    //add account
     @PutMapping("/{idBorrowal}/accounts/{idAccount}")
     public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idAccount") Long idAccount) {
         borrowalService.assignAccountToBorrowal(idBorrowal, idAccount);
