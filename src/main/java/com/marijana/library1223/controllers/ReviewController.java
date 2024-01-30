@@ -21,7 +21,7 @@ public class ReviewController {
     }
 
     //TODO: implement post method addReviewToBook in order to make this one work
-    @GetMapping("/books/{idReview}")
+    @GetMapping("/book/{idReview}")
     public ResponseEntity<Collection<BookDto>> getBooksByIdReview(@PathVariable("idReview") Long idReview) {
         return ResponseEntity.ok(reviewBookService.getBooksByIdReview(idReview));
     }

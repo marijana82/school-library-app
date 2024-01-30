@@ -121,8 +121,6 @@ public class BookController {
 
         return ResponseEntity.ok(photo.getUrl());
 
-
- 
     }
 
 

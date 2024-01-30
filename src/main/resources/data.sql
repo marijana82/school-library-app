@@ -287,7 +287,7 @@ VALUES (1000, 'onderzoekers.jpeg', 'image/jpeg','http://localhost:8080/download/
        (1018, 'generaal.jpeg', 'image/jpeg', 'http://localhost:8080/download/generaal.jpeg'),
        (1019, 'hiroshima.jpeg', 'image/jpeg', 'http://localhost:8080/download/hiroshima.jpeg'),
        (1020, 'man.jpeg', 'image/jpeg', 'http://localhost:8080/download/man.jpeg'),
-       (1021, 'gozert1.jpeg', 'image/jpeg', 'http://localhost:8080/download/gozert.jpeg'),
+       (1021, 'gozert.jpeg', 'image/jpeg', 'http://localhost:8080/download/gozert.jpeg'),
        (1022, 'jurk.jpeg', 'image/jpeg', 'http://localhost:8080/download/jurk.jpeg'),
        (1023, 'nicolaas.jpeg', 'image/jpeg', 'http://localhost:8080/download/nicolaas.jpeg'),
        (1024, 'nicolaas.jpeg', 'image/jpeg', 'http://localhost:8080/download/nicolaas.jpeg'),

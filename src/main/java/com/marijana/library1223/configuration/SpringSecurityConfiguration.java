@@ -49,9 +49,6 @@ public class SpringSecurityConfiguration {
                         auth
  
                                 //users [xxx]
-
-                                //users [x]
- 
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
@@ -67,9 +64,6 @@ public class SpringSecurityConfiguration {
 
  
                                 //accounts [xxx] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
-
-                                //accounts [x] -  @AuthenticationPrincipal for get, put & patch
-
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
@@ -87,7 +81,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
                                     //add photo to book
-                                .requestMatchers(HttpMethod.POST, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.POST, "/books/{idBook}/photo").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
                                 //book-copies [xxx]
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
@@ -123,8 +117,6 @@ public class SpringSecurityConfiguration {
 
  
                                 //file upload [xxx]
-
-                                //file upload [x]
                                 .requestMatchers(HttpMethod.POST, "/single/upload").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download").permitAll()
@@ -133,8 +125,9 @@ public class SpringSecurityConfiguration {
                                 //book-reviews [x]
                                 .requestMatchers(HttpMethod.POST, "/add-book-to-review/**").authenticated() //only authenticated users can post a book review
 
+
                                 //all other requests not defined above
-                                .anyRequest().denyAll()
+                                .anyRequest().permitAll()
 
                 )
 
