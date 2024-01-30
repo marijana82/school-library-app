@@ -81,7 +81,7 @@ public class ReservationController {
 
     }
 
-    //add book
+
     @PutMapping("/{idReservation}/books/{idBook}")
     public ResponseEntity<Object> assignBookToReservation(
             @PathVariable Long idBook,
@@ -96,12 +96,11 @@ public class ReservationController {
 
         } else {
 
-            throw new AccessDeniedException("It seems you are not authorized to access this reservation.");
+            throw new AccessDeniedException("It seems you are not authorized to update this reservation.");
 
         }
     }
 
-    //add account
     @PutMapping("/{idReservation}/accounts/{idAccount}")
     public ResponseEntity<Object> assignAccountToReservation(
             @PathVariable Long idAccount,
@@ -116,7 +115,7 @@ public class ReservationController {
 
     } else {
 
-            throw new AccessDeniedException("It seems you are not authorized to access this reservation.");
+            throw new AccessDeniedException("It seems you are not authorized to update this reservation.");
         }
     }
 

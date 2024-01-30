@@ -102,7 +102,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/accounts/{idAccount}").hasAuthority("ROLE_LIBRARIAN")
 
 
-                                //reservations [x]
+                                //reservations [xxx]
                                 .requestMatchers(HttpMethod.POST, "/reservations").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAuthority("ROLE_LIBRARIAN")
@@ -122,7 +122,9 @@ public class SpringSecurityConfiguration {
 
 
                                 //book-reviews [x]
-                                .requestMatchers(HttpMethod.POST, "/add-book-to-review/**").authenticated() //only authenticated users can post a book review
+                                .requestMatchers(HttpMethod.POST, "/reviews").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/reviews/{idReviews}/{idBooks}").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
 
                                 //all other requests not defined above
                                 .anyRequest().permitAll()

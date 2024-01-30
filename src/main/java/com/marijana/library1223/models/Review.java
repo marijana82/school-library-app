@@ -7,7 +7,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -22,19 +21,14 @@ public class Review {
     private String name;
     @Column(name = "review")
     private String review;
-
-    //Relations..............
     //TARGET
-    //nothing in the database
     @OneToMany(mappedBy = "review")
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     Collection<ReviewBook> reviewBooks;
-    //List<ReviewBook> reviewBooks;
+
 
     //equals and hashcode
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
