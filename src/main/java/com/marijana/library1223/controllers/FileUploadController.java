@@ -55,7 +55,7 @@ public class FileUploadController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType)).header(HttpHeaders.CONTENT_DISPOSITION,"inline;fileName=" + resource.getFilename()).body(resource);
     }
 
-    //get all names in directory
+
     @GetMapping("/download/allNames")
     List<String> downloadMultipleFile() {
         return fileStorageService.downLoad();
