@@ -140,12 +140,18 @@ public class ReservationController {
 
 
     @DeleteMapping("/{idReservation}")
-    public ResponseEntity<Object> deleteReservation(@PathVariable Long idReservation) {
-        reservationService.deleteReservation(idReservation);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Object> deleteReservation(
+            @PathVariable Long idReservation,
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
+
+        if(userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+            reservationService.deleteReservation(idReservation);
+            return ResponseEntity.noContent().build();
+        } else {
+
+            throw new AccessDeniedException("It seems you are not authorized to delete this reservation");
+
+        }
     }
-
-
-
 
 }
