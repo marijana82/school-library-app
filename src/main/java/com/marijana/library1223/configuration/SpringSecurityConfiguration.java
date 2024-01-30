@@ -103,16 +103,16 @@ public class SpringSecurityConfiguration {
 
 
                                 //reservations [x]
-                                .requestMatchers(HttpMethod.POST, "/reservations").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.POST, "/reservations").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/reservations/**").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}").hasAuthority("ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAuthority("ROLE_STUDENT")
                                     //add book to reservation
-                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAuthority("ROLE_STUDENT")
                                     //add account to reservation
-                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAuthority("ROLE_STUDENT")
 
  
                                 //file upload [xxx]

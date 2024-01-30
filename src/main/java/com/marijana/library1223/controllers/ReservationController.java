@@ -74,10 +74,50 @@ public class ReservationController {
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
             ReservationDto reservationDto = reservationService.getSingleReservation(idReservation);
             return ResponseEntity.ok(reservationDto);
+
         } else {
             throw new AccessDeniedException("It seems you are not authorized to access this reservation.");
         }
 
+    }
+
+    //add book
+    @PutMapping("/{idReservation}/books/{idBook}")
+    public ResponseEntity<Object> assignBookToReservation(
+            @PathVariable Long idBook,
+            @PathVariable Long idReservation,
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
+
+        if(userDetails.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+
+        reservationService.assignBookToReservation(idBook, idReservation);
+        return ResponseEntity.noContent().build();
+
+        } else {
+
+            throw new AccessDeniedException("It seems you are not authorized to access this reservation.");
+
+        }
+    }
+
+    //add account
+    @PutMapping("/{idReservation}/accounts/{idAccount}")
+    public ResponseEntity<Object> assignAccountToReservation(
+            @PathVariable Long idAccount,
+            @PathVariable Long idReservation,
+            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
+
+        if(userDetails.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+
+        reservationService.assignAccountToReservation(idAccount, idReservation);
+        return ResponseEntity.noContent().build();
+
+    } else {
+
+            throw new AccessDeniedException("It seems you are not authorized to access this reservation.");
+        }
     }
 
 
@@ -105,19 +145,7 @@ public class ReservationController {
         return ResponseEntity.noContent().build();
     }
 
-    //add book
-    @PutMapping("/{idReservation}/books/{idBook}")
-    public ResponseEntity<Object> assignBookToReservation(@PathVariable Long idBook, @PathVariable Long idReservation) {
-        reservationService.assignBookToReservation(idBook, idReservation);
-        return ResponseEntity.noContent().build();
-    }
 
-    //add account
-    @PutMapping("/{idReservation}/accounts/{idAccount}")
-    public ResponseEntity<Object> assignAccountToReservation(@PathVariable Long idAccount, @PathVariable Long idReservation) {
-        reservationService.assignAccountToReservation(idAccount, idReservation);
-        return ResponseEntity.noContent().build();
-    }
 
 
 }
