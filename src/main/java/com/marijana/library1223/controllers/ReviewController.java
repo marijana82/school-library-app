@@ -23,10 +23,6 @@ public class ReviewController {
     }
 
 
-
-
-
-    //TODO: CHECK below
     @GetMapping("/book/{idReview}")
     public ResponseEntity<Collection<BookDto>> getBooksByIdReview(@PathVariable("idReview") Long idReview) {
         return ResponseEntity.ok(reviewBookService.getBooksByIdReview(idReview));

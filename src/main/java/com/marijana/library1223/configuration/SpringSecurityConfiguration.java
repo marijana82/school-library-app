@@ -47,7 +47,7 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth ->
 
                         auth
-                                //users [xxx]
+                                //users
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
@@ -57,12 +57,11 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
 
-                                //authentication [xxx]
+                                //authentication
                                 .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/authentication/get").authenticated()
 
- 
-                                //accounts [xxx] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
+                                //accounts
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
@@ -72,17 +71,16 @@ public class SpringSecurityConfiguration {
                                     //add user to account
                                 .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //books [xxx]
+                                //books
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
                                     //add photo to book
                                 .requestMatchers(HttpMethod.PUT, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
-                                //book-copies [xxx]
+                                //book-copies
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
@@ -90,7 +88,7 @@ public class SpringSecurityConfiguration {
                                     //add book to copy
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/{idCopy}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //borrowals [xxx]
+                                //borrowals
                                 .requestMatchers(HttpMethod.POST, "/borrowals").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
@@ -101,8 +99,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/reservations/{idReservation}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/accounts/{idAccount}").hasAuthority("ROLE_LIBRARIAN")
 
-
-                                //reservations [xxx]
+                                //reservations
                                 .requestMatchers(HttpMethod.POST, "/reservations").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAuthority("ROLE_LIBRARIAN")
@@ -113,17 +110,16 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAuthority("ROLE_STUDENT")
                                     //add account to reservation
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAuthority("ROLE_STUDENT")
-
  
-                                //file upload [xxx]
+                                //file upload
                                 .requestMatchers(HttpMethod.POST, "/single/upload").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download").permitAll()
 
-
-                                //book-reviews [x]
+                                //book-reviews
                                 .requestMatchers(HttpMethod.POST, "/reviews").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/reviews/{idReviews}/{idBooks}").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
 
                                 //all other requests not defined above
