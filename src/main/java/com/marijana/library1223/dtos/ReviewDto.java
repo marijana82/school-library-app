@@ -1,5 +1,6 @@
 package com.marijana.library1223.dtos;
 
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.Objects;
@@ -11,6 +12,7 @@ public class ReviewDto {
 
     private String name;
 
+    @Size(min=1, max=600, message = "Review can be between 1 and 600 characters long.")
     private String review;
 
     //equals and hashcode

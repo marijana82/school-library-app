@@ -115,7 +115,7 @@ public class ReviewBookService {
     }
 
 
-    //helper methods
+    //..............................
     public ReviewDto transferReviewToReviewDto(Review review) {
         ReviewDto reviewDto = new ReviewDto();
         reviewDto.setId(review.getId());

@@ -30,7 +30,6 @@ public class Book {
     @OneToOne
     FileDocument bookPhoto;
 
-    //TARGET
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
@@ -42,14 +41,10 @@ public class Book {
     @JsonIgnore
     private Reservation reservation;
 
-
-    //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 
-
-    //TARGET
     @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<ReviewBook> reviewBooks = new ArrayList<>();

@@ -30,13 +30,10 @@ public class BookCopy {
     @Column(name = "year_published")
     private LocalDate yearPublished;
 
-    //OWNER
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
 
-
-    //TARGET
     @OneToOne(mappedBy = "bookCopy")
     @JsonIgnore
     private Borrowal borrowal;

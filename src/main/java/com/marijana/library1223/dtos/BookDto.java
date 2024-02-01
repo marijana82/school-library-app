@@ -24,16 +24,13 @@ public class BookDto {
     private FileDocument bookPhoto;
 
 
-    //constructor
+    //constructors
     public BookDto() {}
 
     public BookDto(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge) {}
 
-    public BookDto(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge, FileDocument bookPhoto) {}
 
     //equals and hashcode
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

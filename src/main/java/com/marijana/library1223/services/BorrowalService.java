@@ -172,7 +172,7 @@ public class BorrowalService {
     }
 
 
-    //helper methods.........................................
+    //.........................................
     public Borrowal transferBorrowalDtoToBorrowal(BorrowalDto borrowalDto) {
         Borrowal borrowal = new Borrowal();
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());

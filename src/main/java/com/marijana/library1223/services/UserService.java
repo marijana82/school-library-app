@@ -111,7 +111,7 @@ public class UserService {
         return userDto.getAuthorities();
     }
 
-    //add authority to user
+
     public void addAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -130,7 +130,7 @@ public class UserService {
 
 
 
-    //--------------helper methods---------------------
+    //.................................
     public static UserDto transferUserToUserDto(User user){
         UserDto dto = new UserDto();
         dto.setUsername(user.getUsername());
@@ -138,8 +138,7 @@ public class UserService {
         dto.setEnabled(user.isEnabled());
         dto.setEmail(user.getEmail());
         dto.setAuthorities(user.getAuthorities());
-        //dto.setFirstname(user.getFirstName());
-        //dto.setLastname(user.getLastName());
+
         return dto;
     }
 
@@ -149,8 +148,7 @@ public class UserService {
         user.setPassword(userDto.getPassword());
         user.setEnabled(userDto.getEnabled());
         user.setEmail(userDto.getEmail());
-        //user.setFirstName(userDto.getFirstname());
-        //user.setLastName(userDto.getLastname());
+
         return user;
     }
 

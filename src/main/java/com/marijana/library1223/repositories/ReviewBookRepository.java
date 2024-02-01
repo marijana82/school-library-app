@@ -1,6 +1,5 @@
 package com.marijana.library1223.repositories;
 
-import com.marijana.library1223.models.Review;
 import com.marijana.library1223.models.ReviewBook;
 import com.marijana.library1223.models.ReviewBookKey;
 import org.springframework.data.jpa.repository.JpaRepository;

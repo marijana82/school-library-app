@@ -21,7 +21,7 @@ public class Review {
     private String name;
     @Column(name = "review")
     private String review;
-    //TARGET
+
     @OneToMany(mappedBy = "review")
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore

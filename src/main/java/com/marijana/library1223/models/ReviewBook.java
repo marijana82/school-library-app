@@ -11,13 +11,11 @@ public class ReviewBook {
     @EmbeddedId
     private ReviewBookKey id;
 
-    //OWNER
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("reviewId")
     @JoinColumn(name = "review_id")
     private Review review;
 
-    //OWNER
     @ManyToOne
     @MapsId("bookId")
     @JoinColumn(name = "book_id")

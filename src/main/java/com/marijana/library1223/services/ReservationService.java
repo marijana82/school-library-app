@@ -2,7 +2,6 @@ package com.marijana.library1223.services;
 
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.exceptions.RecordNotFoundException;
-import com.marijana.library1223.exceptions.UsernameNotProvidedException;
 import com.marijana.library1223.models.Account;
 import com.marijana.library1223.models.Book;
 import com.marijana.library1223.models.Reservation;
@@ -135,7 +134,7 @@ public class ReservationService {
 
 
 
-    //helper methods.........................................
+    //.........................................
     public ReservationDto transferReservationToReservationDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setId(reservation.getId());

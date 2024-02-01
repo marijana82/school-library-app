@@ -59,19 +59,19 @@ public class BookCopyController {
         return ResponseEntity.ok(bookCopyDtoList);
     }
 
-    //get-all-year-published-after
+
     @GetMapping("/after")
     public ResponseEntity<List<BookCopyDto>> getAllBookCopiesPublishedAfter(@RequestParam LocalDate date) {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesPublishedAfter(date));
     }
 
-    //get-all-dyslexia-friendly
+
     @GetMapping("/dyslexia")
     public ResponseEntity<List<BookCopyDto>> getAllBookCopiesDyslexiaFriendly(@RequestParam boolean dyslexia) {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesDyslexiaFriendly(dyslexia));
     }
 
-    //get-all-audio-book
+
     @GetMapping("/audio")
     public ResponseEntity<List<BookCopyDto>> getAllBookCopiesAudio(@RequestParam boolean audio) {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesAudio(audio));

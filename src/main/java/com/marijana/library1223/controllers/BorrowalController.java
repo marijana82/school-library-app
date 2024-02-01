@@ -65,7 +65,7 @@ public class BorrowalController {
         return ResponseEntity.ok().body(borrowalDto1);
     }
 
-    //add book copy
+
     @PutMapping("/{idBorrowal}/copies/{idCopy}")
     public ResponseEntity<Object> assignBookCopyToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idCopy") Long idCopy) {
         borrowalService.assignBookCopyToBorrowal(idBorrowal, idCopy);
@@ -73,14 +73,14 @@ public class BorrowalController {
     }
 
 
-    //add reservation
+
     @PutMapping("/{idBorrowal}/reservations/{idReservation}")
     public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
         borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
         return ResponseEntity.noContent().build();
     }
 
-    //add account
+
     @PutMapping("/{idBorrowal}/accounts/{idAccount}")
     public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idAccount") Long idAccount) {
         borrowalService.assignAccountToBorrowal(idBorrowal, idAccount);

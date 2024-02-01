@@ -26,8 +26,6 @@ public class Account {
     @Column(name = "name_of_teacher")
     private String nameOfTeacher;
 
-
-    //TARGET
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
@@ -38,13 +36,10 @@ public class Account {
     @JsonIgnore
     private Reservation reservation;
 
-    //TARGET
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     private List<Borrowal> borrowals = new ArrayList<>();
 
-
-    //OWNER
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
     private User user;

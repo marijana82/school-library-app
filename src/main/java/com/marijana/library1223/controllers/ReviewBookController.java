@@ -6,7 +6,6 @@ import com.marijana.library1223.services.ReviewBookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/reviews")
