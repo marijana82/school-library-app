@@ -1,5 +1,6 @@
 package com.marijana.library1223.controllers;
 
+import com.marijana.library1223.configuration.HandleBindingErrors;
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.services.BorrowalService;
 import jakarta.validation.Valid;
@@ -27,16 +28,12 @@ public class BorrowalController {
             @Valid @RequestBody BorrowalDto borrowalDto,
             BindingResult bindingResult) {
 
-       if(bindingResult.hasFieldErrors()) {
-           StringBuilder stringBuilder = new StringBuilder();
-           for(FieldError fieldError : bindingResult.getFieldErrors()) {
-               stringBuilder.append(fieldError.getField());
-               stringBuilder.append(" : ");
-               stringBuilder.append(fieldError.getDefaultMessage());
-               stringBuilder.append(("\n"));
-           }
-           return ResponseEntity.badRequest().body(stringBuilder.toString());
-       }
+        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        if (bindingErrorResponse != null) {
+            return bindingErrorResponse;
+        }
+
         borrowalService.createBorrowal(borrowalDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()

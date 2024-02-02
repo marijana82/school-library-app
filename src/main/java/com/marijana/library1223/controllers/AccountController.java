@@ -1,14 +1,14 @@
 package com.marijana.library1223.controllers;
 
+import com.marijana.library1223.configuration.HandleBindingErrors;
 import com.marijana.library1223.dtos.AccountDto;
-import com.marijana.library1223.exceptions.AccessDeniedException;
+
 import com.marijana.library1223.services.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,16 +30,10 @@ public class AccountController {
             @Valid @RequestBody AccountDto accountDto,
             BindingResult bindingResult) {
 
-        if(bindingResult.hasFieldErrors()) {
+        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
 
-            StringBuilder stringBuilder = new StringBuilder();
-            for(FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(" : ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append(("\n"));
-            }
-            return ResponseEntity.badRequest().body(stringBuilder.toString());
+        if (bindingErrorResponse != null) {
+            return bindingErrorResponse;
         }
 
         accountService.createAccount(accountDto);
@@ -70,54 +64,32 @@ public class AccountController {
 
     @GetMapping("/{idAccount}")
     public ResponseEntity<Object> getOneAccount(
-            @PathVariable Long idAccount,
-            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
-
-        if(userDetails.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+            @PathVariable Long idAccount) {
 
             AccountDto accountDto = accountService.showOneAccount(idAccount);
-
             return ResponseEntity.ok(accountDto);
 
-        } else {
-            throw new AccessDeniedException("It seems you are not authorized to access this account.");
-        }
     }
 
     @PutMapping("/{idAccount}")
     public ResponseEntity<AccountDto> fullUpdateAccount(
             @PathVariable Long idAccount,
-            @Valid @RequestBody AccountDto accountDto,
-            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
-
-        if (userDetails.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+            @Valid @RequestBody AccountDto accountDto) {
 
             AccountDto accountDto1 = accountService.updateOneAccount(idAccount, accountDto);
             return ResponseEntity.ok().body(accountDto1);
 
-        } else {
-            throw new AccessDeniedException("It seems you are not authorized to access this account.");
-        }
     }
 
 
     @PatchMapping("/{idAccount}")
     public ResponseEntity<AccountDto> partialUpdateAccount (
             @PathVariable Long idAccount,
-            @Valid @RequestBody AccountDto accountDto,
-            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
-
-        if (userDetails.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
+            @Valid @RequestBody AccountDto accountDto) {
 
             AccountDto accountDto1 = accountService.updateAccountPartially(idAccount, accountDto);
             return ResponseEntity.ok().body(accountDto1);
 
-        } else {
-            throw new AccessDeniedException("It seems you are not authorized to access this account.");
-        }
     }
 
 

@@ -67,8 +67,8 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAuthority( "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAuthority("ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_LIBRARIAN")
 
                                 //books
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
@@ -117,7 +117,7 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
 
                                 //all other requests not defined above
-                                .anyRequest().denyAll()
+                                .anyRequest().permitAll()
 
                 )
 
