@@ -19,7 +19,7 @@ public class AccountDto {
     @NotBlank(message = "Please provide student's class name.")
     private String studentClass;
     private String nameOfTeacher;
-    //relation
+
     private UserDto userDto;
 
 }

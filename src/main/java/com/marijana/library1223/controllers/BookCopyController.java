@@ -1,5 +1,6 @@
 package com.marijana.library1223.controllers;
 
+import com.marijana.library1223.configuration.HandleBindingErrors;
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.services.BookCopyService;
 import jakarta.validation.Valid;
@@ -27,16 +28,12 @@ public class BookCopyController {
             @Valid @RequestBody BookCopyDto bookCopyDto,
             BindingResult bindingResult) {
 
-       if(bindingResult.hasFieldErrors()) {
-           StringBuilder stringBuilder = new StringBuilder();
-           for(FieldError fieldError : bindingResult.getFieldErrors()) {
-               stringBuilder.append(fieldError.getField());
-               stringBuilder.append(" : ");
-               stringBuilder.append(fieldError.getDefaultMessage());
-               stringBuilder.append(("\n"));
-           }
-           return ResponseEntity.badRequest().body(stringBuilder.toString());
-       }
+        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        if (bindingErrorResponse != null) {
+            return bindingErrorResponse;
+        }
+
        bookCopyService.createBookCopy(bookCopyDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -59,19 +56,19 @@ public class BookCopyController {
         return ResponseEntity.ok(bookCopyDtoList);
     }
 
-    //get-all-year-published-after
+
     @GetMapping("/after")
     public ResponseEntity<List<BookCopyDto>> getAllBookCopiesPublishedAfter(@RequestParam LocalDate date) {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesPublishedAfter(date));
     }
 
-    //get-all-dyslexia-friendly
+
     @GetMapping("/dyslexia")
     public ResponseEntity<List<BookCopyDto>> getAllBookCopiesDyslexiaFriendly(@RequestParam boolean dyslexia) {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesDyslexiaFriendly(dyslexia));
     }
 
-    //get-all-audio-book
+
     @GetMapping("/audio")
     public ResponseEntity<List<BookCopyDto>> getAllBookCopiesAudio(@RequestParam boolean audio) {
         return ResponseEntity.ok(bookCopyService.getAllBookCopiesAudio(audio));

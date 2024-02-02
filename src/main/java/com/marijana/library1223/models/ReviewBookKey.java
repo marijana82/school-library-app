@@ -7,7 +7,6 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-//embeddable so that it can be used in ReviewBook class as EmbeddedId
 @Embeddable
 public class ReviewBookKey implements Serializable {
 

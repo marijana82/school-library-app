@@ -1,15 +1,12 @@
 package com.marijana.library1223.controllers;
 
+import com.marijana.library1223.configuration.HandleBindingErrors;
 import com.marijana.library1223.dtos.ReservationDto;
-import com.marijana.library1223.exceptions.AccessDeniedException;
 import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,32 +27,14 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Object> createNewReservation(
             @Valid @RequestBody ReservationDto reservationDto,
-            @AuthenticationPrincipal UserDetails userDetails,
-            BindingResult bindingResult)  {
+            BindingResult bindingResult) {
 
-        if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("LIBRARIAN"))) {
+        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
 
-        } else {
-            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
-
+        if (bindingErrorResponse != null) {
+            return bindingErrorResponse;
         }
 
-        if(!userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("STUDENT"))) {
-
-        } else {
-            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
-        }
-
-        if(bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for(FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(" : ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append(("\n"));
-            }
-            return ResponseEntity.badRequest().body(stringBuilder.toString());
-        }
         reservationService.createReservation(reservationDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -65,73 +44,70 @@ public class ReservationController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<ReservationDto>> getAllReservations() {
-        List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
-        return ResponseEntity.ok(reservationDtoList);
-    }
 
-    //get all per reservation date
-    @GetMapping("/dates")
-    public ResponseEntity<List<ReservationDto>> getAllReservationsPerDate(@RequestParam LocalDate reservationDate) {
-        return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
-    }
+        @GetMapping
+        public ResponseEntity<List<ReservationDto>> getAllReservations () {
+            List<ReservationDto> reservationDtoList = reservationService.getAllReservations();
+            return ResponseEntity.ok(reservationDtoList);
+        }
 
+
+        @GetMapping("/dates")
+        public ResponseEntity<List<ReservationDto>> getAllReservationsPerDate (@RequestParam LocalDate reservationDate){
+            return ResponseEntity.ok(reservationService.showAllReservationsByReservationDate(reservationDate));
+        }
 
 
     @GetMapping("/{idReservation}")
     public ResponseEntity<ReservationDto> getSingleReservation (
-            @PathVariable Long idReservation,
-            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
+            @PathVariable Long idReservation) {
 
-        if(userDetails.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_STUDENT"))) {
             ReservationDto reservationDto = reservationService.getSingleReservation(idReservation);
             return ResponseEntity.ok(reservationDto);
-        } else {
-            throw new AccessDeniedException("It seems you are not authorized to access this reservation.");
+        }
+
+
+
+        @PutMapping("/{idReservation}/books/{idBook}")
+        public ResponseEntity<Object> assignBookToReservation (
+                @PathVariable Long idBook,
+                @PathVariable Long idReservation) {
+
+                reservationService.assignBookToReservation(idBook, idReservation);
+                return ResponseEntity.noContent().build();
+
+        }
+
+
+        @PutMapping("/{idReservation}/accounts/{idAccount}")
+        public ResponseEntity<Object> assignAccountToReservation (
+                @PathVariable Long idAccount,
+                @PathVariable Long idReservation) {
+
+                reservationService.assignAccountToReservation(idAccount, idReservation);
+                return ResponseEntity.noContent().build();
+
+        }
+
+
+        @PutMapping("/{idReservation}")
+        public ResponseEntity<ReservationDto> fullUpdateReservation (
+                @PathVariable Long idReservation,
+                @Valid @RequestBody ReservationDto reservationDto) {
+
+                ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
+                return ResponseEntity.ok().body(reservationDto1);
+
+        }
+
+
+        @DeleteMapping("/{idReservation}")
+        public ResponseEntity<Object> deleteReservation (
+                @PathVariable Long idReservation) {
+                reservationService.deleteReservation(idReservation);
+                return ResponseEntity.noContent().build();
         }
 
     }
 
 
-    @PutMapping("/{idReservation}")
-    public ResponseEntity<ReservationDto> fullUpdateReservation(
-            @PathVariable Long idReservation,
-            @Valid @RequestBody ReservationDto reservationDto,
-            @AuthenticationPrincipal UserDetails userDetails) throws AccessDeniedException {
-
-        if(userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("STUDENT"))) {
-
-            ReservationDto reservationDto1 = reservationService.fullUpdateReservation(idReservation, reservationDto);
-            return ResponseEntity.ok().body(reservationDto1);
-
-        } else {
-            throw new AccessDeniedException("It seems you are not authorized to create this reservation");
-        }
-    }
-
-
-
-    @DeleteMapping("/{idReservation}")
-    public ResponseEntity<Object> deleteReservation(@PathVariable Long idReservation) {
-        reservationService.deleteReservation(idReservation);
-        return ResponseEntity.noContent().build();
-    }
-
-    //add book to reservation
-    @PutMapping("/{idReservation}/books/{idBook}")
-    public ResponseEntity<Object> assignBookToReservation(@PathVariable Long idBook, @PathVariable Long idReservation) {
-        reservationService.assignBookToReservation(idBook, idReservation);
-        return ResponseEntity.noContent().build();
-    }
-
-    //add account to reservation
-    @PutMapping("/{idReservation}/accounts/{idAccount}")
-    public ResponseEntity<Object> assignAccountToReservation(@PathVariable Long idAccount, @PathVariable Long idReservation) {
-        reservationService.assignAccountToReservation(idAccount, idReservation);
-        return ResponseEntity.noContent().build();
-    }
-
-
-}

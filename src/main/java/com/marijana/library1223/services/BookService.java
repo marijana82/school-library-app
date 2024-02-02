@@ -181,7 +181,7 @@ public class BookService {
 
 
 
-    //helper methods ...........................................
+    //...........................................
     public BookDto transferBookToBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());

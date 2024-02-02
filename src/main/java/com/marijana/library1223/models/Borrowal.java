@@ -18,17 +18,14 @@ public class Borrowal {
     @Column(name = "number_of_books_borrowed")
     private Integer numberOfBooksBorrowed;
 
-    //OWNER
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
-    //OWNER
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    //OWNER
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_copy_id")
     private BookCopy bookCopy;

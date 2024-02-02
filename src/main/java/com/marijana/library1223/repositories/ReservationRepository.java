@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    //---try for relation many-to-many
-    //List<Reservation> findReservationsByAccountsId(Long accountId);
     List<Reservation> findAllReservationsByReservationDate(LocalDate reservationDate);
 
 }

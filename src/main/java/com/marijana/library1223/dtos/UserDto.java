@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 public class UserDto {
-    @NotBlank
+
     public String username;
     public String password;
     public Boolean enabled;

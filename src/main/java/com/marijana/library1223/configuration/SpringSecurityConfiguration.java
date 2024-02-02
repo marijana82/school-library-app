@@ -47,11 +47,7 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth ->
 
                         auth
- 
-                                //users [xxx]
-
-                                //users [x]
- 
+                                //users
                                 .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
@@ -61,80 +57,67 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
 
-                                //authentication [xxx]
+                                //authentication
                                 .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/authentication/get").authenticated()
 
- 
-                                //accounts [xxx] -  GET ONE, PUT ONE & PATCH ONE CONTAIN @AuthenticationPrincipal
-
-                                //accounts [x] -  @AuthenticationPrincipal for get, put & patch
-
+                                //accounts
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAuthority( "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAuthority("ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ROLE_ADMIN")
-                                    //add user to account
-                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_LIBRARIAN")
 
-                                //books [xxx]
+                                //books
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
-                                    //add photo to book
-                                .requestMatchers(HttpMethod.POST, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
-                                //book-copies [xxx]
+                                //book-copies
                                 .requestMatchers(HttpMethod.POST, "/book-copy").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/book-copy/**").hasAuthority("ROLE_LIBRARIAN")
-                                    //add book to copy
                                 .requestMatchers(HttpMethod.PUT, "/book-copy/{idCopy}/books/{idBook}").hasAuthority("ROLE_LIBRARIAN")
 
-                                //borrowals [x]
+                                //borrowals
                                 .requestMatchers(HttpMethod.POST, "/borrowals").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PATCH, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
-                                    //add book-copy, reservation, and account to borrowal:
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/copies/{idCopy}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/reservations/{idReservation}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/accounts/{idAccount}").hasAuthority("ROLE_LIBRARIAN")
 
-
-                                //reservations [x]
-                                .requestMatchers(HttpMethod.POST, "/reservations").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.GET, "/reservations").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAuthority("ROLE_LIBRARIAN")
+                                //reservations
+                                .requestMatchers(HttpMethod.POST, "/reservations").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/reservations").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations/**").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}").hasAuthority("ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-                                    //add book to reservation
-                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-                                    //add account to reservation
-                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-
+                                .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/accounts/{idAccount}").hasAuthority("ROLE_STUDENT")
  
-                                //file upload [xxx]
-
-                                //file upload [x]
+                                //file upload
                                 .requestMatchers(HttpMethod.POST, "/single/upload").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/download/allNames").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.GET, "/download").permitAll()
 
-
-                                //book-reviews [x]
-                                .requestMatchers(HttpMethod.POST, "/add-book-to-review/**").authenticated() //only authenticated users can post a book review
+                                //book-reviews
+                                .requestMatchers(HttpMethod.POST, "/reviews").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/reviews/{idReviews}/{idBooks}").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/books/reviews/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
 
                                 //all other requests not defined above
-                                .anyRequest().denyAll()
+                                .anyRequest().permitAll()
 
                 )
 

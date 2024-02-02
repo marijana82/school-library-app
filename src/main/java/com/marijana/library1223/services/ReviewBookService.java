@@ -12,10 +12,7 @@ import com.marijana.library1223.repositories.ReviewBookRepository;
 import com.marijana.library1223.repositories.ReviewRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -33,6 +30,27 @@ public class ReviewBookService {
         this.bookRepository = bookRepository;
         this.reviewBookRepository = reviewBookRepository;
     }
+
+    public ReviewDto createNewReview(ReviewDto reviewDto) {
+        Review review = new Review();
+        review.setName(reviewDto.getName());
+        review.setReview(reviewDto.getReview());
+        reviewRepository.save(review);
+        reviewDto.setId(review.getId());
+        return reviewDto;
+    }
+
+
+    public ReviewDto showOneReview(Long id) {
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if(optionalReview.isPresent()) {
+            ReviewDto requestedReviewDto = transferReviewToReviewDto(optionalReview.get());
+            return requestedReviewDto;
+        } else {
+            throw new RecordNotFoundException("Review not found, please try again");
+        }
+    }
+
 
 
     public Collection<ReviewDto> getReviewsByIdBook(Long idBook) {
@@ -94,6 +112,16 @@ public class ReviewBookService {
         reviewBookRepository.save(reviewBook);
 
         return id;
+    }
+
+
+    //..............................
+    public ReviewDto transferReviewToReviewDto(Review review) {
+        ReviewDto reviewDto = new ReviewDto();
+        reviewDto.setId(review.getId());
+        reviewDto.setName(review.getName());
+        reviewDto.setReview(review.getReview());
+        return reviewDto;
     }
 
 

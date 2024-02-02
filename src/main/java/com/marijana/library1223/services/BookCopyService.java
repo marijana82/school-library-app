@@ -129,7 +129,7 @@ public class BookCopyService {
     }
 
 
-    //helper methods ...........................................
+    //...........................................
     public BookCopyDto transferBookCopyToBookCopyDto(BookCopy bookCopy) {
         BookCopyDto bookCopyDto = new BookCopyDto();
         bookCopyDto.setId(bookCopy.getId());
@@ -141,7 +141,7 @@ public class BookCopyService {
         bookCopyDto.setInWrittenForm(bookCopy.isInWrittenForm());
         bookCopyDto.setDyslexiaFriendly(bookCopy.isDyslexiaFriendly());
         bookCopyDto.setYearPublished(bookCopy.getYearPublished());
-        //relation
+
         if(bookCopy.getBook() !=null) {
             bookCopyDto.setBookDto(bookService.transferBookToBookDto(bookCopy.getBook()));
         }
@@ -161,12 +161,12 @@ public class BookCopyService {
         bookCopy.setInWrittenForm(bookCopyDto.isInWrittenForm());
         bookCopy.setDyslexiaFriendly(bookCopyDto.isDyslexiaFriendly());
         bookCopy.setYearPublished(bookCopyDto.getYearPublished());
-        //relation
+
         bookCopy.setBook(bookService.transferBookDtoToBook(bookCopyDto.getBookDto()));
         return bookCopy;
     }
 
-    //assign Book to BookCopy
+
     public void assignBookToBookCopy(Long idBookCopy, Long idBook) {
         Optional<BookCopy> optionalBookCopy = bookCopyRepository.findById(idBookCopy);
         Optional<Book> optionalBook = bookRepository.findById(idBook);

@@ -22,7 +22,6 @@ public class User {
     @Column
     private String email;
 
-    //TARGET
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
@@ -31,7 +30,7 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    //TARGET
+
     @OneToOne(
             mappedBy = "user",
             fetch = FetchType.LAZY,

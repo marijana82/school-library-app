@@ -18,15 +18,12 @@ public class Reservation {
     @Column(name="sidenote")
     private String sidenote;
 
-    //TARGET..........
     @OneToOne(
             mappedBy = "reservation",
             cascade = CascadeType.ALL)
     @JsonIgnore
     private Borrowal borrowal;
 
-
-    //OWNER..........
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
@@ -36,7 +33,6 @@ public class Reservation {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    //OWNER..........
     @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
