@@ -30,7 +30,7 @@ public class BookCopyController {
 
         ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
 
-        if (bindingErrorResponse != null) {
+        if (bindingErrorResponse == null) {
             return bindingErrorResponse;
         }
 

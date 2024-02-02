@@ -40,7 +40,7 @@ public class BookController {
 
         ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
 
-        if (bindingErrorResponse != null) {
+        if (bindingErrorResponse == null) {
             return bindingErrorResponse;
         }
 
@@ -109,7 +109,6 @@ public class BookController {
     }
 
 
-   //add photo to book
     @PutMapping("/{idBook}/photo")
     public ResponseEntity<Object> assignPhotoToBook(@PathVariable("idBook") Long idBook, @RequestBody MultipartFile file) {
 

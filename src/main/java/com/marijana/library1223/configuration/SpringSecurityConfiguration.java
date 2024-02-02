@@ -52,10 +52,10 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/{username}/authorities/{authority}").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/users/**").hasAnyAuthority( "ROLE_ADMIN", "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasAuthority( "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyAuthority("ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_STUDENT")
 
                                 //authentication
                                 .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()

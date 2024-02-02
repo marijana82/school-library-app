@@ -31,7 +31,7 @@ public class ReservationController {
 
         ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
 
-        if (bindingErrorResponse != null) {
+        if (bindingErrorResponse == null) {
             return bindingErrorResponse;
         }
 
@@ -68,15 +68,16 @@ public class ReservationController {
 
 
 
-        @PutMapping("/{idReservation}/books/{idBook}")
-        public ResponseEntity<Object> assignBookToReservation (
-                @PathVariable Long idBook,
-                @PathVariable Long idReservation) {
+    @PutMapping("/{idReservation}/books/{idBook}")
+    public ResponseEntity<Object> assignBookToReservation (
+            @PathVariable Long idBook,
+            @PathVariable Long idReservation) {
 
-                reservationService.assignBookToReservation(idBook, idReservation);
-                return ResponseEntity.noContent().build();
+        reservationService.assignBookToReservation(idBook, idReservation);
+        return ResponseEntity.noContent().build();
 
-        }
+    }
+
 
 
         @PutMapping("/{idReservation}/accounts/{idAccount}")
@@ -108,6 +109,10 @@ public class ReservationController {
                 return ResponseEntity.noContent().build();
         }
 
-    }
+
+
+}
+
+
 
 
