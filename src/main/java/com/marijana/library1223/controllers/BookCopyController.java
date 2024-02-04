@@ -28,18 +28,20 @@ public class BookCopyController {
             @Valid @RequestBody BookCopyDto bookCopyDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+        if(bindingResult.hasErrors()) {
 
-        if (bindingErrorResponse == null) {
-            return bindingErrorResponse;
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
+
+            bookCopyService.createBookCopy(bookCopyDto);
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/" + bookCopyDto.getId())
+                    .toUriString());
+            return ResponseEntity.created(uri).body(bookCopyDto);
+
         }
-
-       bookCopyService.createBookCopy(bookCopyDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + bookCopyDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(bookCopyDto);
     }
 
 

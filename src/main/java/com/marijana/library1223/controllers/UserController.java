@@ -1,5 +1,6 @@
 package com.marijana.library1223.controllers;
 
+import com.marijana.library1223.configuration.HandleBindingErrors;
 import com.marijana.library1223.configuration.PaginationConfiguration;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.AccessDeniedException;
@@ -34,12 +35,9 @@ public class UserController {
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder.toString());
+
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
         } else {
 
             String newUsername = userService.createNewUser(userDto);

@@ -28,18 +28,20 @@ public class BorrowalController {
             @Valid @RequestBody BorrowalDto borrowalDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+        if(bindingResult.hasErrors()) {
 
-        if (bindingErrorResponse == null) {
-            return bindingErrorResponse;
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
+
+            borrowalService.createBorrowal(borrowalDto);
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/" + borrowalDto.getId())
+                    .toUriString());
+            return ResponseEntity.created(uri).body(borrowalDto);
+
         }
-
-        borrowalService.createBorrowal(borrowalDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + borrowalDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(borrowalDto);
 
     }
 

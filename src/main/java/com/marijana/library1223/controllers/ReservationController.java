@@ -29,18 +29,20 @@ public class ReservationController {
             @Valid @RequestBody ReservationDto reservationDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+        if(bindingResult.hasErrors()) {
 
-        if (bindingErrorResponse == null) {
-            return bindingErrorResponse;
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
+
+            reservationService.createReservation(reservationDto);
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/" + reservationDto.getId())
+                    .toUriString());
+            return ResponseEntity.created(uri).body(reservationDto);
+
         }
-
-        reservationService.createReservation(reservationDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + reservationDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(reservationDto);
     }
 
 

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
 
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,11 +31,12 @@ public class AccountController {
             @Valid @RequestBody AccountDto accountDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
 
-        if (bindingErrorResponse == null) {
-            return bindingErrorResponse;
-        }
+        if(bindingResult.hasErrors()) {
+
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
 
         accountService.createAccount(accountDto);
         URI uri = URI.create(ServletUriComponentsBuilder
@@ -42,6 +44,8 @@ public class AccountController {
                 .path("/" + accountDto.getId())
                 .toUriString());
         return ResponseEntity.created(uri).body(accountDto);
+
+        }
     }
 
 

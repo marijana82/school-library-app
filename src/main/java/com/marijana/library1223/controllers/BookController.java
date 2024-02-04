@@ -9,7 +9,6 @@ import com.marijana.library1223.services.ReviewBookService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,18 +37,20 @@ public class BookController {
             @Valid @RequestBody BookDto bookDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+        if(bindingResult.hasErrors()) {
 
-        if (bindingErrorResponse == null) {
-            return bindingErrorResponse;
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
+
+            bookService.createNewBook(bookDto);
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/" + bookDto.getId())
+                    .toUriString());
+            return ResponseEntity.created(uri).body(bookDto);
+
         }
-
-        bookService.createNewBook(bookDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + bookDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(bookDto);
     }
 
 
