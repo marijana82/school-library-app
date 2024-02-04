@@ -1,6 +1,6 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.configuration.HandleBindingErrors;
+import com.marijana.library1223.helpers.HandleBindingErrors;
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;

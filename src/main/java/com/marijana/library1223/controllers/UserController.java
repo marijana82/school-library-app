@@ -1,7 +1,7 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.configuration.HandleBindingErrors;
-import com.marijana.library1223.configuration.PaginationConfiguration;
+import com.marijana.library1223.helpers.HandleBindingErrors;
+import com.marijana.library1223.helpers.PaginationConfiguration;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.AccessDeniedException;
 import com.marijana.library1223.exceptions.BadRequestException;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

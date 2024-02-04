@@ -1,6 +1,6 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.configuration.HandleBindingErrors;
+import com.marijana.library1223.helpers.HandleBindingErrors;
 import com.marijana.library1223.dtos.*;
 import com.marijana.library1223.fileUploadResponse.FileUploadResponse;
 import com.marijana.library1223.services.BookService;

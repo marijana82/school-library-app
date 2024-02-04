@@ -1,6 +1,6 @@
 package com.marijana.library1223.services;
 
-import com.marijana.library1223.configuration.PaginationConfiguration;
+import com.marijana.library1223.helpers.PaginationConfiguration;
 import com.marijana.library1223.dtos.UserDto;
 import com.marijana.library1223.exceptions.PasswordNotValidException;
 import com.marijana.library1223.exceptions.UsernameAlreadyExistsException;
