@@ -21,24 +21,18 @@ import java.util.Optional;
 @Service
 public class BorrowalService {
     private final BorrowalRepository borrowalRepository;
-    private final ReservationRepository reservationRepository;
-    private final ReservationService reservationService;
     private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final BookCopyRepository bookCopyRepository;
     private final BookCopyService bookCopyService;
 
     public BorrowalService(BorrowalRepository borrowalRepository,
-                           ReservationRepository reservationRepository,
-                           ReservationService reservationService,
                            AccountService accountService,
                            AccountRepository accountRepository,
                            BookCopyService bookCopyService,
                            BookCopyRepository bookCopyRepository
                            ) {
         this.borrowalRepository = borrowalRepository;
-        this.reservationRepository = reservationRepository;
-        this.reservationService = reservationService;
         this.accountService = accountService;
         this.accountRepository = accountRepository;
         this.bookCopyService = bookCopyService;
