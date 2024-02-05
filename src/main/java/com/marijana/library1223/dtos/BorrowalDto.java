@@ -16,7 +16,7 @@ public class BorrowalDto {
     @Max(value = 1, message = "Only 1 book can be added to this borrowal.")
     private Integer numberOfBooksBorrowed;
 
-    private AccountDto accountDto;
-    private BookCopyDto bookCopyDto;
+    private Long bookCopyId;
+    private Long accountId;
 
 }

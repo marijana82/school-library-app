@@ -16,13 +16,11 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final FileUploadRepository fileUploadRepository;
-    private final ReviewBookService reviewBookService;
 
 
-    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository, ReviewBookService reviewBookService) {
+    public BookService(BookRepository bookRepository, FileUploadRepository fileUploadRepository) {
         this.bookRepository = bookRepository;
         this.fileUploadRepository = fileUploadRepository;
-        this.reviewBookService = reviewBookService;
     }
 
 

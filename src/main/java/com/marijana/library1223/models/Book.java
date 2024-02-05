@@ -41,7 +41,7 @@ public class Book {
     @JsonIgnore
     private Reservation reservation;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 

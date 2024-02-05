@@ -84,8 +84,6 @@ class BorrowalIntegrationTest {
     AccountDto accountDto2;
     BookCopyDto bookCopyDto1;
     BookCopyDto bookCopyDto2;
-    ReservationDto reservationDto1;
-    ReservationDto reservationDto2;
     BorrowalDto borrowalDto1;
     BorrowalDto borrowalDto2;
     BorrowalDto borrowalUpdate;
@@ -134,23 +132,6 @@ class BorrowalIntegrationTest {
         bookCopyDto1.setId(1000L);
         bookCopyDto2.setId(1001L);
 
-        //reservation
-        reservation1 = new Reservation();
-        reservation2 = new Reservation();
-
-        reservation1.setId(1000L);
-        reservation2.setId(1001L);
-
-        reservation1 = reservationRepository.save(reservation1);
-        reservation2 = reservationRepository.save(reservation2);
-
-        //reservation dto
-        reservationDto1 = new ReservationDto();
-        reservationDto2 = new ReservationDto();
-
-        reservationDto1.setId(1000L);
-        reservationDto2.setId(1001L);
-
 
         //borrowal
         borrowal1 = new Borrowal();
@@ -162,7 +143,6 @@ class BorrowalIntegrationTest {
         borrowal1.setNumberOfBooksBorrowed(1);
         borrowal1.setAccount(account1);
         borrowal1.setBookCopy(bookCopy1);
-        borrowal1.setReservation(reservation1);
 
         borrowal2.setId(1001L);
         borrowal2.setDateOfBorrowal(LocalDate.of(2024, 04, 04));
@@ -170,7 +150,6 @@ class BorrowalIntegrationTest {
         borrowal2.setNumberOfBooksBorrowed(1);
         borrowal2.setAccount(account2);
         borrowal2.setBookCopy(bookCopy2);
-        borrowal2.setReservation(reservation2);
 
         borrowal1 = borrowalRepository.save(borrowal1);
         borrowal2 = borrowalRepository.save(borrowal2);
@@ -185,26 +164,18 @@ class BorrowalIntegrationTest {
         borrowalDto1.setDateOfBorrowal(LocalDate.of(2024, 03, 03));
         borrowalDto1.setDueDate(LocalDate.of(2024, 04, 03));
         borrowalDto1.setNumberOfBooksBorrowed(1);
-        borrowalDto1.setAccountDto(accountDto1);
-        borrowalDto1.setBookCopyDto(bookCopyDto1);
-        borrowalDto1.setReservationDto(reservationDto1);
+
 
         borrowalDto2.setId(1001L);
         borrowalDto2.setDateOfBorrowal(LocalDate.of(2024, 04, 04));
         borrowalDto2.setDueDate(LocalDate.of(2024, 05, 04));
         borrowalDto2.setNumberOfBooksBorrowed(1);
-        borrowalDto2.setAccountDto(accountDto2);
-        borrowalDto2.setBookCopyDto(bookCopyDto2);
-        borrowalDto2.setReservationDto(reservationDto2);
+
 
         borrowalUpdate.setId(1000L);
         borrowalUpdate.setDateOfBorrowal(LocalDate.of(2025, 03, 03));
         borrowalUpdate.setDueDate(LocalDate.of(2025, 04, 03));
         borrowalUpdate.setNumberOfBooksBorrowed(1);
-        borrowalUpdate.setAccountDto(accountDto1);
-        borrowalUpdate.setBookCopyDto(bookCopyDto1);
-        borrowalUpdate.setReservationDto(reservationDto1);
-
     }
 
     @Test
@@ -250,16 +221,10 @@ class BorrowalIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].dateOfBorrowal").value("2024-03-03"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].dueDate").value("2024-04-03"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].numberOfBooksBorrowed").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].accountDto.id").value(accountDto1.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookCopyDto.id").value(bookCopyDto1.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].reservationDto.id").value(reservationDto1.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(1001))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].dateOfBorrowal").value("2024-04-04"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].dueDate").value("2024-05-04"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].numberOfBooksBorrowed").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].accountDto.id").value(1001))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].bookCopyDto.id").value(1001))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].reservationDto.id").value(1001));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].numberOfBooksBorrowed").value(1));
     }
 
 
@@ -275,10 +240,7 @@ class BorrowalIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
                 .andExpect(MockMvcResultMatchers.jsonPath("dateOfBorrowal").value("2024-03-03"))
                 .andExpect(MockMvcResultMatchers.jsonPath("dueDate").value("2024-04-03"))
-                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("accountDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookCopyDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("reservationDto.id").value(1000));
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1));
     }
 
 
@@ -296,10 +258,7 @@ class BorrowalIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
                 .andExpect(MockMvcResultMatchers.jsonPath("dateOfBorrowal").value("2025-03-03"))
                 .andExpect(MockMvcResultMatchers.jsonPath("dueDate").value("2025-04-03"))
-                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("accountDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookCopyDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("reservationDto.id").value(1000));
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1));
     }
 
 
@@ -317,10 +276,7 @@ class BorrowalIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(1000))
                 .andExpect(MockMvcResultMatchers.jsonPath("dateOfBorrowal").value("2025-03-03"))
                 .andExpect(MockMvcResultMatchers.jsonPath("dueDate").value("2025-04-03"))
-                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("accountDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("bookCopyDto.id").value(1000))
-                .andExpect(MockMvcResultMatchers.jsonPath("reservationDto.id").value(1000));
+                .andExpect(MockMvcResultMatchers.jsonPath("numberOfBooksBorrowed").value(1));
     }
 
     @Test
@@ -344,17 +300,6 @@ class BorrowalIntegrationTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Test
-    @DisplayName("Should assign reservation to borrowal")
-    void assignReservationToBorrowal() throws Exception {
-
-        willDoNothing().given(borrowalService).assignReservationToBorrowal(1000L, 1000L);
-
-        mockMvc.perform(put("/borrowals/1000/reservations/1000")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(borrowalDto1)))
-                .andExpect(status().isNoContent());
-    }
 
     @Test
     @DisplayName("Should assign account to borrowal")
