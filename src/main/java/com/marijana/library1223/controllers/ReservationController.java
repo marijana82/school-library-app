@@ -1,6 +1,6 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.configuration.HandleBindingErrors;
+import com.marijana.library1223.helpers.HandleBindingErrors;
 import com.marijana.library1223.dtos.ReservationDto;
 import com.marijana.library1223.services.ReservationService;
 import jakarta.validation.Valid;
@@ -29,18 +29,20 @@ public class ReservationController {
             @Valid @RequestBody ReservationDto reservationDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+        if(bindingResult.hasErrors()) {
 
-        if (bindingErrorResponse != null) {
-            return bindingErrorResponse;
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
+
+            reservationService.createReservation(reservationDto);
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/" + reservationDto.getId())
+                    .toUriString());
+            return ResponseEntity.created(uri).body(reservationDto);
+
         }
-
-        reservationService.createReservation(reservationDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + reservationDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(reservationDto);
     }
 
 
@@ -68,15 +70,16 @@ public class ReservationController {
 
 
 
-        @PutMapping("/{idReservation}/books/{idBook}")
-        public ResponseEntity<Object> assignBookToReservation (
-                @PathVariable Long idBook,
-                @PathVariable Long idReservation) {
+    @PutMapping("/{idReservation}/books/{idBook}")
+    public ResponseEntity<Object> assignBookToReservation (
+            @PathVariable Long idBook,
+            @PathVariable Long idReservation) {
 
-                reservationService.assignBookToReservation(idBook, idReservation);
-                return ResponseEntity.noContent().build();
+        reservationService.assignBookToReservation(idBook, idReservation);
+        return ResponseEntity.noContent().build();
 
-        }
+    }
+
 
 
         @PutMapping("/{idReservation}/accounts/{idAccount}")
@@ -108,6 +111,10 @@ public class ReservationController {
                 return ResponseEntity.noContent().build();
         }
 
-    }
+
+
+}
+
+
 
 

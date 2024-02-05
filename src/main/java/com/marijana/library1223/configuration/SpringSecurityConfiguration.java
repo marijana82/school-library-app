@@ -52,10 +52,10 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/{username}/authorities/{authority}").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/users/**").hasAnyAuthority( "ROLE_ADMIN", "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasAuthority( "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyAuthority("ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_ADMIN")
 
                                 //authentication
                                 .requestMatchers(HttpMethod.POST,"/authentication/post").permitAll()
@@ -64,17 +64,17 @@ public class SpringSecurityConfiguration {
                                 //accounts
                                 .requestMatchers(HttpMethod.POST, "/accounts").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/accounts" ).hasAuthority( "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAuthority( "ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyAuthority( "ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/accounts/**").hasAuthority( "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasAuthority("ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT", "ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasAnyAuthority("ROLE_LIBRARIAN","ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.PUT, "/accounts/{idAccount}/users/{username}").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
 
                                 //books
                                 .requestMatchers(HttpMethod.POST, "/books").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                                .requestMatchers(HttpMethod.PUT, "/books/**").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PATCH, "/books/**").hasAuthority("ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PUT, "/books/**").hasAnyAuthority("ROLE_ADMIN","ROLE_LIBRARIAN")
+                                .requestMatchers(HttpMethod.PATCH, "/books/**").hasAnyAuthority("ROLE_ADMIN","ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/books/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/books/{idBook}/photo/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_LIBRARIAN")
 
@@ -92,14 +92,13 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.PATCH, "/borrowals/{idBorrowal}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.DELETE, "/borrowals/**").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/copies/{idCopy}").hasAuthority("ROLE_LIBRARIAN")
-                                .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/reservations/{idReservation}").hasAuthority("ROLE_LIBRARIAN")
                                 .requestMatchers(HttpMethod.PUT, "/borrowals/{idBorrowal}/accounts/{idAccount}").hasAuthority("ROLE_LIBRARIAN")
 
                                 //reservations
                                 .requestMatchers(HttpMethod.POST, "/reservations").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.GET, "/reservations/dates").hasAnyAuthority("ROLE_LIBRARIAN", "ROLE_STUDENT")
-                                .requestMatchers(HttpMethod.GET, "/reservations/**").hasAuthority("ROLE_STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/reservations/**").hasAnyAuthority("ROLE_LIBRARIAN","ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.DELETE, "/reservations/**").hasAuthority("ROLE_STUDENT")
                                 .requestMatchers(HttpMethod.PUT, "/reservations/{idReservation}/books/{idBook}").hasAuthority("ROLE_STUDENT")

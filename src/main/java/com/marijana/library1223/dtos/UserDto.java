@@ -1,7 +1,6 @@
 package com.marijana.library1223.dtos;
 
 import com.marijana.library1223.models.Authority;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.Set;

@@ -41,7 +41,7 @@ public class Book {
     @JsonIgnore
     private Reservation reservation;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<BookCopy> bookCopyList = new ArrayList<>();
 
@@ -53,12 +53,10 @@ public class Book {
     //constructors - because @Data did not create them!
     public Book() {}
 
-
-
-    //equals and hashcode
     public Book(Long id, Integer isbn, String bookTitle, String nameAuthor, String nameIllustrator, Integer suitableAge) {
     }
 
+    //equals and hashcode - because @Data did not create them
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

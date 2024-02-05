@@ -1,6 +1,5 @@
 package com.marijana.library1223.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
@@ -17,12 +16,6 @@ public class Reservation {
     private LocalDate reservationDate;
     @Column(name="sidenote")
     private String sidenote;
-
-    @OneToOne(
-            mappedBy = "reservation",
-            cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Borrowal borrowal;
 
     @OneToOne(
             fetch = FetchType.LAZY,

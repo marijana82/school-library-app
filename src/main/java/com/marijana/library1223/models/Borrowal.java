@@ -18,10 +18,6 @@ public class Borrowal {
     @Column(name = "number_of_books_borrowed")
     private Integer numberOfBooksBorrowed;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private Account account;

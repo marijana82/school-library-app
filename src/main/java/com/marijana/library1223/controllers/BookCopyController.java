@@ -1,12 +1,11 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.configuration.HandleBindingErrors;
+import com.marijana.library1223.helpers.HandleBindingErrors;
 import com.marijana.library1223.dtos.BookCopyDto;
 import com.marijana.library1223.services.BookCopyService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,18 +27,20 @@ public class BookCopyController {
             @Valid @RequestBody BookCopyDto bookCopyDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+        if(bindingResult.hasErrors()) {
 
-        if (bindingErrorResponse != null) {
-            return bindingErrorResponse;
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
+
+            bookCopyService.createBookCopy(bookCopyDto);
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/" + bookCopyDto.getId())
+                    .toUriString());
+            return ResponseEntity.created(uri).body(bookCopyDto);
+
         }
-
-       bookCopyService.createBookCopy(bookCopyDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + bookCopyDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(bookCopyDto);
     }
 
 

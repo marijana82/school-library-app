@@ -1,12 +1,11 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.configuration.HandleBindingErrors;
+import com.marijana.library1223.helpers.HandleBindingErrors;
 import com.marijana.library1223.dtos.BorrowalDto;
 import com.marijana.library1223.services.BorrowalService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,18 +27,20 @@ public class BorrowalController {
             @Valid @RequestBody BorrowalDto borrowalDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
+        if(bindingResult.hasErrors()) {
 
-        if (bindingErrorResponse != null) {
-            return bindingErrorResponse;
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
+
+            borrowalService.createBorrowal(borrowalDto);
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/" + borrowalDto.getId())
+                    .toUriString());
+            return ResponseEntity.created(uri).body(borrowalDto);
+
         }
-
-        borrowalService.createBorrowal(borrowalDto);
-        URI uri = URI.create(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/" + borrowalDto.getId())
-                .toUriString());
-        return ResponseEntity.created(uri).body(borrowalDto);
 
     }
 
@@ -66,14 +67,6 @@ public class BorrowalController {
     @PutMapping("/{idBorrowal}/copies/{idCopy}")
     public ResponseEntity<Object> assignBookCopyToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idCopy") Long idCopy) {
         borrowalService.assignBookCopyToBorrowal(idBorrowal, idCopy);
-        return ResponseEntity.noContent().build();
-    }
-
-
-
-    @PutMapping("/{idBorrowal}/reservations/{idReservation}")
-    public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
-        borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
         return ResponseEntity.noContent().build();
     }
 

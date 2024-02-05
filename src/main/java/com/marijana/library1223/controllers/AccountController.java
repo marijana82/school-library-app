@@ -1,6 +1,6 @@
 package com.marijana.library1223.controllers;
 
-import com.marijana.library1223.configuration.HandleBindingErrors;
+import com.marijana.library1223.helpers.HandleBindingErrors;
 import com.marijana.library1223.dtos.AccountDto;
 
 import com.marijana.library1223.services.AccountService;
@@ -30,11 +30,12 @@ public class AccountController {
             @Valid @RequestBody AccountDto accountDto,
             BindingResult bindingResult) {
 
-        ResponseEntity<Object> bindingErrorResponse = HandleBindingErrors.handleBindingErrors(bindingResult);
 
-        if (bindingErrorResponse != null) {
-            return bindingErrorResponse;
-        }
+        if(bindingResult.hasErrors()) {
+
+            return HandleBindingErrors.handleBindingErrors(bindingResult);
+
+        } else {
 
         accountService.createAccount(accountDto);
         URI uri = URI.create(ServletUriComponentsBuilder
@@ -42,6 +43,8 @@ public class AccountController {
                 .path("/" + accountDto.getId())
                 .toUriString());
         return ResponseEntity.created(uri).body(accountDto);
+
+        }
     }
 
 

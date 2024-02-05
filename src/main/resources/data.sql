@@ -247,14 +247,6 @@ UPDATE borrowals SET book_copy_id = 1031 WHERE id = 1009;
 UPDATE borrowals SET book_copy_id = 1028 WHERE id = 1010;
 UPDATE borrowals SET book_copy_id = 1015 WHERE id = 1011;
 
---Add reservation to borrowal
-UPDATE borrowals SET reservation_id = 1000 WHERE id = 1000;
-UPDATE borrowals SET reservation_id = 1001 WHERE id = 1001;
-UPDATE borrowals SET reservation_id = 1009 WHERE id = 1002;
-UPDATE borrowals SET reservation_id = 1007 WHERE id = 1003;
-UPDATE borrowals SET reservation_id = 1003 WHERE id = 1004;
-UPDATE borrowals SET reservation_id = 1005 WHERE id = 1005;
-
 --Add account to borrowal
 UPDATE borrowals SET account_id = 1000 WHERE id = 1000;
 UPDATE borrowals SET account_id = 1001 WHERE id = 1001;
