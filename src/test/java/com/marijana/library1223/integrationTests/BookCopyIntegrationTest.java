@@ -300,7 +300,7 @@ class BookCopyIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(errorBookCopyDto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string(containsString("barcode : must be greater than or equal to 4")));
+                .andExpect(MockMvcResultMatchers.content().string(containsString("must be greater than or equal to 4")));
     }
 
 

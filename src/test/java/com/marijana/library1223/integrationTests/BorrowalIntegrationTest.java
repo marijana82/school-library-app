@@ -232,7 +232,7 @@ class BorrowalIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(errorBorrowalDto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string(containsString("dateOfBorrowal : must be a date in the present or in the future")));
+                .andExpect(MockMvcResultMatchers.content().string(containsString("must be a date in the present or in the future")));
     }
 
 

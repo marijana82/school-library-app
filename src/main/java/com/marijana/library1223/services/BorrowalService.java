@@ -64,9 +64,6 @@ public class BorrowalService {
         for (Borrowal borrowal : borrowalList) {
             BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowal);
 
-            if(borrowal.getReservation() !=null) {
-                borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
-            }
             if(borrowal.getBookCopy() !=null) {
                 borrowalDto.setBookCopyDto(bookCopyService.transferBookCopyToBookCopyDto(borrowal.getBookCopy()));
             }
@@ -87,9 +84,6 @@ public class BorrowalService {
             Borrowal borrowalFound = optionalBorrowal.get();
             BorrowalDto borrowalDto = transferBorrowalToBorrowalDto(borrowalFound);
 
-            if(borrowalFound.getReservation() != null) {
-                borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowalFound.getReservation()));
-            }
             if(borrowalFound.getAccount() !=null) {
                 borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowalFound.getAccount()));
             }
@@ -142,9 +136,6 @@ public class BorrowalService {
                 existingBorrowal.setNumberOfBooksBorrowed(partialUpdates.getNumberOfBooksBorrowed());
             }
 
-            if(partialUpdates.getReservation() !=null) {
-                existingBorrowal.setReservation(partialUpdates.getReservation());
-            }
 
             if(partialUpdates.getAccount() !=null) {
                 existingBorrowal.setAccount(partialUpdates.getAccount());
@@ -178,7 +169,6 @@ public class BorrowalService {
         borrowal.setDateOfBorrowal(borrowalDto.getDateOfBorrowal());
         borrowal.setDueDate(borrowalDto.getDueDate());
         borrowal.setId(borrowalDto.getId());
-        borrowal.setReservation(reservationService.transferReservationDtoToReservation(borrowalDto.getReservationDto()));
         borrowal.setBookCopy(bookCopyService.transferBookCopyDtoToBookCopy(borrowalDto.getBookCopyDto()));
         borrowal.setAccount(accountService.transferAccountDtoToAccount(borrowalDto.getAccountDto()));
 
@@ -192,9 +182,6 @@ public class BorrowalService {
         borrowalDto.setDueDate(borrowal.getDueDate());
         borrowalDto.setId(borrowal.getId());
 
-        if(borrowal.getReservation() !=null) {
-            borrowalDto.setReservationDto(reservationService.transferReservationToReservationDto(borrowal.getReservation()));
-        }
         if(borrowal.getAccount() !=null) {
             borrowalDto.setAccountDto(accountService.transferAccountToAccountDto(borrowal.getAccount()));
         }
@@ -204,29 +191,6 @@ public class BorrowalService {
         return borrowalDto;
     }
 
-
-    public void assignReservationToBorrowal(Long idBorrowal, Long idReservation) {
-        Optional<Borrowal> optionalBorrowal = borrowalRepository.findById(idBorrowal);
-        Optional<Reservation> optionalReservation = reservationRepository.findById(idReservation);
-
-        if(optionalBorrowal.isPresent() && optionalReservation.isPresent()) {
-             Borrowal borrowalPresent = optionalBorrowal.get();
-             Reservation reservationPresent = optionalReservation.get();
-
-            if(borrowalPresent.getReservation() !=null) {
-
-                throw new BadRequestException("Borrowal already contains one reservation. No new reservations can be added.");
-            }
-
-            borrowalPresent.setReservation(reservationPresent);
-
-            borrowalRepository.save(borrowalPresent);
-
-        } else {
-
-            throw new RecordNotFoundException();
-        }
-    }
 
 
     public void assignBookCopyToBorrowal(Long idBorrowal, Long idCopy) {

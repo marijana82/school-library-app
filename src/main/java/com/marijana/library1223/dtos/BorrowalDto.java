@@ -15,8 +15,7 @@ public class BorrowalDto {
     private LocalDate dueDate;
     @Max(value = 1, message = "Only 1 book can be added to this borrowal.")
     private Integer numberOfBooksBorrowed;
-    //---relations
-    private ReservationDto reservationDto;
+
     private AccountDto accountDto;
     private BookCopyDto bookCopyDto;
 

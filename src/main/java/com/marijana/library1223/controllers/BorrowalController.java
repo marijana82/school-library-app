@@ -71,14 +71,6 @@ public class BorrowalController {
     }
 
 
-
-    @PutMapping("/{idBorrowal}/reservations/{idReservation}")
-    public ResponseEntity<Object> assignReservationToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idReservation") Long idReservation) {
-        borrowalService.assignReservationToBorrowal(idBorrowal, idReservation);
-        return ResponseEntity.noContent().build();
-    }
-
-
     @PutMapping("/{idBorrowal}/accounts/{idAccount}")
     public ResponseEntity<Object> assignAccountToBorrowal(@PathVariable("idBorrowal") Long idBorrowal, @PathVariable("idAccount") Long idAccount) {
         borrowalService.assignAccountToBorrowal(idBorrowal, idAccount);

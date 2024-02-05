@@ -19,12 +19,6 @@ public class Reservation {
     private String sidenote;
 
     @OneToOne(
-            mappedBy = "reservation",
-            cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Borrowal borrowal;
-
-    @OneToOne(
             fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
